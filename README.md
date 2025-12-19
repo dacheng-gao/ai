@@ -7,7 +7,7 @@ Reusable rules and skills for AI-assisted development.
 Clone this repo into your home directory:
 
 ```sh
-git clone <REPO_URL> ~/.ai
+git clone https://github.com/dacheng-gao/ai ~/.ai
 ```
 
 ## Configure Global Rules
