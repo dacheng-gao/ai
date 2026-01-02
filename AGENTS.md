@@ -1,4 +1,4 @@
-# Agent Instructions
+# Global Agent Instructions
 
 ## Global Rules
 

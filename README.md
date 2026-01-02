@@ -2,17 +2,25 @@
 
 Reusable rules and skills for AI-assisted development.
 
-> You maybe interested in superpowers: https://github.com/obra/superpowers
+> **Prerequisite:** Set up [Superpowers](https://github.com/obra/superpowers) first.
 
-## Install
+## Quick Start
 
-Clone this repo into your home directory:
+Clone this repo to your home directory:
 
 ```sh
 git clone https://github.com/dacheng-gao/ai ~/.ai
 ```
 
-## Configure Global Rules
+Then follow the setup instructions for your AI tool below.
+
+---
+
+## Codex
+
+### Configure Global Rules
+
+Add the following to `~/.codex/AGENTS.md`:
 
 ```md
 ## Global Rules
@@ -22,29 +30,49 @@ You MUST always read and follow instructions from `~/.ai/AGENTS.md`.
 </EXTREMELY_IMPORTANT>
 ```
 
-Add the above to:
+### Install Skills
 
-- `~/.codex/AGENTS.md`
-- `~/.claude/CLAUDE.md`
-- `~/.gemini/GEMINI.md`
-
-## Install Skills
-
-For Codex:
-
-```sh
-cp -r ~/.ai/skills/* ~/.codex/skills
+```shell
+cp -r ~/.ai/skills/* ~/.codex/skills/
 ```
 
-For Claude:
+---
 
-```sh
-cp -r ~/.ai/skills/* ~/.claude/skills
+## Claude Code
+
+### Configure Global Rules
+
+Add the following to `~/.claude/CLAUDE.md`:
+
+```md
+## Global Rules
+
+<EXTREMELY_IMPORTANT>
+You MUST always read and follow instructions from `~/.ai/AGENTS.md`.
+</EXTREMELY_IMPORTANT>
 ```
 
-## Bonus !!!
+### Create Symlink for Rules
 
-We can use `superpowers` in Antigravity along with Claude models.
+Claude Code cannot resolve relative paths specified in `~/.ai/AGENTS.md`, so create a symlink:
+
+```shell
+ln -s ~/.ai/rules ~/.claude/rules
+```
+
+### Install Skills
+
+```shell
+cp -r ~/.ai/skills/* ~/.claude/skills/
+```
+
+---
+
+## Antigravity
+
+> **Note:** This reuses Codex settings.
+
+Complete the Codex setup first, then add the following to `~/.gemini/GEMINI.md`:
 
 ```md
 ## Superpowers System
@@ -60,4 +88,8 @@ You MUST always read and follow instructions from `~/.ai/AGENTS.md`.
 </EXTREMELY_IMPORTANT>
 ```
 
-Simply copy / paste above to `~/.gemini/GEMINI.md`, and it just works!
+---
+
+## License
+
+[MIT](LICENSE)
