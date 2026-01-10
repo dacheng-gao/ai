@@ -1,76 +1,91 @@
 ---
 name: develop-feature
-description: Design and implement new features with planning phase
-triggers:
-  - new feature
-  - add feature
-  - implement
-  - build
-  - create
-  - develop
+description: Use when adding a new feature or enhancement, especially with unclear requirements or multi-file impact - enforces a two-phase research/plan approval gate with evidence, then TDD + verification before completion.
 ---
 
-You are a feature development assistant helping developers design and implement new functionality.
+# Develop Feature
 
-**Goal:** Phase 1 - Understand requirements, explore approaches, deliver an implementation plan. Phase 2 - After approval, implement the feature with tests and validation.
+## Overview
+Two-phase gate: research/plan, approval, then TDD + verification.
 
-## Context
+## When to Use
+- New feature, enhancement, endpoint, UI flow, integration, data model
+- Multi-file change or unclear requirements
 
-Start with what you know (or ask/search for missing pieces):
-- Feature description: what you're building and why
-- User goals: desired outcome and success criteria
-- Constraints: technical limitations, compatibility requirements, performance targets
-- Affected areas: modules/files that will change or integrate
-- Existing patterns: project conventions, architecture docs
+**When NOT to Use**
+- Bug fix only -> use fix-bug; refactor only -> use refactor workflow
 
-If critical info is missing and you can search files or run commands, do so. Otherwise ask.
+## Required Sub-Skills
+- **REQUIRED SUB-SKILL:** superpowers:test-driven-development
+- **REQUIRED SUB-SKILL:** superpowers:verification-before-completion
 
-## Core Principles
+## Quick Reference
+| Phase | Gate | Output |
+|---|---|---|
+| 1. Planning | approval | evidence, approach, scope |
+| 2. Implementation | tests + verification | code + tests, validation, deviations |
 
-- **Understand before planning** - Restate the requirement clearly; identify core problem and desired outcome
-- **Ask when requirements are unclear** - Don't guess scope, edge cases, constraints, or success criteria
-- **Research existing code** - Explore current implementation; if project has architecture docs (like AGENTS.md, README, etc.), check them first to reuse/extend capabilities
-- **Explore alternatives when relevant** - If multiple valid approaches exist, compare 2-3 options with tradeoffs
-- **Design for simplicity and maintainability** - Prefer solutions that are simple, user-friendly, stable, and easy to maintain (YAGNI - don't over-engineer)
-- **Get approval before implementing** - Present plan, wait for user confirmation, then proceed to code
-- **Implement with validation** - After approval, write code with tests and clear verification steps
+## Phase 1: Planning & Design
 
-## Two-Phase Workflow
+**Rules:**
+- No implementation code or tests in Phase 1
+- Cite evidence (paths/functions/patterns)
+- Missing info -> search or ask
+- If asked to skip planning or "just implement", refuse and continue only after plan approval
 
-### Phase 1: Planning & Design
+**Mandatory Context Checklist**
+- Scope + success criteria
+- Architecture docs: `AGENTS.md`, `README.md`, `docs/`
+- Existing patterns/utilities (cite files/functions)
+- Dependencies/constraints + integration points + open questions
 
-Deliver an implementation plan covering:
-- **Requirement summary** - What you're building and why (restate in your own words)
-- **Research findings** - Existing code/modules to reuse, patterns to follow, constraints discovered
-- **Approach** - Recommended solution (if alternatives exist, compare 2-3 options with tradeoffs and your recommendation)
-- **Implementation scope** - Affected files/modules, key changes, integration points
-- **Considerations** - Edge cases, backward compatibility, performance, security, testing strategy
+**Implementation Plan Must Include**
+1. **Summary** — what/why, success criteria
+2. **Evidence** — files checked, patterns/utilities, constraints
+3. **Approach + Scope** — alternatives, tradeoffs, files, tests, edge cases, compatibility, perf, security, rollout/rollback
+3. **Approach + Scope** — alternatives, tradeoffs, files, tests, edge cases, compatibility, perf, security
 
-**Detail level:**
-- Simple features: Natural conversational plan with brief code sketches to illustrate key ideas
-- Complex features: Structured architectural overview focusing on high-level design, not line-by-line code
+**End Phase 1 with**
+> "Does this plan look good? Say 'proceed' or 'approved' to begin implementation."
 
-**End Phase 1 with:** "Does this plan look good? Any adjustments needed before I implement?"
+---
 
-### Phase 2: Implementation (after approval)
+## Phase 2: Implementation
 
-Once user approves the plan:
-- Write the feature code following the approved design
-- Add or update tests to cover new functionality
-- Provide validation steps (commands to run, manual testing instructions)
-- Note any implementation discoveries or reasonable deviations from plan
+**Rules:**
+- Only enter after approval (e.g., "proceed")
+- Follow TDD + verification; deviations require stop + approval
 
-## Response Guidance
+**Implementation Checklist**
+- Follow approved design; log deviations and rationale
+- Write failing test first (TDD), then minimal code
+- Match existing patterns; handle errors
+- Run tests + lint/format before completion claims
+- Provide validation steps
 
-**Always:**
-- Show your work - cite files/modules you checked, patterns you found (don't just claim you researched)
-- Explain tradeoffs - when choosing an approach, explain why you prefer it vs alternatives
-- Keep responses focused - clear bullets, concrete examples, no filler
-- Follow existing patterns - match project conventions, code style, architecture
+**If you already wrote code before approval**
+Delete or stash it and restart from Phase 1. Retroactive planning is a violation.
 
-**Important Notes:**
-- Don't skip research - check for existing solutions before proposing new code
-- Don't over-engineer - YAGNI applies; build what's needed now, not what might be needed later
-- Don't assume - if project structure, dependencies, or constraints are unclear, ask or search
-- If you can read files/run commands, do so proactively; if not, request relevant code/docs
-- Balance user request with better alternatives - if you spot a simpler/more maintainable approach, propose it with reasoning
+## Example Plan
+```markdown
+Requirement: CSV export on Reports page
+Success: download CSV A,B,C <2s
+Research: ReportPage.tsx; reports API; utils/csv.ts
+Approach: client-side export (rec) /reports/export endpoint
+Scope: ReportPage + ReportPage.test.tsx
+Considerations: 10k cap, permissions
+```
+
+## Common Mistakes and Rationalizations
+| Thought | Reality |
+|---|---|
+| "It's small/urgent, I can skip the plan" | Skipping plan ships wrong output. Plan anyway. |
+| "I already wrote code / quick spike first" | Retroactive planning != plan. Restart Phase 1. |
+| "I'll assume defaults or skip questions" | Assumptions cause rework. Ask/research. |
+| "I'll run tests after" | Not TDD. Write tests first. |
+
+## Red Flags - STOP
+- You started implementation or tests before Phase 1 approval
+- You cannot cite file paths or functions for research claims
+- You are guessing requirements, edge cases, or constraints
+- You are asked to skip planning or "just push a quick patch"
