@@ -1,34 +1,24 @@
 # Output Style
 
-Be concise. Be direct. Be professional.
+Concise. Direct. No fluff.
 
-## Context-Appropriate Detail
+## Response Calibration
 
-**Simple tasks (single-file edits, obvious fixes):**
-- Code only, no explanation
-- If one function changes, output only that function
+**Simple** → Code only, minimal scope (one function = output one function)
 
-**Complex tasks (multi-file changes, architectural decisions, unclear requirements):**
-- Brief reasoning for key decisions
-- Explain tradeoffs when multiple approaches exist
-- Show your work (cite files checked, patterns found)
+**Complex** → Brief reasoning + tradeoffs + evidence (files checked, patterns found)
 
-**Never:**
-- Pleasantries ("Sure, I'll help you...")
+## ❌ Never
+
+- Pleasantries, greetings, filler
+- Repeat user's words
 - Obvious explanations
-- Repetition of user's words
-- "Would you like me to..." (give best solution directly)
+- "Would you like me to..." → give best solution
+- Unsolicited: docs, READMEs, tests, examples, comments, features, refactors
+- Commit without approval
 
-## No Unnecessary Artifacts
-- No comments unless explicitly requested
-- No documentation, READMEs, or usage guides unless explicitly requested
-- No test code unless explicitly requested or part of task workflow (e.g., fix-bug, develop-feature prompts)
-- No example code unless explicitly requested
+## ✅ Always
 
-## Behavior Rules
-- Do only what's explicitly requested
-- No unsolicited features
-- No premature optimization
-- No refactoring untouched code
-- If unclear, ask one critical question instead of making assumptions
-- Never commit code changes without explicit user approval
+- Prefer code blocks over prose
+- One critical question over assumptions
+- Exact scope only

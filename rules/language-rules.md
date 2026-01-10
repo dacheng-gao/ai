@@ -1,186 +1,114 @@
 # Language Rules
 
+## Overview
+
+This document defines language conventions for AI-assisted development.
+
+**Core Principles:**
+1. **Chat language is ALWAYS Chinese (中文)** — AI responses, questions, explanations
+2. **Default technical language is English** — code, docs, git, configs
+3. **No confirmation needed** — use defaults directly without asking
+4. **Project overrides allowed** — see [Configuration](#project-level-override) section
+
+---
+
 ## Quick Reference
 
-| # | Category | Language | Notes |
-|---|----------|----------|-------|
-| 1 | Chat / Conversation | Chinese | AI ↔ User dialogue |
-| 2 | Documentation | English* | *Unless project specifies otherwise |
-| 3 | Code comments | English | Inline, block, docstrings |
-| 4 | Git commit messages | English | Conventional format |
-| 5 | PR / Issue titles & body | English | GitHub/GitLab workflow |
-| 6 | Code review comments | English | Technical discussion |
-| 7 | User-facing messages | Locale-based | Match target audience |
-| 8 | Logs & Debug output | English | Developer-facing |
-| 9 | Exception / Error messages | English | Stack traces, assertions |
-| 10 | Identifiers & Filenames | English | Variables, functions, paths |
-| 11 | Configuration | English | Keys, env vars, YAML/JSON |
-| 12 | Database schema | English | Tables, columns, indexes |
-| 13 | API contracts | English | Endpoints, params, responses |
-| 14 | Test names & descriptions | English | Describe behavior in English |
-| 15 | CI/CD & Build output | English | Pipeline logs, scripts |
-| 16 | Changelog & Release notes | English | Version history |
-| 17 | i18n keys | English | Translation identifiers |
+| Group | Categories | Default | Override Allowed |
+|-------|------------|---------|------------------|
+| 💬 **Chat** | AI ↔ User dialogue | **Chinese** | ✅ Project |
+| 📝 **Documentation** | README, ADR, guides, wikis | English | ✅ Project |
+| 💻 **Code** | Comments, identifiers, filenames | English | ❌ |
+| 🔧 **Git & VCS** | Commits, PRs, issues, reviews | English | ❌ |
+| 🌐 **API & Schema** | Endpoints, DB schema, configs | English | ❌ |
+| 🧪 **Testing** | Test names, assertions, mocks | English | ❌ |
+| 🚀 **DevOps** | CI/CD, logs, build output | English | ❌ |
+| 📋 **Changelog** | Release notes, migration guides | English | ✅ Project |
+| 🌍 **User-Facing** | UI text, notifications | **Locale-based** | ✅ Project |
+| 🔑 **i18n Keys** | Translation identifiers | English | ❌ |
 
 ---
 
 ## Category Details
 
-### 1. Chat & Conversation (AI ↔ User)
+### 💬 Chat & Conversation (AI ↔ User)
 
-**Language:** Chinese 中文
+**Language:** Chinese 中文 (固定)
 
+Applies to:
 - Conversational responses
 - Questions and clarifications
 - Explanations and reasoning
 - Non-technical narrative text
 
+> **Note:** This is the ONLY category that defaults to Chinese. All other technical content defaults to English.
+
 ---
 
-### 2. Documentation
+### 📝 Documentation
 
 **Default:** English
 
-- README, guides, specifications
+Applies to:
+- README files and guides
 - Architecture decision records (ADR)
 - Rule and skill files
-- Wiki pages
+- Wiki pages and specifications
 
-**Exception:** Follow project-specified language if defined. Do not ask for confirmation when using English default.
-
----
-
-### 3. Code Comments
-
-**Language:** English
-
-- Inline comments (`// ...`, `# ...`)
-- Block comments (`/* ... */`)
-- JSDoc / docstrings / type annotations
-- TODO / FIXME / HACK annotations
+> **Override:** Projects may specify another language. When using English default, do NOT ask for confirmation.
 
 ---
 
-### 4. Git Commit Messages
+### 💻 Code
 
-**Language:** English  
+**Language:** English (固定)
+
+Includes:
+- **Comments:** Inline (`//`, `#`), block (`/* */`), docstrings
+- **Annotations:** TODO, FIXME, HACK, type hints
+- **Identifiers:** Variables, functions, classes, methods
+- **Filenames:** Files, directories, modules, packages
+- **Constants:** Enum values, magic strings
+
+---
+
+### 🔧 Git & Version Control
+
+**Language:** English (固定)  
 **Format:** Conventional commits — `type(scope): description`
+
+Includes:
+- Commit messages
+- Branch names
+- PR/Issue titles and descriptions
+- Code review comments
+- Labels and milestones
 
 ```
 feat(auth): add OAuth2 support
 fix(api): handle null response
 docs(readme): update installation steps
-refactor(db): extract connection pooling
 ```
 
 ---
 
-### 5. PR / Issue Titles & Descriptions
+### 🌐 API & Schema
 
-**Language:** English
+**Language:** English (固定)
 
-- Pull request titles and body
-- Issue titles and descriptions
-- Milestone and project names
-- Labels and tags
-
----
-
-### 6. Code Review Comments
-
-**Language:** English
-
-- Review comments on PRs
-- Inline code suggestions
-- Technical discussion threads
+Includes:
+- **API:** Endpoint paths, query params, request/response fields
+- **Database:** Table/column names, indexes, migrations
+- **Config:** YAML/JSON/TOML keys, env vars, feature flags
+- **OpenAPI/Swagger/GraphQL:** Schema definitions
 
 ---
 
-### 7. User-Facing Messages
+### 🧪 Testing
 
-**Language:** Match application locale / target audience
+**Language:** English (固定)
 
-- UI text, labels, buttons
-- Form validation messages
-- Notifications and alerts
-- Help text and tooltips
-- Onboarding flows
-
----
-
-### 8. Logs & Debug Output
-
-**Language:** English
-
-- Application logs (info, warn, debug)
-- Debugging statements
-- Profiling output
-- Metrics and telemetry labels
-
----
-
-### 9. Exception & Error Messages
-
-**Language:** English
-
-- Developer-facing error messages
-- Stack traces and assertions
-- Error codes and constants
-- Deprecation warnings
-
----
-
-### 10. Code Identifiers & Filenames
-
-**Language:** English
-
-- Variable, function, class, method names
-- File and directory names
-- Module and package names
-- Constant and enum values
-
----
-
-### 11. Configuration
-
-**Language:** English
-
-- Configuration keys (YAML, JSON, TOML)
-- Environment variable names
-- Feature flag names
-- Secret and credential keys
-
----
-
-### 12. Database Schema
-
-**Language:** English
-
-- Table and column names
-- Index and constraint names
-- Migration file names
-- Stored procedure names
-
-**Note:** User data follows application locale; schema stays English.
-
----
-
-### 13. API Contracts
-
-**Language:** English
-
-- Endpoint paths (`/api/users`)
-- Query and path parameters
-- Request/response field names
-- OpenAPI / Swagger documentation
-- GraphQL schema definitions
-
----
-
-### 14. Test Names & Descriptions
-
-**Language:** English
-
+Includes:
 - Test function/method names
 - Test suite descriptions
 - Assertion messages
@@ -189,40 +117,60 @@ refactor(db): extract connection pooling
 ```python
 def test_user_login_with_valid_credentials():
     ...
+```
 
+```javascript
 it('should return 404 when user not found', () => { ... })
 ```
 
 ---
 
-### 15. CI/CD & Build Output
+### 🚀 DevOps & Infrastructure
 
-**Language:** English
+**Language:** English (固定)
 
-- Pipeline stage and job names
-- Build script comments
-- Deployment logs
+Includes:
+- CI/CD pipeline stages and job names
+- Build scripts and deployment logs
 - Infrastructure-as-code (Terraform, Ansible)
+- Application logs (info, warn, debug)
+- Error messages, stack traces, assertions
 
 ---
 
-### 16. Changelog & Release Notes
+### 📋 Changelog & Release Notes
 
-**Language:** English
+**Default:** English
 
+Includes:
 - CHANGELOG.md entries
-- Release notes
-- Version descriptions
+- Release notes and version descriptions
 - Migration guides
 
+> **Override:** Projects targeting non-English audiences may specify another language.
+
 ---
 
-### 17. i18n Keys (Internationalization)
+### 🌍 User-Facing Messages
 
-**Language:** English
+**Language:** Match application locale / target audience
 
-- Translation key identifiers
-- Locale file structure
+Includes:
+- UI text, labels, buttons
+- Form validation messages
+- Notifications and alerts
+- Help text and tooltips
+- Onboarding flows
+
+> **Note:** This category is locale-dependent. Follow the application's i18n strategy.
+
+---
+
+### 🔑 i18n Keys (Internationalization)
+
+**Language:** English (固定)
+
+Key names MUST be English. Translated values follow target locale.
 
 ```json
 {
@@ -231,4 +179,43 @@ it('should return 404 when user not found', () => { ... })
 }
 ```
 
-**Key names in English**, translated values in target locale.
+---
+
+## Project-Level Override
+
+Projects can override default languages by creating a `.ai/project-rules.md` or similar config file.
+
+### Configuration Format
+
+```yaml
+# .ai/project-config.yaml (or in project AGENTS.md)
+language:
+  chat: chinese          # AI conversation language (default: chinese)
+  documentation: chinese # Override for docs (default: english)
+  changelog: chinese     # Override for release notes (default: english)
+  user_facing: chinese   # Override for UI text (default: locale-based)
+```
+
+### Override Priority
+
+1. **Project-level config** — highest priority
+2. **User global rules** — `~/.ai/rules/`
+3. **System defaults** — this file
+
+### Behavior on Override
+
+- When a project specifies a language, use it **without asking for confirmation**
+- Only ask for clarification if the project config is ambiguous or missing for an edge case
+
+---
+
+## Summary
+
+| Aspect | Language | Confirmation |
+|--------|----------|--------------|
+| AI Chat | Chinese 中文 | Never ask |
+| Technical (code, git, API, etc.) | English | Never ask |
+| Documentation | English (or project override) | Never ask |
+| User-facing text | Locale-based | Follow project i18n |
+
+**Remember:** Use defaults directly. No confirmation dialogs. Projects can override via config.
