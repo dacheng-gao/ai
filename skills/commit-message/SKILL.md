@@ -1,21 +1,40 @@
 ---
 name: commit-message
-description: Generate git commit message from staged changes using Conventional Commits
+description: Use when you need a Conventional Commits message from staged git changes or a pasted diff - guides type/scope selection and subject/body/footer formatting for a compliant commit message
 triggers:
   - commit message
   - git message
   - write commit
   - generate commit
-  - 提交信息
-  - 生成 commit
-  - 写 commit
+  - conventional commit
+  - conventional commits
+  - commit subject
+  - commit body
+  - commit footer
+  - staged diff
+  - git diff --staged
+  - git diff --cached
 ---
 
 # Commit Message Generator
 
 Generate high-quality git commit messages following [Conventional Commits](https://www.conventionalcommits.org/).
+Core principle: capture the primary change and express it in the standard format.
 
 > **Language Rule:** Commit messages MUST be in English (per global language rules).
+
+---
+
+## When to Use
+
+Use when:
+- You need a Conventional Commits message from staged changes or a pasted diff
+- You want help selecting type/scope or writing a clear subject/body/footer
+- The diff is large and needs a concise primary intent
+
+Do not use when:
+- There is no diff available and the user refuses to provide it
+- You are asked for a non-Conventional-Commits format
 
 ---
 
@@ -29,7 +48,6 @@ GIT_PAGER=cat git diff --staged
 **Handle edge cases:**
 - **Empty output** → Respond: "No staged changes. Stage files with `git add` or paste the diff."
 - **Command fails** → Ask user to paste the staged diff manually.
-- **Never stop** without generating a message or requesting the diff.
 
 ---
 
@@ -50,7 +68,9 @@ Identify:
 
 ## Step 3: Generate Message
 
-### Commit Types
+### Quick Reference
+
+#### Commit Types
 
 | Type | Use When |
 |------|----------|
@@ -66,16 +86,7 @@ Identify:
 | `chore` | Maintenance, tooling |
 | `revert` | Reverting a previous commit |
 
-### Selecting Scope
-
-Scope should be a **noun** describing the affected area:
-- Module name: `auth`, `api`, `db`
-- Component: `button`, `header`, `modal`
-- Feature: `login`, `payment`, `notifications`
-
-Skip scope if changes are too broad or span multiple areas.
-
-### Format Rules
+#### Format Rules
 
 ```
 <type>[(scope)]: <subject>
@@ -90,6 +101,15 @@ Skip scope if changes are too broad or span multiple areas.
 | **Subject** | Imperative mood, ≤72 chars (aim ≤50), no period |
 | **Body** | Explain *what* and *why* (not *how*), wrap at 72 chars, optional |
 | **Footer** | `BREAKING CHANGE:`, `Fixes #123`, `Refs #456`, optional |
+
+### Selecting Scope
+
+Scope should be a **noun** describing the affected area:
+- Module name: `auth`, `api`, `db`
+- Component: `button`, `header`, `modal`
+- Feature: `login`, `payment`, `notifications`
+
+Skip scope if changes are too broad or span multiple areas.
 
 ### Avoid
 
@@ -113,6 +133,7 @@ Before outputting, check:
 ## Output Format
 
 Output **only** the commit message in a code block. No Git commands, no explanation.
+Exception: if there is no diff, request the staged diff instead of outputting a message.
 
 ```
 <type>[(scope)]: <subject>
@@ -124,24 +145,16 @@ Output **only** the commit message in a code block. No Git commands, no explanat
 
 ---
 
-## Examples
+## Common Mistakes
 
-### Simple Feature
+- Outputting explanations instead of a code block
+- Using vague verbs like "update" or past tense
+- Forcing a scope when changes span multiple areas
+- Omitting `BREAKING CHANGE:` when behavior breaks
 
-```
-feat(auth): add Google OAuth2 login
-```
+---
 
-### Feature with Body
-
-```
-feat(api): add rate limiting to public endpoints
-
-Implement token bucket algorithm with 100 req/min per IP.
-Add X-RateLimit-* headers for client visibility.
-```
-
-### Bug Fix with Issue Reference
+## Example
 
 ```
 fix(checkout): prevent duplicate order submission
@@ -150,22 +163,4 @@ Race condition allowed double-click to create duplicate orders.
 Add idempotency key validation before processing.
 
 Fixes #1234
-```
-
-### Breaking Change
-
-```
-feat(config)!: migrate to YAML configuration format
-
-BREAKING CHANGE: JSON configuration files are no longer supported.
-Run `migrate-config --format yaml` before upgrading.
-```
-
-### Refactor
-
-```
-refactor(db): extract connection pooling to dedicated module
-
-Improve testability by decoupling pool management from query execution.
-No behavior changes.
 ```
