@@ -2,6 +2,8 @@
 
 ## Global Rules
 
-- Before any task, read and follow all rules in `./rules/*.md` relative to the directory containing this `AGENTS.md`.
-- Do not proceed until those rules are loaded.
-- If `./rules/*.md` is missing or unreadable, stop and ask for clarification.
+<EXTREMELY_IMPORTANT>
+Read and apply all rule files matching `./rules/*.md` (paths relative to this file).
+
+Read each file NOW before proceeding. Stop and ask if the rules directory is missing or empty.
+</EXTREMELY_IMPORTANT>

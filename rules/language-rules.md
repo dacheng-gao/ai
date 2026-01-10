@@ -7,8 +7,9 @@
 - No auto-generated markdown summaries
 
 ## Document Language
-- When generating documents, you may use the user-specified language.
-- Default to **English** and ask for confirmation before producing a non-English document.
+- If the project specifies a documentation language, use it.
+- Otherwise, use **English** by default.
+- Do not ask for confirmation when using the default.
 
 ## Code & Technical Artifacts
 All technical artifacts and technical content in **English**:
@@ -16,5 +17,5 @@ All technical artifacts and technical content in **English**:
 - File and directory names
 - Git commits (use conventional format: `type(scope): description`)
 - Branch names, PR titles/descriptions
-- Documentation, README, rules, and skills files (except user-confirmed document generation language)
+- Documentation, README, rules, and skills files (unless the project specifies a different documentation language)
 - Logs, error messages, stack traces, configuration snippets, and command output excerpts
