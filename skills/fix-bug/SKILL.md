@@ -1,61 +1,86 @@
 ---
 name: fix-bug
-description: Fix bugs with root cause analysis and minimal changes
-triggers:
-  - fix bug
-  - resolve error
-  - debug
-  - troubleshoot
-  - issue
-  - broken
-  - not working
+description: Use when a defect, regression, failing test, crash, or incorrect output needs diagnosis and a minimal, validated fix - guides root-cause tracing, evidence gathering, and scoped changes.
 ---
 
-You are a bug-fixing assistant helping developers ship correct, minimal fixes.
+# Fix Bug
 
-**Goal:** Understand the bug, find the root cause, deliver a targeted fix with clear validation steps.
+## Overview
 
-## Context
+Find the root cause with evidence, then apply the smallest safe change and verify it.
 
-Start with what you know (or ask/search for missing pieces):
-- Bug description: what's broken, expected vs actual behavior
-- Repro steps: how to trigger the issue
-- Error logs/stack traces: concrete failure evidence
-- Relevant files/functions: where the problem likely originates
-- Environment: language/framework versions, config, OS
+## When to Use
 
-If critical info is missing and you can search files or run commands, do so. Otherwise ask.
+- Failing tests, regressions, crashes, incorrect output, performance drops, flaky behavior
+- Stack traces, error logs, exceptions, timeouts, user reports with repro steps
+- You need to correct existing behavior, not add new features
 
-## Core Principles
+**When NOT to use**
+- New feature or large behavior change (use develop-feature)
+- Broad refactors or redesigns (ask first)
 
-- **Understand before fixing** - Restate the bug clearly; classify impact (crash/security/perf/data loss)
-- **Ask when uncertain** - Don't guess repro steps, inputs, environment, or expected behavior
-- **Trace to root cause** - Read surrounding code, follow execution path from input → failure, cite evidence
-- **Prefer minimal safe changes** - Smallest fix addressing the cause; ask before broad refactors
-- **Validate thoroughly** - Provide exact test steps, highlight regression risks
+## Core Pattern
 
-## Response Guidance
+1. Observe: capture the exact failure (log/stack trace/failing test)
+2. Reproduce: minimal repro or targeted logging
+3. Isolate: trace input -> failure and identify the first wrong assumption
+4. Fix: smallest change that addresses the cause
+5. Verify: rerun the repro + relevant regression checks
 
-**For simple/clear bugs:**
-Respond naturally - state the cause, propose the fix, give validation steps.
+## Quick Reference
 
-**For complex/uncertain bugs:**
-Use structured sections:
-- **Bug summary:** Expected vs actual, repro
-- **Root cause:** Cause + evidence (cite files, functions, lines you checked)
-- **Fix:** Specific changes, affected files, why this approach
-- **Validation:** Test commands/steps, regression checks
+| Step | Goal | Evidence |
+| --- | --- | --- |
+| Observe | What fails and where | stack trace, logs, failing test |
+| Reproduce | Make it fail on demand | minimal repro, targeted logging |
+| Isolate | Find the first wrong assumption | code trace, git bisect |
+| Fix | Minimal, safe change | smallest diff, avoid refactor |
+| Verify | Prove it is fixed | test command, manual steps |
 
-**Always:**
-- Show your work - reference what you read/checked (don't just claim you found the cause)
-- Explain *why* the change fixes the root cause, not just *what* changed
-- Keep responses tight - short bullets, concrete steps, no filler
-- Read surrounding code and context, not just the failing line
+## Implementation
 
-## Important Notes
+- Start from evidence, not hunches; cite files/functions/lines you checked.
+- If repro is missing, add temporary logging or a focused failing test before changing code.
+- Prefer local, reversible changes; ask before touching multiple modules.
+- Explain why the change fixes the root cause (not just what changed).
 
-- Don't patch symptoms - address root causes with evidence
-- Consider project conventions, environment, config when investigating
-- If you can read files or run tests, do so proactively
-- If you can't access files, request relevant code snippets
-- Balance minimal fixes with sound judgment - fix it right, not just fast
+## Example
+
+**Symptom:** `TypeError: Cannot read properties of undefined (reading 'id')`  
+**Root cause:** `user` can be `undefined` when auth token is expired.  
+**Fix (minimal guard):**
+
+```ts
+// before
+const userId = user.id;
+
+// after
+if (!user) return res.status(401).end();
+const userId = user.id;
+```
+
+**Verify:** add test "expired token returns 401" + rerun the failing endpoint.
+
+## Common Mistakes
+
+- Patching symptoms (try/catch) without locating the cause
+- Guessing without repro or evidence
+- Broad refactors for a small bug
+- Skipping validation or regression checks
+- Disabling tests or increasing timeouts to "get green"
+
+## Rationalizations vs Reality
+
+| Excuse | Reality |
+| --- | --- |
+| "No time to reproduce" | Fixing blind causes regressions; build a minimal repro or log. |
+| "Quick try/catch is fine" | It hides failures; fix where the bad data is introduced. |
+| "Refactor to be safe" | Bigger changes increase risk; start with the smallest fix. |
+
+## Red Flags - STOP
+
+- "Just add a try/catch"
+- "Disable the test for now"
+- "Can't reproduce, so guess"
+- "Let's refactor everything"
+- "Ship without verification"
