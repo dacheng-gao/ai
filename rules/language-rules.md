@@ -39,6 +39,9 @@ Applies to:
 - Conversational responses
 - Questions and clarifications
 - Explanations and reasoning
+- **Structured output within chat** (Plans, Checklists, Analysis Reports)
+  - **Headers, Labels, Descriptions**: Chinese (e.g., "Risk Level", "Impact")
+  - **Code, Filenames, Proper Nouns**: English (e.g., `Netty`, `user_id`)
 - Non-technical narrative text
 
 > **Note:** This is the ONLY category that defaults to Chinese. All other technical content defaults to English.
