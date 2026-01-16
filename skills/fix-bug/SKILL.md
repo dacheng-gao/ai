@@ -1,13 +1,13 @@
 ---
 name: fix-bug
-description: Use when a defect, regression, failing test, crash, or incorrect output needs diagnosis and a minimal, validated fix - guides root-cause tracing, evidence gathering, and scoped changes.
+description: Use when a defect, regression, failing test, crash, or incorrect output needs a minimal, validated fix with clear reproduction or evidence.
 ---
 
 # Fix Bug
 
 ## Overview
 
-Find the root cause with evidence, then apply the smallest safe change and verify it.
+Find the root cause with evidence, then apply the smallest safe change and verify it. Confirm only for high-risk or irreversible changes; otherwise proceed with documented scope.
 
 ## When to Use
 
@@ -17,7 +17,7 @@ Find the root cause with evidence, then apply the smallest safe change and verif
 
 **When NOT to use**
 - New feature or large behavior change (use develop-feature)
-- Broad refactors or redesigns (ask first)
+- Broad refactors or redesigns (switch to refactor workflow)
 
 ## Core Pattern
 
@@ -41,8 +41,13 @@ Find the root cause with evidence, then apply the smallest safe change and verif
 
 - Start from evidence, not hunches; cite files/functions/lines you checked.
 - If repro is missing, add temporary logging or a focused failing test before changing code.
-- Prefer local, reversible changes; ask before touching multiple modules.
+- Prefer local, reversible changes; inform when touching multiple modules and ask only if scope expands or risk increases.
 - Explain why the change fixes the root cause (not just what changed).
+
+**High-Risk Confirmation Triggers**
+- Destructive or irreversible operations (data deletion, history rewrite, breaking migrations)
+- Security/auth or sensitive data handling changes
+- Breaking API/contract changes or compatibility risks
 
 ## Example
 
@@ -76,6 +81,7 @@ const userId = user.id;
 | "No time to reproduce" | Fixing blind causes regressions; build a minimal repro or log. |
 | "Quick try/catch is fine" | It hides failures; fix where the bad data is introduced. |
 | "Refactor to be safe" | Bigger changes increase risk; start with the smallest fix. |
+| "I must ask before touching multiple modules" | Inform the scope change; ask only if risk increases. |
 
 ## Red Flags - STOP
 
@@ -84,3 +90,4 @@ const userId = user.id;
 - "Can't reproduce, so guess"
 - "Let's refactor everything"
 - "Ship without verification"
+- "High-risk change without explicit confirmation"

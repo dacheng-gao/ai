@@ -10,6 +10,13 @@ This document defines language conventions for AI-assisted development.
 3. **No confirmation needed** — use defaults directly without asking
 4. **Project overrides allowed** — see [Configuration](#project-level-override) section
 
+**Confirmation Exceptions (only when necessary):**
+- Destructive or irreversible actions (data deletion, history rewrite, breaking migrations)
+- Security/auth or sensitive data handling changes
+- Breaking API/contract changes or compatibility risks
+- Ambiguous requirements that materially change scope or risk
+- User explicitly requests confirmation
+
 ---
 
 ## Quick Reference

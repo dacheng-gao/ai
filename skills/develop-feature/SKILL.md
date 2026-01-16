@@ -1,12 +1,12 @@
 ---
 name: develop-feature
-description: Use when adding a new feature or enhancement, especially with unclear requirements or multi-file impact - enforces a two-phase research/plan approval gate with evidence, then TDD + verification before completion.
+description: Use when adding a new feature, endpoint, UI flow, integration, or data model change with multi-file impact or unclear requirements that need scoped planning.
 ---
 
 # Develop Feature
 
 ## Overview
-Two-phase gate: research/plan, approval, then TDD + verification.
+Two-phase flow: research/plan, then TDD + verification. Proceed by default after the plan; ask for confirmation only when High-Risk Confirmation Triggers apply.
 
 ## When to Use
 - New feature, enhancement, endpoint, UI flow, integration, data model
@@ -22,7 +22,7 @@ Two-phase gate: research/plan, approval, then TDD + verification.
 ## Quick Reference
 | Phase | Gate | Output |
 |---|---|---|
-| 1. Planning | approval | evidence, approach, scope |
+| 1. Planning | risk check (confirm only if high-risk) | evidence, approach, scope |
 | 2. Implementation | tests + verification | code + tests, validation, deviations |
 
 ## Phase 1: Planning & Design
@@ -31,7 +31,7 @@ Two-phase gate: research/plan, approval, then TDD + verification.
 - No implementation code or tests in Phase 1
 - Cite evidence (paths/functions/patterns)
 - Missing info -> search or ask
-- If asked to skip planning or "just implement", refuse and continue only after plan approval
+- If asked to skip planning or "just implement", refuse; provide the plan and proceed by default unless High-Risk Confirmation Triggers apply
 
 **Mandatory Context Checklist**
 - Scope + success criteria
@@ -43,18 +43,23 @@ Two-phase gate: research/plan, approval, then TDD + verification.
 1. **Summary** — what/why, success criteria
 2. **Evidence** — files checked, patterns/utilities, constraints
 3. **Approach + Scope** — alternatives, tradeoffs, files, tests, edge cases, compatibility, perf, security, rollout/rollback
-3. **Approach + Scope** — alternatives, tradeoffs, files, tests, edge cases, compatibility, perf, security
 
 **End Phase 1 with**
-> "Does this plan look good? Say 'proceed' or 'approved' to begin implementation."
+> "Plan ready. I will proceed unless you want changes. If any High-Risk Confirmation Triggers apply, I will ask explicitly before implementation."
+
+**High-Risk Confirmation Triggers**
+- Destructive or irreversible operations (data deletion, history rewrite, breaking migrations)
+- Security/auth changes, access control, or sensitive data handling
+- Breaking API/contract changes or compatibility risks
+- Scope expands beyond the agreed plan in a way that increases risk
 
 ---
 
 ## Phase 2: Implementation
 
 **Rules:**
-- Only enter after approval (e.g., "proceed")
-- Follow TDD + verification; deviations require stop + approval
+- Enter after plan; require explicit confirmation only if High-Risk Confirmation Triggers apply
+- Follow TDD + verification; deviations require an explicit check only when risk or scope increases
 
 **Implementation Checklist**
 - Follow approved design; log deviations and rationale
@@ -63,7 +68,7 @@ Two-phase gate: research/plan, approval, then TDD + verification.
 - Run tests + lint/format before completion claims
 - Provide validation steps
 
-**If you already wrote code before approval**
+**If you already wrote code before the plan**
 Delete or stash it and restart from Phase 1. Retroactive planning is a violation.
 
 ## Example Plan
@@ -83,9 +88,11 @@ Considerations: 10k cap, permissions
 | "I already wrote code / quick spike first" | Retroactive planning != plan. Restart Phase 1. |
 | "I'll assume defaults or skip questions" | Assumptions cause rework. Ask/research. |
 | "I'll run tests after" | Not TDD. Write tests first. |
+| "I must ask for approval every time" | Only ask when High-Risk Confirmation Triggers apply. Otherwise proceed. |
 
 ## Red Flags - STOP
-- You started implementation or tests before Phase 1 approval
+- You started implementation or tests before Phase 1 plan
 - You cannot cite file paths or functions for research claims
 - You are guessing requirements, edge cases, or constraints
 - You are asked to skip planning or "just push a quick patch"
+- You are about to perform a High-Risk Confirmation Trigger without explicit confirmation

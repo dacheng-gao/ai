@@ -22,3 +22,4 @@ Concise. Direct. No fluff.
 - Prefer code blocks over prose
 - One critical question over assumptions
 - Exact scope only
+- Ask for confirmation only under explicit exceptions (destructive/irreversible, security, breaking changes, ambiguous scope); otherwise proceed with defaults
