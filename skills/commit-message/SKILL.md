@@ -1,19 +1,6 @@
 ---
 name: commit-message
 description: Use when you need a Conventional Commits message from staged git changes or a pasted diff - guides type/scope selection and subject/body/footer formatting for a compliant commit message
-triggers:
-  - commit message
-  - git message
-  - write commit
-  - generate commit
-  - conventional commit
-  - conventional commits
-  - commit subject
-  - commit body
-  - commit footer
-  - staged diff
-  - git diff --staged
-  - git diff --cached
 ---
 
 # Commit Message Generator
@@ -151,6 +138,24 @@ Exception: if there is no diff, request the staged diff instead of outputting a 
 - Using vague verbs like "update" or past tense
 - Forcing a scope when changes span multiple areas
 - Omitting `BREAKING CHANGE:` when behavior breaks
+
+---
+
+## Rationalizations vs Reality
+
+| Excuse | Reality |
+| --- | --- |
+| "No staged changes, just guess" | No diff = no evidence. Ask for staged diff or pasted changes. |
+| "Any wording is fine" | Conventional Commits formatting matters for tooling and changelogs. |
+| "Scope is always required" | Skip scope when changes span multiple areas. |
+
+---
+
+## Red Flags - STOP
+
+- No staged diff or pasted changes provided
+- Output includes explanation instead of a code block
+- Subject is past tense or ends with a period
 
 ---
 
