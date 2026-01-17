@@ -233,6 +233,7 @@ For each selected role:
 3. **Role-appropriate depth** — Security role digs deep on auth; Developer role focuses on code
 4. **Conflict is valuable** — When roles disagree, highlight the tradeoff
 5. **Task overrides mapping** — If user specifies roles, use those instead
+6. **Language expert required for code changes** — After identifying the programming language(s) used in the project, always include the corresponding language expert role for any task that modifies code. For multi-language repositories, include only the experts for the languages involved in the current task. Aim for concise, maintainable, idiomatic code (e.g., SOLID).
 
 ---
 
