@@ -25,7 +25,7 @@ AI 辅助开发的语言规范。
 |------|------|------|--------|
 | 💬 **聊天** | AI ↔ 用户对话 | **中文** | ✅ 项目级 |
 | 📝 **文档** | README、ADR、指南、Wiki | 英语 | ✅ 项目级 |
-| 📝 **文档** | OpenSpec 工具生成文档 | 中文 | ✅ 项目级 |
+| 📝 **文档** | OpenSpec 工具生成文档（如 `proposal.md` / `design.md` / `tasks.md` / `spec.md`） | 中文 | ✅ 项目级 |
 | 📝 **文档** | plan 文档（如 docs/plans） | 中文 | ✅ 项目级 |
 | 💻 **代码** | 注释、标识符、文件名 | 英语 | ❌ |
 | 🔧 **Git 与版本控制** | 提交、PR、Issue、评审 | 英语 | ❌ |
@@ -57,7 +57,7 @@ AI 辅助开发的语言规范。
 **默认：** 英语  
 适用：README、指南、ADR、规则/技能文件、Wiki、规范文档  
 **例外（默认中文）：**
-- OpenSpec 工具生成文档
+- OpenSpec 工具生成文档（如 `proposal.md` / `design.md` / `tasks.md` / `spec.md`）
 - plan 文档（如 docs/plans）
 > 可被项目配置覆盖；默认英语无需确认。
 
