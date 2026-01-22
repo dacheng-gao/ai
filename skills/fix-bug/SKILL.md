@@ -1,59 +1,59 @@
 ---
 name: fix-bug
-description: Use when a defect, regression, failing test, crash, or incorrect output needs a minimal, validated fix with clear reproduction or evidence.
+description: Use when 处理缺陷、回归、失败测试、崩溃、错误输出、性能下降或不稳定行为（包括需要先补充复现或证据的情况）。
 ---
 
-# Fix Bug
+# 修复缺陷
 
-## Overview
+## 概述
 
-Find the root cause with evidence, then apply the smallest safe change and verify it. Confirm only for high-risk or irreversible changes; otherwise proceed with documented scope.
+基于证据定位根因，做最小且安全的修改并验证。仅在高风险/不可逆变更时确认。
 
-## When to Use
+## 何时使用
 
-- Failing tests, regressions, crashes, incorrect output, performance drops, flaky behavior
-- Stack traces, error logs, exceptions, timeouts, user reports with repro steps
-- You need to correct existing behavior, not add new features
+- 失败测试、回归、崩溃、错误输出、性能下降、不稳定行为
+- 堆栈、错误日志、异常、超时、带复现步骤的用户报告
+- 需要纠正既有行为，而非新增功能
 
-**When NOT to use**
-- New feature or large behavior change (use develop-feature)
-- Broad refactors or redesigns (switch to refactor workflow)
+**不适用**
+- 新功能或大幅行为变更（用 develop-feature）
+- 大范围重构或重新设计（切换到 refactor 流程）
 
-## Core Pattern
+## 核心模式
 
-1. Observe: capture the exact failure (log/stack trace/failing test)
-2. Reproduce: minimal repro or targeted logging
-3. Isolate: trace input -> failure and identify the first wrong assumption
-4. Fix: smallest change that addresses the cause
-5. Verify: rerun the repro + relevant regression checks
+1. 观察：捕捉精确失败（日志/堆栈/失败测试）
+2. 复现：最小复现或定向日志
+3. 定位：沿输入 → 失败追踪，找出第一个错误假设
+4. 修复：最小变更解决根因
+5. 验证：重跑复现 + 相关回归检查
 
-## Quick Reference
+## 快速参考
 
-| Step | Goal | Evidence |
+| 步骤 | 目标 | 证据 |
 | --- | --- | --- |
-| Observe | What fails and where | stack trace, logs, failing test |
-| Reproduce | Make it fail on demand | minimal repro, targeted logging |
-| Isolate | Find the first wrong assumption | code trace, git bisect |
-| Fix | Minimal, safe change | smallest diff, avoid refactor |
-| Verify | Prove it is fixed | test command, manual steps |
+| 观察 | 失败内容与位置 | 堆栈、日志、失败测试 |
+| 复现 | 可按需失败 | 最小复现、定向日志 |
+| 定位 | 找到第一个错误假设 | 代码跟踪、git bisect |
+| 修复 | 最小且安全 | 最小 diff，避免重构 |
+| 验证 | 证明已修复 | 测试命令、手动步骤 |
 
-## Implementation
+## 实施要点
 
-- Start from evidence, not hunches; cite files/functions/lines you checked.
-- If repro is missing, add temporary logging or a focused failing test before changing code.
-- Prefer local, reversible changes; inform when touching multiple modules and ask only if scope expands or risk increases.
-- Explain why the change fixes the root cause (not just what changed).
+- 从证据出发，不凭猜测；引用检查过的文件/函数/行号。
+- 缺少复现时先补证据（临时日志/失败测试）。
+- 优先局部、可回滚变更；范围扩大或风险上升再询问。
+- 解释为什么能修复根因（不是只说改了什么）。
 
-**High-Risk Confirmation Triggers**
+**高风险确认条件**
 - Destructive or irreversible operations (data deletion, history rewrite, breaking migrations)
 - Security/auth or sensitive data handling changes
 - Breaking API/contract changes or compatibility risks
 
-## Example
+## 示例
 
-**Symptom:** `TypeError: Cannot read properties of undefined (reading 'id')`  
-**Root cause:** `user` can be `undefined` when auth token is expired.  
-**Fix (minimal guard):**
+**症状：** `TypeError: Cannot read properties of undefined (reading 'id')`  
+**根因：** 认证 token 过期时 `user` 可能为 `undefined`。  
+**修复（最小保护）：**
 
 ```ts
 // before
@@ -64,30 +64,30 @@ if (!user) return res.status(401).end();
 const userId = user.id;
 ```
 
-**Verify:** add test "expired token returns 401" + rerun the failing endpoint.
+**验证：** 添加测试 “expired token returns 401” 并重跑失败端点。
 
-## Common Mistakes
+## 常见错误
 
-- Patching symptoms (try/catch) without locating the cause
-- Guessing without repro or evidence
-- Broad refactors for a small bug
-- Skipping validation or regression checks
-- Disabling tests or increasing timeouts to "get green"
+- 只补症状（try/catch）而不定位根因
+- 没有复现或证据就猜测
+- 为小 bug 做大范围重构
+- 跳过验证或回归检查
+- 通过禁用测试或加超时来“变绿”
 
-## Rationalizations vs Reality
+## 借口 vs 事实
 
-| Excuse | Reality |
+| 借口 | 事实 |
 | --- | --- |
-| "No time to reproduce" | Fixing blind causes regressions; build a minimal repro or log. |
-| "Quick try/catch is fine" | It hides failures; fix where the bad data is introduced. |
-| "Refactor to be safe" | Bigger changes increase risk; start with the smallest fix. |
-| "I must ask before touching multiple modules" | Inform the scope change; ask only if risk increases. |
+| “没时间复现” | 盲修会引入回归；做最小复现或日志。 |
+| “先加 try/catch 就行” | 只是掩盖失败；应修复错误数据来源。 |
+| “为稳妥起见先重构” | 变更越大风险越高；先做最小修复。 |
+| “涉及多模块必须先问” | 说明范围变化；仅在风险增加时询问。 |
 
-## Red Flags - STOP
+## 红旗 - 立刻停止
 
-- "Just add a try/catch"
-- "Disable the test for now"
-- "Can't reproduce, so guess"
-- "Let's refactor everything"
-- "Ship without verification"
-- "High-risk change without explicit confirmation"
+- “先加 try/catch”
+- “先禁用测试”
+- “无法复现就猜”
+- “不如全量重构”
+- “不验证就上线”
+- “高风险变更未明确确认”

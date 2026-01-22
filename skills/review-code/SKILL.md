@@ -1,87 +1,86 @@
 ---
 name: review-code
-description: Use when asked to review code, PRs, diffs, or patches for correctness, security, performance, or maintainability risk - produces a severity-ranked, location-cited review with concrete fixes, assumptions, and minimal fluff.
+description: Use when 需要评审代码、PR、diff 或补丁的正确性、安全性、性能或可维护性风险。
 ---
 
-# Review Code
+# 代码评审
 
-## Overview
-Find the highest-impact issues first, cite exact locations, and propose concrete fixes.
+## 概述
+先找高风险问题，标出位置并给出可执行修复。
 
-## When to Use
-- Code review / PR review / diff or patch review
-- Requests to check for bugs, security, performance, or maintainability issues
-- Approval or pre-merge review
+## 何时使用
+- 代码/PR/diff/补丁评审
+- 关注 bug、安全、性能或可维护性风险
+- 合并/审批前评审
 
-## When Not to Use
-- No code or diff provided (ask for code)
-- Only architecture/design discussion (use architecture review)
+## 不适用
+- 未提供代码或 diff（先请求提供）
+- 仅架构/设计讨论（用 architecture-review）
 
-## Quick Reference
+## 快速参考
 
-| Focus | Signals / examples |
+| 关注点 | 信号 / 示例 |
 | --- | --- |
-| Correctness | off-by-one, null deref, wrong condition, missing error handling |
-| Security | auth bypass, SQL injection, XSS/CSRF, secret leaks |
-| Performance | N+1 queries, unbounded loops, blocking I/O |
-| Maintainability | unclear naming, duplication, complex branching |
-| Best practices | framework conventions, logging, error handling |
+| 正确性 | off-by-one、空指针、条件错误、缺少错误处理 |
+| 安全 | 越权、SQL 注入、XSS/CSRF、泄露密钥 |
+| 性能 | N+1 查询、无限循环、阻塞 I/O |
+| 可维护性 | 命名不清、重复、分支复杂 |
+| 最佳实践 | 框架约定、日志、错误处理 |
 
-## Output Format
-- Findings first, ordered by severity.
-- Each finding includes: location (file:line or snippet), severity, impact, fix.
-- Then open questions/assumptions.
-- Then 1-2 sentence summary.
-- Optional positives (only if meaningful).
-- If no findings, say so explicitly and note residual risks or testing gaps.
-- If essential context is missing, ask one critical question; otherwise state assumptions.
+## 输出格式
+- 先列问题，按严重度排序。
+- 每个问题包含：位置（文件:行 或片段）、严重度、影响、修复。
+- 然后写开放问题/假设。
+- 最后 1-2 句总结；亮点可选。
+- 若无问题，明确说明 + 残余风险/测试缺口。
+- 缺上下文：只问一个关键问题；否则写明假设。
 
-## Severity Rubric
-- Critical: security, auth bypass, data loss, crash/panic
-- Important: logic bugs, perf regressions, flaky behavior
-- Suggestion: readability, naming, small refactors
+## 严重度标准
+- Critical：安全、越权、数据丢失、崩溃/恐慌
+- Important：逻辑 bug、性能回退、不稳定行为
+- Suggestion：可读性、命名、小型重构
 
-## Time-Boxed Reviews
-If time or authority pressure exists, time-box but still scan highest-risk areas (auth, input validation, data writes, concurrency). State what was reviewed and what was not.
+## 盒式评审
+时间/权威压力下可限时，但仍需扫高风险区域（鉴权、输入、写入、并发），并说明已检/未检。
 
-## Example
+## 示例
 ```markdown
-Findings
+问题
 - b/api/users.ts:42
-  Severity: Critical
-  Issue: Missing auth/ownership check allows any user to update profiles.
-  Fix: Require `requireUser()` and verify `user.id` matches target.
+  严重度: Critical
+  问题: 缺少鉴权/归属检查，任意用户可更新资料。
+  修复: 要求 `requireUser()` 并校验 `user.id` 与目标一致。
 
 - b/db/users.ts:88
-  Severity: Important
-  Issue: Unbounded query can cause N+1 behavior under load.
-  Fix: Add LIMIT and batch fetch related data.
+  严重度: Important
+  问题: 无界查询在负载下会引发 N+1 行为。
+  修复: 增加 LIMIT 并批量获取关联数据。
 
-Questions/Assumptions
-- Is `req.user` always set by middleware before this handler?
+问题/假设
+- 该 handler 之前是否总有中间件设置 `req.user`？
 
-Summary
-- Block merge until auth check is added; performance issue can follow.
+总结
+- 鉴权检查加入前阻止合并；性能问题可后续处理。
 ```
 
-## Common Mistakes
-- Starting with summary before findings
-- Missing locations or severity
-- Nitpicking style while ignoring correctness/security/perf
-- Vague fixes ("optimize") without concrete action
+## 常见错误
+- 先写总结后写问题
+- 缺少位置或严重度
+- 忽略正确性/安全/性能只挑风格
+- 修复建议含糊（“优化一下”）而无具体行动
 
-## Rationalizations vs Reality
+## 借口 vs 事实
 
-| Excuse | Reality |
+| 借口 | 事实 |
 | --- | --- |
-| "No time for line numbers" | No location = no fix; cite file and snippet at minimum. |
-| "User asked for quick review" | Quick still needs high-severity issues first. |
-| "Be nice, avoid negatives" | Hidden critical issues cause real harm. |
-| "No findings, so I'll just say looks good" | Explicitly state no findings and list residual risks or testing gaps. |
+| “没时间标行号” | 没位置就没法修复；至少给文件与片段。 |
+| “用户只要快速评审” | 快速也要先看高严重度问题。 |
+| “要友好，别说问题” | 隐藏关键问题会造成真实伤害。 |
+| “没发现就说看起来不错” | 明确无问题并列出残余风险或测试缺口。 |
 
-## Red Flags - STOP
-- "I'll just skim and approve"
-- "Only style comments"
-- "No file/line references"
-- "Summary only, no findings"
-- "No findings stated"
+## 红旗 - 立刻停止
+- “随便扫一眼就批准”
+- “只提风格意见”
+- “不标文件/行”
+- “只有总结，没有问题”
+- “未说明是否有问题”

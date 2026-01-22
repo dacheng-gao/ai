@@ -1,79 +1,78 @@
 ---
 name: commit-message
-description: Use when you need a Conventional Commits message from staged git changes or a pasted diff - guides type/scope selection and subject/body/footer formatting for a compliant commit message
+description: Use when 需要基于已暂存的 git 变更或粘贴的 diff 生成 Conventional Commits 提交信息。
 ---
 
-# Commit Message Generator
+# 提交信息生成器
 
-Generate high-quality git commit messages following [Conventional Commits](https://www.conventionalcommits.org/).
-Core principle: capture the primary change and express it in the standard format.
+生成符合 [Conventional Commits](https://www.conventionalcommits.org/) 的提交信息。核心：抓住主要变更，用标准格式表达。
 
-> **Language Rule:** Commit messages MUST be in English (per global language rules).
-
----
-
-## When to Use
-
-Use when:
-- You need a Conventional Commits message from staged changes or a pasted diff
-- You want help selecting type/scope or writing a clear subject/body/footer
-- The diff is large and needs a concise primary intent
-
-Do not use when:
-- There is no diff available and the user refuses to provide it
-- You are asked for a non-Conventional-Commits format
+> **语言规则：** 提交信息必须为英文（遵循全局语言规则）。
 
 ---
 
-## Step 1: Obtain Staged Diff
+## 何时使用
 
-Run:
+使用场景：
+- 需要基于已暂存变更或粘贴的 diff 生成 Conventional Commits 信息
+- 需要帮助选择 type/scope，或写清晰的 subject/body/footer
+- diff 很大，需要提炼主要意图
+
+不使用场景：
+- 没有 diff 且用户拒绝提供
+- 被要求非 Conventional-Commits 格式
+
+---
+
+## 步骤 1：获取已暂存 diff
+
+运行：
 ```bash
 GIT_PAGER=cat git diff --staged
 ```
 
-**Handle edge cases:**
-- **Empty output** → Respond: "No staged changes. Stage files with `git add` or paste the diff."
-- **Command fails** → Ask user to paste the staged diff manually.
+**处理边界情况：**
+- **输出为空** → 回复："No staged changes. Stage files with `git add` or paste the diff."
+- **命令失败** → 请用户手动粘贴已暂存 diff。
 
 ---
 
-## Step 2: Analyze Changes
+## 步骤 2：分析变更
 
-Identify:
-1. **Primary purpose** — What is the main intent of this change?
-2. **Affected scope** — Which module/component/file is primarily affected?
-3. **Breaking changes** — Does this change break existing APIs or behavior?
+识别：
+1. **主要目的** — 变更的核心意图是什么？
+2. **影响范围** — 主要影响哪个模块/组件/文件？
+3. **破坏性变更** — 是否破坏现有 API 或行为？
 
-### Large Diff Handling (>300 lines)
+### 大型 diff 处理（>300 行）
 
-1. Summarize changes by file/module
-2. Focus on the primary purpose
-3. If changes should be split → Suggest: "Consider splitting into multiple commits: [list]"
+1. 按文件/模块总结变更
+2. 聚焦主要目的
+3. 若应拆分 → 建议："Consider splitting into multiple commits: [list]"
 
 ---
 
-## Step 3: Generate Message
+## 步骤 3：生成提交信息
 
-### Quick Reference
+### 快速参考
 
-#### Commit Types
+#### 提交类型
 
-| Type | Use When |
+| 类型 | 何时使用 |
 |------|----------|
-| `feat` | New feature for the user |
-| `fix` | Bug fix |
-| `docs` | Documentation only |
-| `style` | Formatting, no code change |
-| `refactor` | Code restructure, no behavior change |
-| `perf` | Performance improvement |
-| `test` | Adding/fixing tests |
-| `build` | Build system, dependencies |
-| `ci` | CI/CD configuration |
-| `chore` | Maintenance, tooling |
-| `revert` | Reverting a previous commit |
+| `feat` | 面向用户的新功能 |
+| `fix` | Bug 修复 |
+| `docs` | 仅文档 |
+| `style` | 仅格式，无代码变化 |
+| `refactor` | 代码重构，无行为变化 |
+| `perf` | 性能优化 |
+| `test` | 添加/修复测试 |
+| `build` | 构建系统、依赖 |
+| `ci` | CI/CD 配置 |
+| `chore` | 维护、工具 |
+| `revert` | 回滚先前提交 |
 
-#### Format Rules
+#### 格式规则
 
 ```
 <type>[(scope)]: <subject>
@@ -83,32 +82,32 @@ Identify:
 [footer]
 ```
 
-| Element | Rule |
+| 要素 | 规则 |
 |---------|------|
-| **Subject** | Imperative mood, ≤72 chars (aim ≤50), no period |
-| **Body** | Explain *what* and *why* (not *how*), wrap at 72 chars, optional |
-| **Footer** | `BREAKING CHANGE:`, `Fixes #123`, `Refs #456`, optional |
+| **Subject** | 祈使语气，≤72 字符（建议 ≤50），不以句号结尾 |
+| **Body** | 说明 *what* 与 *why*（不是 *how*），72 字符换行，可选 |
+| **Footer** | `BREAKING CHANGE:`, `Fixes #123`, `Refs #456`，可选 |
 
-### Selecting Scope
+### 选择 Scope
 
-Scope should be a **noun** describing the affected area:
+Scope 应为描述影响范围的**名词**：
 - Module name: `auth`, `api`, `db`
 - Component: `button`, `header`, `modal`
 - Feature: `login`, `payment`, `notifications`
 
-Skip scope if changes are too broad or span multiple areas.
+若变更过于广泛或跨多个区域，跳过 scope。
 
-### Avoid
+### 避免
 
-- ❌ Vague verbs: "update", "change", "modify" (unless unavoidable)
-- ❌ Past tense: "added", "fixed" → Use "add", "fix"
-- ❌ Articles at start: "Add a feature" → "Add feature"
+- ❌ 含糊动词：`update`, `change`, `modify`（除非不可避免）
+- ❌ 过去时：`added`, `fixed` → 用 `add`, `fix`
+- ❌ 以冠词开头：`Add a feature` → `Add feature`
 
 ---
 
-## Step 4: Self-Verify
+## 步骤 4：自检
 
-Before outputting, check:
+输出前检查：
 - [ ] Subject ≤72 characters
 - [ ] Uses imperative mood ("add" not "added")
 - [ ] Type matches the primary change
@@ -117,10 +116,10 @@ Before outputting, check:
 
 ---
 
-## Output Format
+## 输出格式
 
-Output **only** the commit message in a code block. No Git commands, no explanation.
-Exception: if there is no diff, request the staged diff instead of outputting a message.
+**只输出**代码块内的提交信息，不给 Git 命令或解释。
+例外：如果没有 diff，请请求已暂存 diff，而不是输出提交信息。
 
 ```
 <type>[(scope)]: <subject>
@@ -132,34 +131,34 @@ Exception: if there is no diff, request the staged diff instead of outputting a 
 
 ---
 
-## Common Mistakes
+## 常见错误
 
-- Outputting explanations instead of a code block
-- Using vague verbs like "update" or past tense
-- Forcing a scope when changes span multiple areas
-- Omitting `BREAKING CHANGE:` when behavior breaks
+- 输出解释而不是代码块
+- 使用含糊动词或过去时
+- 变更跨多区域时强行加 scope
+- 行为破坏时遗漏 `BREAKING CHANGE:`
 
 ---
 
-## Rationalizations vs Reality
+## 借口 vs 事实
 
-| Excuse | Reality |
+| 借口 | 事实 |
 | --- | --- |
-| "No staged changes, just guess" | No diff = no evidence. Ask for staged diff or pasted changes. |
-| "Any wording is fine" | Conventional Commits formatting matters for tooling and changelogs. |
-| "Scope is always required" | Skip scope when changes span multiple areas. |
+| “没有已暂存变更，随便猜” | 没有 diff 就没有证据。请求暂存 diff 或粘贴变更。 |
+| “措辞随便” | Conventional Commits 格式影响工具与变更日志。 |
+| “Scope 一定要有” | 跨多区域就跳过 scope。 |
 
 ---
 
-## Red Flags - STOP
+## 红旗 - 立刻停止
 
-- No staged diff or pasted changes provided
-- Output includes explanation instead of a code block
-- Subject is past tense or ends with a period
+- 未提供已暂存 diff 或粘贴的变更
+- 输出包含解释而不是代码块
+- Subject 为过去时或以句号结尾
 
 ---
 
-## Example
+## 示例
 
 ```
 fix(checkout): prevent duplicate order submission

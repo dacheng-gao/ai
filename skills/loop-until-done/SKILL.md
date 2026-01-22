@@ -1,31 +1,30 @@
 ---
 name: loop-until-done
-description: Use when the user explicitly requests repeated execution until completion (phrases like "loop until done", "keep iterating", "repeat until fixed"), typically for bug fixes or feature work.
+description: Use when 用户明确要求反复执行或迭代直到完成（如 “loop until done”, “keep iterating”, “repeat until fixed”）。
 ---
 
-# Loop Until Done
+# 循环直到完成
 
-## Overview
-Enforce a strict review-plan-execute-review loop and keep iterating until requirements and verification pass, or stop only for a blocker that needs user input.
+## 概述
+严格执行“评审-计划-执行-再评审”循环，直到需求与验证全部通过；仅在需要用户输入时停。
 
-## Trigger Gate
-- Use only when the user explicitly asks for looping or iteration.
-- If the request is not explicit, do not apply this skill.
+## 触发门槛
+- 仅在用户明确要求循环或迭代时使用。
+- 若请求不明确，不应用此技能。
 
-## Required Sub-Skills
-- **REQUIRED SUB-SKILL:** fix-bug (bug, regression, incorrect output)
-- **REQUIRED SUB-SKILL:** develop-feature (new feature or enhancement)
-- **REQUIRED SUB-SKILL:** superpowers:test-driven-development
+## 必需子技能
+- **REQUIRED SUB-SKILL:** fix-bug（bug、回归、错误输出）
+- **REQUIRED SUB-SKILL:** develop-feature（新功能或增强）
 - **REQUIRED SUB-SKILL:** superpowers:verification-before-completion
-- **OPTIONAL:** review-code (review stage)
+- **OPTIONAL:** review-code（评审阶段）
 
-## Loop Decision Flow
+## 循环决策流程
 ```dot
 digraph loop_until_done {
     rankdir=LR;
     start [label="Explicit loop requested?", shape=diamond];
     review [label="Review request", shape=box];
-    plan [label="Plan + execute (TDD)", shape=box];
+    plan [label="Plan + execute (tests)", shape=box];
     check [label="Review changes vs request", shape=box];
     verify [label="Verification + no gaps?", shape=diamond];
     stop [label="Stop: report evidence", shape=box];
@@ -40,76 +39,76 @@ digraph loop_until_done {
 }
 ```
 
-## Loop Protocol
-1. **Review request**: restate success criteria and constraints; identify missing info.
-2. **Classify task**: bug fix vs feature; invoke the correct sub-skill.
-3. **Write plan**: list steps, tests, and verification commands.
-4. **Execute plan**: follow TDD; make minimal changes per step.
-5. **Review changes**: compare results to the request; list gaps and regressions.
-6. **Verify**: run tests/commands and capture evidence.
-7. **Decide**: if gaps or failures remain, update the plan and iterate.
+## 循环协议
+1. 评审请求：重述成功标准与约束；识别缺失信息。
+2. 分类任务：bug vs 功能；调用对应子技能。
+3. 编写计划：步骤、测试、验证命令。
+4. 执行计划：最小变更，并补齐必要测试。
+5. 评审变更：对照请求列出缺口/回归。
+6. 验证：运行测试/命令并记录证据。
+7. 决策：仍有缺口/失败 → 更新计划继续迭代。
 
-## Stop Conditions
-Stop only when all are true:
+## 停止条件
+仅在全部满足时停止：
 - The request is fully satisfied.
 - Verification commands pass.
 - No known gaps, failing tests, or unaddressed issues remain.
 
-Stop and ask the user when:
+遇到以下情况停止并询问用户：
 - Missing information blocks progress.
 - A high-risk confirmation trigger applies.
 - The request expands scope beyond the agreed plan.
 
-## Iteration Checklist
-- Restate request and success criteria.
-- Plan and execute with TDD.
-- Review changes vs request.
-- Run verification and report evidence.
-- Decide: iterate or stop.
+## 迭代检查清单
+- 重述请求与成功标准。
+- 规划并按测试与验证执行。
+- 评审变更与请求的一致性。
+- 运行验证并报告证据。
+- 决定：继续迭代或停止。
 
-## Quick Reference
-| Stage | Output |
+## 快速参考
+| 阶段 | 输出 |
 | --- | --- |
-| Review | Success criteria + missing info |
-| Plan | Steps + tests + verification |
-| Execute | TDD red-green-refactor |
-| Review | Gap list vs request |
-| Verify | Command output evidence |
-| Decide | Iterate or stop |
+| 评审 | 成功标准 + 缺失信息 |
+| 计划 | 步骤 + 测试 + 验证 |
+| 执行 | 最小变更 + 必要测试 |
+| 复审 | 与请求的差距清单 |
+| 验证 | 命令输出证据 |
+| 决策 | 继续迭代或停止 |
 
-## Example
-User: "Loop until done: fix the login 500 error. Keep iterating until fixed."
+## 示例
+用户："Loop until done: fix the login 500 error. Keep iterating until fixed."
 
-Iteration 1:
-- Review: define success as 200 OK on valid login; identify missing repro.
-- Plan: add failing test for login endpoint; run it to fail; implement fix; re-run tests.
-- Review: tests still fail on session token case.
-- Verify: unit tests fail; must iterate.
+迭代 1：
+- 评审：将成功定义为有效登录返回 200 OK；识别缺失复现。
+- 计划：为登录端点添加失败测试；运行失败；实现修复；重跑测试。
+- 复审：会话 token 场景仍失败。
+- 验证：单元测试失败，必须继续迭代。
 
-Iteration 2:
-- Update plan: add test for session token edge case; implement fix.
-- Verify: all tests pass; no gaps remain.
-- Stop: report evidence and outputs.
+迭代 2：
+- 更新计划：增加会话 token 边界测试；实现修复。
+- 验证：全部测试通过，无缺口。
+- 停止：报告证据与输出。
 
-## Common Mistakes
-- Skipping the plan because "this is small"
-- Stopping after one iteration without re-review
-- Claiming success without verification evidence
-- Ignoring missing info and guessing requirements
-- Looping without changing the plan or evidence
+## 常见错误
+- 以“很小”为由跳过计划
+- 一次迭代后未复审就停止
+- 无验证证据就宣称完成
+- 忽略缺失信息并猜需求
+- 不更新计划或证据就反复循环
 
-## Rationalizations vs Reality
-| Excuse | Reality |
+## 借口 vs 事实
+| 借口 | 事实 |
 | --- | --- |
-| "User said skip planning" | Plan is required; keep it short, but do not skip it. |
-| "Tests can run after" | No verification means no completion claims. |
-| "I already reviewed once" | Review must happen every iteration. |
-| "Close enough" | Loop ends only when requirements and verification pass. |
-| "Missing info is fine" | Stop and ask instead of guessing. |
+| “用户说跳过计划” | 计划是必须的；可简短但不能跳过。 |
+| “测试可以后跑” | 没有验证就不能声称完成。 |
+| “我已经复审过一次” | 每次迭代都必须复审。 |
+| “差不多就行” | 仅当需求与验证通过时才能结束。 |
+| “缺信息没关系” | 停止并询问，不要猜。 |
 
-## Red Flags - STOP
-- No plan written before execution
-- No verification evidence in the final response
-- Iteration ends with known gaps or failing tests
-- High-risk change without explicit confirmation
-- Repeating the same iteration without new evidence
+## 红旗 - 立刻停止
+- 执行前没有计划
+- 最终回复缺少验证证据
+- 迭代结束仍有已知缺口或失败测试
+- 高风险变更无明确确认
+- 未新增证据就重复同一迭代

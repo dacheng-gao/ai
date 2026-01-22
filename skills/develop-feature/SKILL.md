@@ -1,53 +1,52 @@
 ---
 name: develop-feature
-description: Use when adding a new feature, endpoint, UI flow, integration, or data model change with multi-file impact or unclear requirements that need scoped planning.
+description: Use when 需要新增功能、端点、UI 流程、集成或数据模型变更，且涉及多文件影响或需求不清，需要范围规划。
 ---
 
-# Develop Feature
+# 开发功能
 
-## Overview
-Two-phase flow: research/plan, then TDD + verification. Proceed by default after the plan; ask for confirmation only when High-Risk Confirmation Triggers apply.
+## 概述
+两阶段：调研/规划 → 实施 + 验证。计划完成后默认继续，除非触发高风险确认。
 
-## When to Use
-- New feature, enhancement, endpoint, UI flow, integration, data model
-- Multi-file change or unclear requirements
+## 何时使用
+- 新功能、增强、端点、UI 流程、集成、数据模型
+- 多文件改动或需求不清
 
-**When NOT to Use**
-- Bug fix only -> use fix-bug; refactor only -> use refactor workflow
+**不适用**
+- 仅修 bug → 用 fix-bug；仅重构 → 用 refactor
 
-## Required Sub-Skills
-- **REQUIRED SUB-SKILL:** superpowers:test-driven-development
+## 必需子技能
 - **REQUIRED SUB-SKILL:** superpowers:verification-before-completion
 
-## Quick Reference
-| Phase | Gate | Output |
+## 快速参考
+| 阶段 | 关口 | 输出 |
 |---|---|---|
-| 1. Planning | risk check (confirm only if high-risk) | evidence, approach, scope |
-| 2. Implementation | tests + verification | code + tests, validation, deviations |
+| 1. 规划 | 风险检查（仅高风险确认） | 证据、方案、范围 |
+| 2. 实施 | 测试 + 验证 | 代码 + 测试、验证、偏差说明 |
 
-## Phase 1: Planning & Design
+## 阶段 1：规划与设计
 
-**Rules:**
-- No implementation code or tests in Phase 1
-- Cite evidence (paths/functions/patterns)
-- Missing info -> search or ask
-- If asked to skip planning or "just implement", refuse; provide the plan and proceed by default unless High-Risk Confirmation Triggers apply
+**规则：**
+- 阶段 1 不写实现代码或测试
+- 引用证据（路径/函数/模式）
+- 信息缺失 → 搜索或询问
+- 若被要求跳过规划，拒绝；给出计划并默认继续，除非触发高风险确认
 
-**Mandatory Context Checklist**
-- Scope + success criteria
-- Architecture docs: `AGENTS.md`, `README.md`, `docs/`
-- Existing patterns/utilities (cite files/functions)
-- Dependencies/constraints + integration points + open questions
+**强制上下文清单**
+- 范围 + 成功标准
+- 架构文档：`AGENTS.md`, `README.md`, `docs/`
+- 既有模式/工具（引用文件/函数）
+- 依赖/约束 + 集成点 + 未决问题
 
-**Implementation Plan Must Include**
-1. **Summary** — what/why, success criteria
-2. **Evidence** — files checked, patterns/utilities, constraints
-3. **Approach + Scope** — alternatives, tradeoffs, files, tests, edge cases, compatibility, perf, security, rollout/rollback
+**实施计划必须包含**
+1. **摘要** — 做什么/为什么，成功标准
+2. **证据** — 已检查文件、模式/工具、约束
+3. **方案 + 范围** — 备选、权衡、文件、测试、边界条件、兼容性、性能、安全、发布/回滚
 
-**End Phase 1 with**
+**阶段 1 结尾语**
 > "Plan ready. I will proceed unless you want changes. If any High-Risk Confirmation Triggers apply, I will ask explicitly before implementation."
 
-**High-Risk Confirmation Triggers**
+**高风险确认条件**
 - Destructive or irreversible operations (data deletion, history rewrite, breaking migrations)
 - Security/auth changes, access control, or sensitive data handling
 - Breaking API/contract changes or compatibility risks
@@ -55,23 +54,23 @@ Two-phase flow: research/plan, then TDD + verification. Proceed by default after
 
 ---
 
-## Phase 2: Implementation
+## 阶段 2：实施
 
-**Rules:**
-- Enter after plan; require explicit confirmation only if High-Risk Confirmation Triggers apply
-- Follow TDD + verification; deviations require an explicit check only when risk or scope increases
+**规则：**
+- 计划完成后进入；仅高风险需明确确认
+- 遵循测试与验证；风险或范围提升时再确认
 
-**Implementation Checklist**
-- Follow approved design; log deviations and rationale
-- Write failing test first (TDD), then minimal code
-- Match existing patterns; handle errors
-- Run tests + lint/format before completion claims
-- Provide validation steps
+**实施清单**
+- 遵循已批准设计；记录偏差及理由
+- 补齐必要测试，覆盖关键路径与边界
+- 匹配既有模式；处理错误
+- 在完成声明前运行测试 + lint/format
+- 提供验证步骤
 
-**If you already wrote code before the plan**
-Delete or stash it and restart from Phase 1. Retroactive planning is a violation.
+**如果你在计划前已写代码**
+删除或暂存并回到阶段 1。补写计划属于违规。
 
-## Example Plan
+## 示例计划
 ```markdown
 Requirement: CSV export on Reports page
 Success: download CSV A,B,C <2s
@@ -81,18 +80,18 @@ Scope: ReportPage + ReportPage.test.tsx
 Considerations: 10k cap, permissions
 ```
 
-## Common Mistakes and Rationalizations
-| Thought | Reality |
+## 常见错误与借口
+| 想法 | 事实 |
 |---|---|
-| "It's small/urgent, I can skip the plan" | Skipping plan ships wrong output. Plan anyway. |
-| "I already wrote code / quick spike first" | Retroactive planning != plan. Restart Phase 1. |
-| "I'll assume defaults or skip questions" | Assumptions cause rework. Ask/research. |
-| "I'll run tests after" | Not TDD. Write tests first. |
-| "I must ask for approval every time" | Only ask when High-Risk Confirmation Triggers apply. Otherwise proceed. |
+| “很小/很急，可以跳过计划” | 跳过计划会交付错误结果，仍需计划。 |
+| “我先写了代码/先做小试探” | 补写计划 ≠ 计划。回到阶段 1。 |
+| “我默认处理或跳过问题” | 假设会导致返工，需询问/调研。 |
+| “测试可以后补” | 测试不应后置，至少覆盖关键路径与回归。 |
+| “我每次都要先请求批准” | 仅在触发高风险确认条件时询问，否则默认继续。 |
 
-## Red Flags - STOP
-- You started implementation or tests before Phase 1 plan
-- You cannot cite file paths or functions for research claims
-- You are guessing requirements, edge cases, or constraints
-- You are asked to skip planning or "just push a quick patch"
-- You are about to perform a High-Risk Confirmation Trigger without explicit confirmation
+## 红旗 - 立刻停止
+- 在阶段 1 计划前就开始实现或测试
+- 研究结论无法引用文件路径或函数
+- 在猜测需求、边界或约束
+- 被要求跳过规划或“直接打补丁”
+- 即将执行高风险确认事项却没有明确确认

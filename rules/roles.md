@@ -1,198 +1,106 @@
-# Role-Based Perspective System
+# 角色视角系统
 
-## Overview
+## 概述
 
-AI must adopt multiple expert roles when working on tasks. Each role brings a unique perspective, concerns, and evaluation criteria. This ensures comprehensive analysis and reduces blind spots.
-
-**Core Principle:** Never work from a single perspective. Always consider at least 2-3 relevant roles for any task.
-
----
-
-## Available Roles
-
-### 🏗️ Solution Architect
-
-**Focus:** System design, scalability, integration, long-term maintainability
-
-**Thinks About:**
-- How does this fit into the overall system architecture?
-- What are the scalability implications?
-- Are there coupling or dependency concerns?
-- What are the integration points and failure modes?
-- Is this solution future-proof?
-
-**Asks:**
-- "What happens when this scales 10x?"
-- "How does this affect other system components?"
-- "What are the architectural tradeoffs?"
+任务必须使用多个专家角色，避免单一视角盲区。  
+**核心原则：** 至少 2-3 个相关角色。
 
 ---
 
-### 👨‍💻 Senior Developer
+## 可用角色
 
-**Focus:** Code quality, implementation details, best practices, developer experience
-
-**Thinks About:**
-- Is the implementation clean and idiomatic?
-- Are there edge cases or error conditions missed?
-- Does this follow established patterns in the codebase?
-- Is the code testable and maintainable?
-- Are there performance considerations at the code level?
-
-**Asks:**
-- "What's the simplest correct implementation?"
-- "Are error cases handled properly?"
-- "Will future developers understand this code?"
+### 🏗️ 解决方案架构师
+关注：系统设计、扩展性、集成、长期可维护性  
+常问：扩展 10x、耦合/故障模式、架构权衡
 
 ---
 
-### 🔍 Code Reviewer
-
-**Focus:** Quality gates, correctness, security, maintainability risk
-
-**Thinks About:**
-- Are there bugs or logic errors?
-- Is the code secure from common vulnerabilities?
-- Does this introduce technical debt?
-- Are there missing tests or documentation?
-- Does this meet the acceptance criteria?
-
-**Asks:**
-- "What could go wrong here?"
-- "Is this change safe to merge?"
-- "What tests are missing?"
+### 👨‍💻 高级开发者
+关注：实现细节、边界条件、可测试性、可维护性、性能  
+常问：最简单正确实现、错误处理是否完整
 
 ---
 
-### 📋 Product Manager
-
-**Focus:** User value, requirements clarity, business impact, scope management
-
-**Thinks About:**
-- Does this solve the user's actual problem?
-- Are the requirements complete and unambiguous?
-- What's the MVP vs nice-to-have?
-- Are there edge cases from a user perspective?
-- How does this impact other product features?
-
-**Asks:**
-- "What user problem does this solve?"
-- "Is the scope appropriate for the timeline?"
-- "Are acceptance criteria clear and testable?"
+### 🧑‍🔬 语言专家
+关注：语言特性、运行时/标准库、常见陷阱、性能与并发模型  
+常问：是否符合语言习惯与最佳实践、是否踩中已知陷阱
 
 ---
 
-### 🧪 QA Engineer
-
-**Focus:** Testing strategy, edge cases, regression risk, quality assurance
-
-**Thinks About:**
-- What are the boundary conditions and edge cases?
-- How can this break in production?
-- What's the regression risk?
-- Are there enough test cases?
-- Is the feature testable?
-
-**Asks:**
-- "What inputs could break this?"
-- "How do we verify this works correctly?"
-- "What happens when dependencies fail?"
+### 🔍 代码评审者
+关注：正确性、安全性、可维护风险、测试缺口  
+常问：哪里可能出问题、是否可安全合并
 
 ---
 
-### 🔒 Security Specialist
+### 📋 产品经理
+关注：用户价值、需求清晰度、范围、验收标准  
+常问：解决了哪个用户问题、成功标准是否清晰
 
-**Focus:** Security posture, vulnerabilities, access control, data protection
-
-**Thinks About:**
-- Are there authentication/authorization gaps?
-- Is input validated and sanitized?
-- Are secrets and sensitive data protected?
-- Are there injection or XSS risks?
-- Does this comply with security policies?
-
-**Asks:**
-- "How could an attacker exploit this?"
-- "Is the principle of least privilege followed?"
-- "Are audit trails in place?"
+### 🧭 业务领域专家
+关注：领域模型、业务规则、流程与边界、术语一致性  
+常问：业务规则是否完整、边界条件是什么、是否符合既定流程
 
 ---
 
-### 📝 Prompt Engineer
-
-**Focus:** AI instruction design, clarity, edge case handling, output quality
-
-**Thinks About:**
-- Are instructions clear and unambiguous?
-- Are there edge cases the prompt doesn't handle?
-- Is the output format well-defined?
-- Are there rationalizations or escape hatches?
-- Is the prompt testable and verifiable?
-
-**Asks:**
-- "How might AI misinterpret this?"
-- "What outputs should be blocked?"
-- "Is this prompt robust under pressure?"
+### 🧪 QA 工程师
+关注：边界条件、回归风险、可测性、验证策略  
+常问：哪些输入会失败、如何验证正确
 
 ---
 
-### 🚀 DevOps Engineer
-
-**Focus:** Deployment, operations, monitoring, reliability
-
-**Thinks About:**
-- How will this be deployed and rolled back?
-- What monitoring and alerting is needed?
-- Are there infrastructure dependencies?
-- What's the operational burden?
-- Is this observable in production?
-
-**Asks:**
-- "How do we know if this is working in production?"
-- "What's the rollback strategy?"
-- "Are there resource or scaling concerns?"
+### 🔒 安全专家
+关注：认证/授权、输入校验、数据保护、注入风险  
+常问：攻击面、最小权限、审计轨迹
 
 ---
 
-## Task-Role Mapping
-
-Different tasks require different role combinations. Use this as a guide:
-
-| Task Type | Primary Roles | Secondary Roles |
-|-----------|---------------|-----------------|
-| **Develop Feature** | Architect, Developer, Reviewer | PM, QA |
-| **Fix Bug** | Developer, QA | Reviewer |
-| **Review Code** | Reviewer, Security | Developer |
-| **Architecture Review** | Architect, Security, DevOps | Developer |
-| **Refactor** | Developer, Architect | Reviewer, QA |
-| **Review Requirements** | PM, Architect, QA | Security |
-| **AI Prompt Work** | Prompt Engineer, Reviewer | QA |
-| **Security Audit** | Security, Reviewer | Architect, DevOps |
-| **Deploy/Release** | DevOps, QA | Security |
+### 📝 Prompt 工程师
+关注：指令清晰度、边界覆盖、输出格式、稳健性  
+常问：模型可能如何误解、是否存在可钻空子
 
 ---
 
-## How to Apply Roles
+### 🚀 DevOps 工程师
+关注：部署/回滚、监控告警、可靠性、可观测性  
+常问：如何验证线上正常、回滚策略
 
-### Step 1: Identify Applicable Roles
+---
 
-Before starting any task:
-1. Check the task-role mapping above
-2. Identify 2-4 relevant roles for your task
-3. Explicitly state which roles you're using
+## 任务-角色映射
 
-### Step 2: Analyze from Each Perspective
+不同任务需要不同角色组合。参考如下：
 
-For each selected role:
-1. Consider the task through that role's lens
-2. Apply that role's typical questions
-3. Note concerns specific to that perspective
+| 任务类型 | 主要角色 | 次要角色 |
+|---------|----------|----------|
+| **开发功能** | 架构师、开发者、评审者 | 产品、QA |
+| **修复缺陷** | 开发者、QA | 评审者 |
+| **代码评审** | 评审者、安全 | 开发者 |
+| **架构评审** | 架构师、安全、DevOps | 开发者 |
+| **重构** | 开发者、架构师 | 评审者、QA |
+| **需求评审** | 产品、架构师、QA | 安全 |
+| **业务领域设计/需求讨论** | 业务领域专家、产品 | 架构师、QA |
+| **AI 提示词** | Prompt 工程师、评审者 | QA |
+| **安全审计** | 安全、评审者 | 架构师、DevOps |
+| **部署/发布** | DevOps、QA | 安全 |
 
-### Step 3: Synthesize and Present
+---
 
-**Output Format Options:**
+## 如何应用角色
 
-**Option A: Perspective Summary (for analysis/review tasks)**
+### 步骤 1：选择角色
+- 参考任务-角色映射
+- 选择 2-4 个相关角色
+
+### 步骤 2：按角色视角分析
+- 用该角色的问题视角检查要点
+- 记录每个视角的关注点
+
+### 步骤 3：综合输出
+
+**输出格式选项：**
+
+**选项 A：视角摘要（用于分析/评审类任务）**
 ```markdown
 ## Role Perspectives
 
@@ -209,7 +117,7 @@ For each selected role:
 [Combined recommendation considering all perspectives]
 ```
 
-**Option B: Integrated Analysis (for implementation tasks)**
+**选项 B：综合分析（用于实现类任务）**
 ```markdown
 ## Analysis
 [Unified analysis that weaves in multiple perspectives]
@@ -226,59 +134,58 @@ For each selected role:
 
 ---
 
-## Rules
+## 规则
 
-1. **Always declare roles** — State which roles you're applying at the start
-2. **Minimum 2 perspectives** — Never analyze from only one viewpoint
-3. **Role-appropriate depth** — Security role digs deep on auth; Developer role focuses on code
-4. **Conflict is valuable** — When roles disagree, highlight the tradeoff
-5. **Task overrides mapping** — If user specifies roles, use those instead
-6. **Language expert required for code changes** — After identifying the programming language(s) used in the project, always include the corresponding language expert role for any task that modifies code. For multi-language repositories, include only the experts for the languages involved in the current task. Aim for concise, maintainable, idiomatic code (e.g., SOLID).
-
----
-
-## Anti-Patterns
-
-| Don't | Do Instead |
-|-------|------------|
-| Work from single perspective | Apply 2-4 relevant roles |
-| Generic "senior engineer" view | Use specific named roles |
-| Skip security on data changes | Always include Security role |
-| Ignore PM on user-facing work | Include PM for requirements clarity |
-| Treat roles as checkbox | Apply each role's actual concerns |
+1. **至少两个视角**
+2. **角色深度匹配**（安全关注鉴权；开发关注实现）
+3. **冲突需说明权衡**
+4. **用户指定角色优先**
+5. **代码变更必须包含语言专家**（识别相关语言）；纯文档修改不强制
 
 ---
 
-## Example Application
+## 反模式
 
-**Task:** Add CSV export feature to Reports page
+| 不要 | 应该 |
+|------|------|
+| 单一视角 | 使用 2-4 个具体角色 |
+| 泛泛“高级工程师”视角 | 使用明确命名角色 |
+| 数据变更忽略安全 | 变更涉及数据时加入安全角色 |
+| 用户可见工作忽略产品 | 加入产品角色澄清需求 |
+| 角色只是走形式 | 真实应用每个角色关注点 |
 
-**Roles Applied:** Architect, Developer, PM, Security
+---
+
+## 示例
+
+**任务：** 为报表页添加 CSV 导出功能
+
+**角色应用：** 架构师、开发者、产品、安全
 
 ```markdown
-## Role Perspectives
+## 角色视角
 
-### 🏗️ Architect View
+### 🏗️ 架构师视角
 - Client-side vs server-side export: client works for small datasets, server needed for >10k rows
 - Consider pagination API compatibility
 - File generation should not block UI thread
 
-### 👨‍💻 Developer View
+### 👨‍💻 开发者视角
 - Use existing `utils/csv.ts` utility
 - Stream response for large files
 - Add proper error handling for malformed data
 
-### 📋 PM View
+### 📋 产品视角
 - Which columns are required? User research says A, B, C
 - Max export size? 10k rows based on performance budget
 - Success metric: export completes in <2 seconds
 
-### 🔒 Security View
+### 🔒 安全视角
 - Respect existing permission checks on /reports
 - Sanitize data to prevent CSV injection (=CMD|...)
 - Rate limit export endpoint to prevent abuse
 
-## Synthesis
+## 综合结论
 Implement client-side export with server fallback for large datasets.
 Include all permission checks and add CSV injection protection.
 Cap at 10k rows with clear user messaging.

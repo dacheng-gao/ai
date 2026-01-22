@@ -1,94 +1,94 @@
 ---
 name: architecture-review
-description: Use when assessing system architecture, platform design, or high-level codebase structure (scalability, reliability, performance bottlenecks, coupling, data consistency, operational risk) - produces a health checklist with risk levels and concrete fixes, and flags missing inputs.
+description: Use when 在评估系统架构、平台设计或高层代码库结构时，关注可扩展性、可靠性、耦合、数据一致性或运行风险。
 ---
 
-# Architecture Review
+# 架构评审
 
-## Overview
-Assess risk using evidence, then produce a checklist with risk levels and fixes. Do not redesign unless asked.
+## 概述
+基于证据评估风险，输出含风险等级与修复建议的检查清单。除非要求，不做重构/重设计。
 
-## Required Inputs (ask if missing)
-- Goals, SLOs, and non-functional requirements
-- Traffic, data volume, and growth profile
-- Topology diagram and data flow
-- Critical user journeys and failure modes
-- Constraints: latency, cost, compliance, team size
-- Incident history or known hotspots
+## 必需输入（缺失则询问）
+- 目标、SLO 与非功能性需求
+- 流量、数据规模与增长曲线
+- 拓扑图与数据流
+- 关键用户路径与故障模式
+- 约束：延迟、成本、合规、团队规模
+- 事故历史或已知热点
 
-## Output Format
-Use this structure:
+## 输出格式
+使用如下结构：
 
 ```markdown
-Checklist
-- Area: <boundary/data/scale/reliability/security/observability/deploy/cost>
-  Risk: Critical | Important | Suggestion
-  Evidence: <file/metric/trace/diagram note>
-  Impact: <user or system impact>
-  Fix: <concrete change>
+检查清单
+- 领域: <边界/数据/规模/可靠性/安全/可观测性/部署/成本>
+  风险: Critical | Important | Suggestion
+  证据: <文件/指标/链路追踪/图示备注>
+  影响: <用户或系统影响>
+  修复: <具体改动>
 
-Summary
-- Stop-ship risks: <count + short list>
-- Next steps: <top 1-3 fixes>
+摘要
+- 阻断发布风险: <数量 + 简短清单>
+- 下一步: <前 1-3 个修复项>
 ```
 
-## Review Workflow
-1. Define scope and constraints
-2. Gather evidence (docs, code touchpoints, metrics)
-3. Identify risks per area
-4. Propose fixes with clear scope
-5. Prioritize by impact and urgency
+## 评审流程
+1. 明确范围与约束
+2. 收集证据（文档、代码触点、指标）
+3. 分领域识别风险
+4. 提出范围清晰的修复方案
+5. 按影响与紧迫度排序
 
-## Checklist Areas
-- Boundaries and coupling
-- Data flow and consistency
-- Scalability and capacity
-- Reliability and failure recovery
-- Security and access control
-- Observability and operability
-- Deployment and rollback
-- Cost and efficiency
+## 检查清单领域
+- 边界与耦合
+- 数据流与一致性
+- 可扩展性与容量
+- 可靠性与故障恢复
+- 安全与访问控制
+- 可观测性与可运维性
+- 部署与回滚
+- 成本与效率
 
-## Quick Reference
-| Step | Output |
+## 快速参考
+| 步骤 | 输出 |
 | --- | --- |
-| Scope | Stated assumptions or missing inputs |
-| Evidence | Cited docs/metrics/paths |
-| Risks | Checklist with severity |
-| Fixes | Concrete, scoped actions |
-| Priority | Top 1-3 fixes |
+| 范围 | 明确假设或缺失输入 |
+| 证据 | 引用文档/指标/路径 |
+| 风险 | 含严重度的检查清单 |
+| 修复 | 具体、可界定的行动 |
+| 优先级 | 前 1-3 个修复项 |
 
-## Example
+## 示例
 ```markdown
-Checklist
-- Area: scalability
-  Risk: Important
-  Evidence: api reads all rows without pagination
-  Impact: p95 latency spikes under peak load
-  Fix: add pagination + index; cap page size
+检查清单
+- 领域: 可扩展性
+  风险: Important
+  证据: API 读取全量数据，未做分页
+  影响: 峰值负载下 p95 延迟飙升
+  修复: 增加分页与索引；限制单页大小
 
-Summary
-- Stop-ship risks: 0
-- Next steps: add pagination, add index
+摘要
+- 阻断发布风险: 0
+- 下一步: 增加分页，增加索引
 ```
 
-## Common Mistakes
-- Generic advice without evidence
-- Missing risk level or fix per item
-- Treating review as a redesign
-- Ignoring runtime constraints or SLOs
-- Skipping assumptions when inputs are missing
+## 常见错误
+- 没有证据支撑的泛化建议
+- 单项缺少风险等级或修复
+- 把评审当成重构或重新设计
+- 忽略运行时约束或 SLO
+- 输入缺失时不写明假设
 
-## Rationalizations vs Reality
-| Excuse | Reality |
+## 借口 vs 事实
+| 借口 | 事实 |
 | --- | --- |
-| "No docs, so give generic advice" | Ask for missing inputs or state assumptions. |
-| "Need a quick yes/no" | Provide checklist with stop-ship risks. |
-| "Architecture review equals redesign" | Diagnose first, fix only what is asked. |
-| "I know the system, no evidence needed" | Cite artifacts or metrics to avoid guesswork. |
+| “没有文档，只能给泛化建议” | 询问缺失输入或明确假设。 |
+| “只要一个快速 yes/no” | 给出含阻断发布风险的检查清单。 |
+| “架构评审就是重构” | 先诊断，只修被要求的部分。 |
+| “我熟悉系统，不需要证据” | 引用工件或指标，避免猜测。 |
 
-## Red Flags - STOP
-- No scope or constraints defined
-- Checklist lacks risk level or fix
-- No evidence or assumptions stated
-- Only summary, no checklist
+## 红旗 - 立刻停止
+- 没有范围或约束
+- 检查清单缺少风险等级或修复
+- 没有证据或假设说明
+- 只有摘要，没有检查清单

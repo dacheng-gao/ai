@@ -1,42 +1,41 @@
 ---
 name: refactor
-description: Use when changing code structure with intended behavior changes (performance optimizations, rewrites, module splits, sync-to-async, data model shifts, cleanup that may alter outputs or timing) - enforces explicit behavior boundaries, baseline tests, and verification to prevent regressions.
+description: Use when 代码结构调整可能改变行为、时序或输出（性能优化、重写、模块拆分、同步改异步、数据模型迁移）。
 ---
 
-# Refactor
+# 重构
 
-## Overview
-Define behavior boundaries first, then refactor under test protection. Timing and concurrency changes are behavior changes.
+## 概述
+先定义行为边界，再在测试保护下重构。时序/并发变化也算行为变化。
 
-## Required Sub-Skills
-- **REQUIRED SUB-SKILL:** superpowers:test-driven-development
+## 必需子技能
 - **REQUIRED SUB-SKILL:** superpowers:verification-before-completion
 
-## Core Workflow
-1. Define intent + behavior boundaries
-2. Establish baseline (tests + key metrics)
-3. Implement in small steps
-4. Verify behavior and performance
-5. Record change scope + rollback point
+## 核心流程
+1. 定义意图 + 行为边界
+2. 建立基线（测试 + 关键指标）
+3. 小步实现
+4. 验证行为与性能
+5. 记录范围 + 回滚点
 
-## Behavior Boundary Checklist
-- Public APIs and return shapes
-- Data schema and migration compatibility
-- Output ordering and formatting
-- Error types, messages, and status codes
-- Timing, concurrency, and side effects
-- Resource usage (CPU, memory, I/O)
+## 行为边界清单
+- 公共 API 与返回结构
+- 数据 schema 与迁移兼容性
+- 输出顺序与格式
+- 错误类型、消息与状态码
+- 时序、并发与副作用
+- 资源占用（CPU、内存、I/O）
 
-## Quick Reference
-| Step | Output |
+## 快速参考
+| 步骤 | 输出 |
 | --- | --- |
-| Boundaries | Explicit list of allowed behavior changes |
-| Baseline | Tests + metrics proving current behavior |
-| Change | Small, reviewable refactor commits |
-| Verify | Regression tests + perf checks |
-| Record | Change log + rollback plan |
+| 边界 | 允许的行为变化清单 |
+| 基线 | 证明现状的测试 + 指标 |
+| 变更 | 小而可审的重构提交 |
+| 验证 | 回归测试 + 性能检查 |
+| 记录 | 变更记录 + 回滚计划 |
 
-## Example
+## 示例
 ```ts
 type Api = {
   fetchUser(): Promise<{ id: string }>;
@@ -66,25 +65,25 @@ export async function loadUserProfile(api: Api) {
 }
 ```
 
-## Common Mistakes
-- Skipping baseline tests because "it's just a refactor"
-- Expanding scope with "while I'm here" changes
-- Treating performance claims as a substitute for tests
-- Changing behavior without documenting the boundary
-- No rollback plan for risky changes
+## 常见错误
+- 以“只是重构”为由跳过基线测试
+- 顺手扩大范围
+- 用性能宣称替代测试
+- 改了行为却未记录边界
+- 高风险变更无回滚计划
 
-## Rationalizations vs Reality
-| Excuse | Reality |
+## 借口 vs 事实
+| 借口 | 事实 |
 | --- | --- |
-| "Refactor doesn't change behavior" | Timing and side effects change behavior. Define boundaries. |
-| "Manual testing is enough" | Manual testing doesn't prevent regressions. Baseline tests do. |
-| "Feature flags make tests optional" | Flags reduce blast radius, not verification. |
-| "We can add tests later" | Tests after refactor don't prove safety of the change. |
-| "Too late to back out" | Sunk cost is not a quality strategy. |
+| “重构不改行为” | 时序与副作用会改变行为，应定义边界。 |
+| “手测够了” | 手测不能防回归，基线测试可以。 |
+| “有 feature flag 就不必测” | flag 只降风险，不是验证。 |
+| “测试可以后补” | 重构后的测试不能证明安全性。 |
+| “来不及回滚” | 沉没成本不是质量策略。 |
 
-## Red Flags - STOP
-- No explicit behavior boundary list
-- Baseline tests missing or failing
-- "I'll add tests after"
-- "This is only cleanup"
-- Broad cross-module changes without scope control
+## 红旗 - 立刻停止
+- 没有明确的行为边界清单
+- 基线测试缺失或失败
+- “测试后补”
+- “只是清理而已”
+- 跨模块大范围变更无范围控制

@@ -1,98 +1,80 @@
-# Language Rules
+# 语言规则
 
-## Overview
+## 概述
 
-This document defines language conventions for AI-assisted development.
+AI 辅助开发的语言规范。
 
-**Core Principles:**
-1. **Chat language is ALWAYS Chinese (中文)** — AI responses, questions, explanations
-2. **Default technical language is English** — code, docs, git, configs
-3. **No confirmation needed** — use defaults directly without asking
-4. **Project overrides allowed** — see [Configuration](#project-level-override) section
+**核心原则**
+1. 聊天始终中文（回复、提问、解释）
+2. 技术内容默认英文（代码、文档、git、配置等）
+3. 默认不确认，直接采用默认值
+4. 项目可覆盖（见 [项目级覆盖](#项目级覆盖)）
 
-**Confirmation Exceptions (only when necessary):**
-- Destructive or irreversible actions (data deletion, history rewrite, breaking migrations)
-- Security/auth or sensitive data handling changes
-- Breaking API/contract changes or compatibility risks
-- Ambiguous requirements that materially change scope or risk
-- User explicitly requests confirmation
-
----
-
-## Quick Reference
-
-| Group | Categories | Default | Override Allowed |
-|-------|------------|---------|------------------|
-| 💬 **Chat** | AI ↔ User dialogue | **Chinese** | ✅ Project |
-| 📝 **Documentation** | README, ADR, guides, wikis | English | ✅ Project |
-| 💻 **Code** | Comments, identifiers, filenames | English | ❌ |
-| 🔧 **Git & VCS** | Commits, PRs, issues, reviews | English | ❌ |
-| 🌐 **API & Schema** | Endpoints, DB schema, configs | English | ❌ |
-| 🧪 **Testing** | Test names, assertions, mocks | English | ❌ |
-| 🚀 **DevOps** | CI/CD, logs, build output | English | ❌ |
-| 📋 **Changelog** | Release notes, migration guides | English | ✅ Project |
-| 🌍 **User-Facing** | UI text, notifications | **Locale-based** | ✅ Project |
-| 🔑 **i18n Keys** | Translation identifiers | English | ❌ |
+**仅在必要时确认**
+- 破坏性或不可逆操作（数据删除、历史重写、破坏性迁移）
+- 安全/认证或敏感数据处理变更
+- 破坏 API/契约或兼容性风险
+- 需求重大歧义导致范围/风险变化
+- 用户明确要求确认
 
 ---
 
-## Category Details
+## 快速参考
 
-### 💬 Chat & Conversation (AI ↔ User)
-
-**Language:** Chinese 中文 (固定)
-
-Applies to:
-- Conversational responses
-- Questions and clarifications
-- Explanations and reasoning
-- **Structured output within chat** (Plans, Checklists, Analysis Reports)
-  - **Headers, Labels, Descriptions**: Chinese (e.g., "Risk Level", "Impact")
-  - **Code, Filenames, Proper Nouns**: English (e.g., `Netty`, `user_id`)
-- Non-technical narrative text
-
-> **Note:** This is the ONLY category that defaults to Chinese. All other technical content defaults to English.
-
----
-
-### 📝 Documentation
-
-**Default:** English
-
-Applies to:
-- README files and guides
-- Architecture decision records (ADR)
-- Rule and skill files
-- Wiki pages and specifications
-
-> **Override:** Projects may specify another language. When using English default, do NOT ask for confirmation.
+| 分组 | 类别 | 默认 | 可覆盖 |
+|------|------|------|--------|
+| 💬 **聊天** | AI ↔ 用户对话 | **中文** | ✅ 项目级 |
+| 📝 **文档** | README、ADR、指南、Wiki | 英语 | ✅ 项目级 |
+| 📝 **文档** | OpenSpec 工具生成文档 | 中文 | ✅ 项目级 |
+| 📝 **文档** | plan 文档（如 docs/plans） | 中文 | ✅ 项目级 |
+| 💻 **代码** | 注释、标识符、文件名 | 英语 | ❌ |
+| 🔧 **Git 与版本控制** | 提交、PR、Issue、评审 | 英语 | ❌ |
+| 🌐 **API 与 Schema** | 端点、DB schema、配置 | 英语 | ❌ |
+| 🧪 **测试** | 测试名、断言、mock | 英语 | ❌ |
+| 🚀 **DevOps** | CI/CD、日志、构建输出 | 英语 | ❌ |
+| 📋 **变更日志** | Release notes、迁移指南 | 英语 | ✅ 项目级 |
+| 🌍 **用户可见** | UI 文案、通知 | **按 Locale** | ✅ 项目级 |
+| 🔑 **i18n Key** | 翻译键 | 英语 | ❌ |
 
 ---
 
-### 💻 Code
+## 分类说明（默认）
 
-**Language:** English (固定)
+### 💬 聊天与对话（AI ↔ 用户）
 
-Includes:
-- **Comments:** Inline (`//`, `#`), block (`/* */`), docstrings
-- **Annotations:** TODO, FIXME, HACK, type hints
-- **Identifiers:** Variables, functions, classes, methods
-- **Filenames:** Files, directories, modules, packages
-- **Constants:** Enum values, magic strings
+**语言：** 中文（固定）
+- 对话回复、提问、澄清、解释
+- 聊天中的结构化输出：标题/标签/描述用中文
+- 所有 agent plan 输出使用中文
+- 代码、文件名、专有名词保持英文（如 `Netty`、`user_id`）
+
+> 仅此分类默认中文，其余技术内容默认英文。
 
 ---
 
-### 🔧 Git & Version Control
+### 📝 文档
 
-**Language:** English (固定)  
-**Format:** Conventional commits — `type(scope): description`
+**默认：** 英语  
+适用：README、指南、ADR、规则/技能文件、Wiki、规范文档  
+**例外（默认中文）：**
+- OpenSpec 工具生成文档
+- plan 文档（如 docs/plans）
+> 可被项目配置覆盖；默认英语无需确认。
 
-Includes:
-- Commit messages
-- Branch names
-- PR/Issue titles and descriptions
-- Code review comments
-- Labels and milestones
+---
+
+### 💻 代码
+
+**语言：** 英语（固定）  
+包含注释、TODO/FIXME、标识符、文件名、常量等。
+
+---
+
+### 🔧 Git 与版本控制
+
+**语言：** 英语（固定）  
+**格式：** Conventional Commits — `type(scope): description`  
+包含提交、分支、PR/Issue、评审、标签、里程碑。
 
 ```
 feat(auth): add OAuth2 support
@@ -102,85 +84,45 @@ docs(readme): update installation steps
 
 ---
 
-### 🌐 API & Schema
+### 🌐 API 与 Schema
 
-**Language:** English (固定)
-
-Includes:
-- **API:** Endpoint paths, query params, request/response fields
-- **Database:** Table/column names, indexes, migrations
-- **Config:** YAML/JSON/TOML keys, env vars, feature flags
-- **OpenAPI/Swagger/GraphQL:** Schema definitions
+**语言：** 英语（固定）  
+包含 API、DB schema、配置 key、OpenAPI/GraphQL 等。
 
 ---
 
-### 🧪 Testing
+### 🧪 测试
 
-**Language:** English (固定)
-
-Includes:
-- Test function/method names
-- Test suite descriptions
-- Assertion messages
-- Mock and fixture names
-
-```python
-def test_user_login_with_valid_credentials():
-    ...
-```
-
-```javascript
-it('should return 404 when user not found', () => { ... })
-```
+**语言：** 英语（固定）  
+包含测试名、断言、mock、fixture 等。
 
 ---
 
-### 🚀 DevOps & Infrastructure
+### 🚀 DevOps 与基础设施
 
-**Language:** English (固定)
-
-Includes:
-- CI/CD pipeline stages and job names
-- Build scripts and deployment logs
-- Infrastructure-as-code (Terraform, Ansible)
-- Application logs (info, warn, debug)
-- Error messages, stack traces, assertions
+**语言：** 英语（固定）  
+包含 CI/CD、构建/部署日志、IaC、应用日志与错误信息。
 
 ---
 
-### 📋 Changelog & Release Notes
+### 📋 变更日志与发布说明
 
-**Default:** English
-
-Includes:
-- CHANGELOG.md entries
-- Release notes and version descriptions
-- Migration guides
-
-> **Override:** Projects targeting non-English audiences may specify another language.
+**默认：** 英语  
+包含 CHANGELOG、Release notes、迁移指南。可被项目覆盖。
 
 ---
 
-### 🌍 User-Facing Messages
+### 🌍 用户可见消息
 
-**Language:** Match application locale / target audience
-
-Includes:
-- UI text, labels, buttons
-- Form validation messages
-- Notifications and alerts
-- Help text and tooltips
-- Onboarding flows
-
-> **Note:** This category is locale-dependent. Follow the application's i18n strategy.
+**语言：** 与应用 locale/受众一致  
+包含 UI 文案、提示、校验、通知、帮助、Onboarding。
 
 ---
 
-### 🔑 i18n Keys (Internationalization)
+### 🔑 i18n Key（国际化键）
 
-**Language:** English (固定)
-
-Key names MUST be English. Translated values follow target locale.
+**语言：** 英语（固定）  
+键名必须为英语；翻译值按目标语言。
 
 ```json
 {
@@ -191,41 +133,41 @@ Key names MUST be English. Translated values follow target locale.
 
 ---
 
-## Project-Level Override
+## 项目级覆盖
 
-Projects can override default languages by creating a `.ai/project-rules.md` or similar config file.
+项目可通过 `.ai/project-rules.md` 或类似配置覆盖默认语言。
 
-### Configuration Format
+### 配置格式
 
 ```yaml
-# .ai/project-config.yaml (or in project AGENTS.md)
+# .ai/project-config.yaml (或项目 AGENTS.md 中)
 language:
-  chat: chinese          # AI conversation language (default: chinese)
-  documentation: chinese # Override for docs (default: english)
-  changelog: chinese     # Override for release notes (default: english)
-  user_facing: chinese   # Override for UI text (default: locale-based)
+  chat: chinese          # AI 对话语言（默认: chinese）
+  documentation: chinese # 文档覆盖（默认: english）
+  changelog: chinese     # 变更日志覆盖（默认: english）
+  user_facing: chinese   # UI 文案覆盖（默认: locale-based）
 ```
 
-### Override Priority
+### 覆盖优先级
 
-1. **Project-level config** — highest priority
-2. **User global rules** — `~/.ai/rules/`
-3. **System defaults** — this file
+1. **项目级配置** — 最高优先级
+2. **用户全局规则** — `~/.ai/rules/`
+3. **系统默认** — 本文件
 
-### Behavior on Override
+### 覆盖行为
 
-- When a project specifies a language, use it **without asking for confirmation**
-- Only ask for clarification if the project config is ambiguous or missing for an edge case
+- 项目指定语言时直接使用，不确认
+- 配置不明确或边界缺失才询问
 
 ---
 
-## Summary
+## 总结
 
-| Aspect | Language | Confirmation |
-|--------|----------|--------------|
-| AI Chat | Chinese 中文 | Never ask |
-| Technical (code, git, API, etc.) | English | Never ask |
-| Documentation | English (or project override) | Never ask |
-| User-facing text | Locale-based | Follow project i18n |
+| 方面 | 语言 | 是否确认 |
+|------|------|----------|
+| AI 对话 | 中文 | 不确认 |
+| 技术内容（代码、git、API 等） | 英语 | 不确认 |
+| 文档 | 英语（OpenSpec/plan 文档默认中文，可覆盖） | 不确认 |
+| 用户可见文本 | 按 locale | 遵循 i18n |
 
-**Remember:** Use defaults directly. No confirmation dialogs. Projects can override via config.
+**记住：** 直接使用默认值。无需确认。项目可通过配置覆盖。
