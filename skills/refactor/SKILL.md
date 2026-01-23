@@ -1,6 +1,6 @@
 ---
 name: refactor
-description: Use when 代码结构调整可能改变行为、时序或输出（性能优化、重写、模块拆分、同步改异步、数据模型迁移）。
+description: 当代码结构调整可能改变行为、时序或输出（性能优化、重写、模块拆分、同步改异步、数据模型迁移）时使用。
 ---
 
 # 重构
@@ -9,7 +9,7 @@ description: Use when 代码结构调整可能改变行为、时序或输出（�
 先定义行为边界，再在测试保护下重构。时序/并发变化也算行为变化。
 
 ## 必需子技能
-- **REQUIRED SUB-SKILL:** superpowers:verification-before-completion
+- **REQUIRED SUB-SKILL:** verification-before-completion
 
 ## 核心流程
 1. 定义意图 + 行为边界
@@ -42,7 +42,7 @@ type Api = {
   fetchPosts(): Promise<string[]>;
 };
 
-// Boundary: output contract and errors stay the same; timing may change.
+// 边界：输出契约与错误保持不变；时序可能变化。
 test('loadUserProfile keeps output contract', async () => {
   const api: Api = {
     fetchUser: async () => ({ id: 'u1' }),

@@ -38,22 +38,28 @@ description: One-line description for skill matching
 ## Overview
 What this skill does and when to use it.
 
-## Steps
-1. First action
-2. Second action
+## Suggested Roles
+- Core role 1
+- Core role 2 (e.g. Code Reviewer, Security Expert)
+
+## Steps / Core Process
+Explicit steps or patterns (e.g. Observe -> Reproduce -> Fix -> Verify).
 
 ## Examples
 Show concrete usage.
+
+## Excuse vs Fact (借口 vs 事实)
+Common pitfalls and the disciplined response.
+
+## Red Flags (红旗)
+Absolute "must-not" or "stop-immediately" conditions.
 ```
 
 ## Validation
 
-Before committing changes:
+Before committing changes, ensure all rules and skills follow the patterns established in `rules/` and `skills/`.
 
 ```bash
-# Check markdown syntax
-find . -name "*.md" -exec cat {} \; > /dev/null
-
 # Verify structure
 ls rules/
 ls skills/*/SKILL.md
@@ -61,6 +67,13 @@ ls skills/*/SKILL.md
 
 ## Git Workflow
 
-- Do not commit without explicit user approval
-- Do not use `git worktree`
-- Use Conventional Commits format (English)
+- Always use the `commit-message` skill to generate messages.
+- Do not commit without explicit user approval.
+- Follow `rules/git-workflow.md` for detailed constraints.
+
+## Implementation Standards
+
+For complex tasks (features, major fixes):
+1. **Planning Phase**: Research, check files, and propose an Implementation Plan.
+2. **Execution Phase**: Implement only after the plan is agreed upon (except for Low-Risk changes).
+3. **Verification**: Always use `verification-before-completion` before finishing.

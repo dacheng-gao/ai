@@ -1,6 +1,6 @@
 ---
 name: session-init
-description: Use when 在任何响应前必须加载全局规则，或用户要求跳过启动/加急/直接回答，需要读取 `~/.ai/AGENTS.md` 与 `~/.ai/rules/*.md`。
+description: 当在任何响应前必须加载全局规则，或用户要求跳过启动/加急/直接回答，需要读取 `~/.ai/AGENTS.md` 与 `~/.ai/rules/*.md`时使用。
 ---
 
 # 会话初始化

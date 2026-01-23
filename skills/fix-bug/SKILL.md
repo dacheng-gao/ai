@@ -1,13 +1,16 @@
 ---
 name: fix-bug
-description: Use when 处理缺陷、回归、失败测试、崩溃、错误输出、性能下降或不稳定行为（包括需要先补充复现或证据的情况）。
+description: 当处理缺陷、回归、失败测试、崩溃、错误输出、性能下降或不稳定行为（包括需要先补充复现或证据的情况）时使用。
 ---
 
 # 修复缺陷
 
 ## 概述
-
 基于证据定位根因，做最小且安全的修改并验证。仅在高风险/不可逆变更时确认。
+
+## 建议角色
+- 👨‍💻 **高级开发者**：定位根因并实施最小修复。
+- 🧪 **QA 工程师**：设计复现步骤并验证回归。
 
 ## 何时使用
 
@@ -18,6 +21,9 @@ description: Use when 处理缺陷、回归、失败测试、崩溃、错误输�
 **不适用**
 - 新功能或大幅行为变更（用 develop-feature）
 - 大范围重构或重新设计（切换到 refactor 流程）
+
+## 必需子技能
+- **REQUIRED SUB-SKILL:** verification-before-completion
 
 ## 核心模式
 
@@ -45,9 +51,9 @@ description: Use when 处理缺陷、回归、失败测试、崩溃、错误输�
 - 解释为什么能修复根因（不是只说改了什么）。
 
 **高风险确认条件**
-- Destructive or irreversible operations (data deletion, history rewrite, breaking migrations)
-- Security/auth or sensitive data handling changes
-- Breaking API/contract changes or compatibility risks
+- 破坏性或不可逆操作（数据删除、历史重写、破坏性迁移）
+- 安全、鉴权变更或敏感数据处理
+- 破坏 API、契约或兼容性风险
 
 ## 示例
 

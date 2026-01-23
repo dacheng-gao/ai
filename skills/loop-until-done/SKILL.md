@@ -1,6 +1,6 @@
 ---
 name: loop-until-done
-description: Use when 用户明确要求反复执行或迭代直到完成（如 “loop until done”, “keep iterating”, “repeat until fixed”）。
+description: 当用户明确要求反复执行或迭代直到完成（如 “loop until done”, “keep iterating”, “repeat until fixed”）时使用。
 ---
 
 # 循环直到完成
@@ -15,26 +15,26 @@ description: Use when 用户明确要求反复执行或迭代直到完成（如 
 ## 必需子技能
 - **REQUIRED SUB-SKILL:** fix-bug（bug、回归、错误输出）
 - **REQUIRED SUB-SKILL:** develop-feature（新功能或增强）
-- **REQUIRED SUB-SKILL:** superpowers:verification-before-completion
+- **REQUIRED SUB-SKILL:** verification-before-completion
 - **OPTIONAL:** review-code（评审阶段）
 
 ## 循环决策流程
 ```dot
 digraph loop_until_done {
     rankdir=LR;
-    start [label="Explicit loop requested?", shape=diamond];
-    review [label="Review request", shape=box];
-    plan [label="Plan + execute (tests)", shape=box];
-    check [label="Review changes vs request", shape=box];
-    verify [label="Verification + no gaps?", shape=diamond];
-    stop [label="Stop: report evidence", shape=box];
-    iterate [label="Update plan + iterate", shape=box];
+    start [label="明确要求循环？", shape=diamond];
+    review [label="评审请求", shape=box];
+    plan [label="计划 + 执行 (含测试)", shape=box];
+    check [label="核对变更与请求", shape=box];
+    verify [label="验证且无遗漏？", shape=diamond];
+    stop [label="停止：提交证据", shape=box];
+    iterate [label="更新计划并迭代", shape=box];
 
-    start -> review [label="yes"];
-    start -> stop [label="no"];
+    start -> review [label="是"];
+    start -> stop [label="否"];
     review -> plan -> check -> verify;
-    verify -> stop [label="yes"];
-    verify -> iterate [label="no"];
+    verify -> stop [label="是"];
+    verify -> iterate [label="否"];
     iterate -> review;
 }
 ```
@@ -50,14 +50,14 @@ digraph loop_until_done {
 
 ## 停止条件
 仅在全部满足时停止：
-- The request is fully satisfied.
-- Verification commands pass.
-- No known gaps, failing tests, or unaddressed issues remain.
+- 请求已完全满足。
+- 验证命令运行通过。
+- 无已知遗漏、失败测试或尚未解决的问题。
 
 遇到以下情况停止并询问用户：
-- Missing information blocks progress.
-- A high-risk confirmation trigger applies.
-- The request expands scope beyond the agreed plan.
+- 信息缺失导致无法推进。
+- 触发表中的高风险确认项。
+- 请求超出了既定计划的范围且增加了风险。
 
 ## 迭代检查清单
 - 重述请求与成功标准。

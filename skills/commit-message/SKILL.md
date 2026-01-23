@@ -1,6 +1,6 @@
 ---
 name: commit-message
-description: Use when 需要基于已暂存的 git 变更或粘贴的 diff 生成 Conventional Commits 提交信息。
+description: 当需要基于已暂存的 git 变更或粘贴的 diff 生成 Conventional Commits 提交信息时使用。
 ---
 
 # 提交信息生成器
@@ -32,7 +32,7 @@ GIT_PAGER=cat git diff --staged
 ```
 
 **处理边界情况：**
-- **输出为空** → 回复："No staged changes. Stage files with `git add` or paste the diff."
+- **输出为空** → 回复："暂无已暂存的变更。请先使用 `git add` 暂存文件或手动粘贴 diff。"
 - **命令失败** → 请用户手动粘贴已暂存 diff。
 
 ---
@@ -48,7 +48,7 @@ GIT_PAGER=cat git diff --staged
 
 1. 按文件/模块总结变更
 2. 聚焦主要目的
-3. 若应拆分 → 建议："Consider splitting into multiple commits: [list]"
+3. 若应拆分 → 建议："建议拆分为多个提交：[列表]"
 
 ---
 

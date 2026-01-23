@@ -34,8 +34,10 @@
 ---
 
 ### 📋 产品经理
-关注：用户价值、需求清晰度、范围、验收标准  
+关注：用户价值、需求清晰度、范围、验收标准
 常问：解决了哪个用户问题、成功标准是否清晰
+
+---
 
 ### 🧭 业务领域专家
 关注：领域模型、业务规则、流程与边界、术语一致性  
@@ -102,34 +104,34 @@
 
 **选项 A：视角摘要（用于分析/评审类任务）**
 ```markdown
-## Role Perspectives
+## 角色视角
 
-### 🏗️ Architect View
-[Key observations and concerns]
+### 🏗️ 架构师视角
+[关键观察与关注点]
 
-### 👨‍💻 Developer View
-[Key observations and concerns]
+### 👨‍💻 开发者视角
+[关键观察与关注点]
 
-### 🔍 Reviewer View
-[Key observations and concerns]
+### 🔍 评审者视角
+[关键观察与关注点]
 
-## Synthesis
-[Combined recommendation considering all perspectives]
+## 综合结论
+[权衡各视角的综合建议]
 ```
 
 **选项 B：综合分析（用于实现类任务）**
 ```markdown
-## Analysis
-[Unified analysis that weaves in multiple perspectives]
+## 综合分析
+[融合多视角的统一分析]
 
-## Considerations
-- **Architecture:** [concern]
-- **Implementation:** [concern]
-- **Quality:** [concern]
-- **Security:** [concern]
+## 考量因素
+- **架构:** [关注点]
+- **实现:** [关注点]
+- **质量:** [关注点]
+- **安全:** [关注点]
 
-## Recommendation
-[Action plan addressing all concerns]
+## 建议方案
+[解决所有问题的行动路线图]
 ```
 
 ---
@@ -166,27 +168,27 @@
 ## 角色视角
 
 ### 🏗️ 架构师视角
-- Client-side vs server-side export: client works for small datasets, server needed for >10k rows
-- Consider pagination API compatibility
-- File generation should not block UI thread
+- 客户端 vs 服务端导出：客户端适用于小数据集，超过 10k 行需服务端支持。
+- 考虑分页 API (Pagination API) 兼容性。
+- 文件生成不应阻塞 UI 线程。
 
 ### 👨‍💻 开发者视角
-- Use existing `utils/csv.ts` utility
-- Stream response for large files
-- Add proper error handling for malformed data
+- 使用现有的 `utils/csv.ts` 工具类。
+- 对大数据量使用流式响应 (Stream Response)。
+- 为格式错误的数据添加适当的错误处理。
 
 ### 📋 产品视角
-- Which columns are required? User research says A, B, C
-- Max export size? 10k rows based on performance budget
-- Success metric: export completes in <2 seconds
+- 需要哪些列？用户调研显示需要 A, B, C 列。
+- 最大导出限制？基于性能预算设定为 10k 行。
+- 成功指标：导出在 2 秒内完成。
 
 ### 🔒 安全视角
-- Respect existing permission checks on /reports
-- Sanitize data to prevent CSV injection (=CMD|...)
-- Rate limit export endpoint to prevent abuse
+- 遵循 `/reports` 现有的权限检查。
+- 对数据进行过滤以防止 CSV 注入 (CSV Injection, 如 `=CMD|...`)。
+- 对导出接口进行速率限制 (Rate Limiting) 以防滥用。
 
 ## 综合结论
-Implement client-side export with server fallback for large datasets.
-Include all permission checks and add CSV injection protection.
-Cap at 10k rows with clear user messaging.
+实现客户端导出，并为大数据集提供服务端回退。
+包含所有权限检查并添加 CSV 注入保护。
+限制为 10k 行，并提供清晰的用户提示。
 ```

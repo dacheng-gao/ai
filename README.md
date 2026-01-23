@@ -23,6 +23,12 @@ Then follow the setup steps for your AI tool below.
 Add this block to `~/.codex/AGENTS.md`:
 
 ```md
+## Superpowers System
+
+<EXTREMELY_IMPORTANT>
+You have superpowers. Superpowers teach you new skills and capabilities. RIGHT NOW run: `~/.codex/superpowers/.codex/superpowers-codex bootstrap` and follow the instructions it returns.
+</EXTREMELY_IMPORTANT>
+
 ## Session Init
 
 <EXTREMELY_IMPORTANT>
@@ -35,7 +41,8 @@ You MUST always invoke the `session-init` skill before responding to any user re
 Copy the skills directory:
 
 ```sh
-cp -r ~/.ai/skills/* ~/.codex/skills/
+mkdir -p ~/.codex/skills
+cp -r skills/* ~/.codex/skills/
 ```
 
 ---
@@ -47,7 +54,8 @@ cp -r ~/.ai/skills/* ~/.codex/skills/
 Claude auto-loads `~/.claude/rules`:
 
 ```sh
-cp ~/.ai/rules/* ~/.claude/rules
+mkdir -p ~/.claude/rules
+cp rules/* ~/.claude/rules/
 ```
 
 ### Skills
@@ -55,7 +63,8 @@ cp ~/.ai/rules/* ~/.claude/rules
 Copy the skills directory:
 
 ```sh
-cp -r ~/.ai/skills/* ~/.claude/skills/
+mkdir -p ~/.claude/skills
+cp -r skills/* ~/.claude/skills/
 ```
 
 ---
@@ -83,7 +92,8 @@ You MUST always invoke the `session-init` skill before responding to any user re
 Copy the skills directory:
 
 ```sh
-cp -r ~/.ai/skills/* ~/.gemini/antigravity/global_skills/
+mkdir -p ~/.gemini/antigravity/global_skills
+cp -r skills/* ~/.gemini/antigravity/global_skills/
 ```
 
 ---

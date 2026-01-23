@@ -1,12 +1,17 @@
 ---
 name: develop-feature
-description: Use when 需要新增功能、端点、UI 流程、集成或数据模型变更，且涉及多文件影响或需求不清，需要范围规划。
+description: 当需要新增功能、端点、UI 流程、集成或数据模型变更，且涉及多文件影响或需求不清，需要范围规划时使用。
 ---
 
 # 开发功能
 
 ## 概述
 两阶段：调研/规划 → 实施 + 验证。计划完成后默认继续，除非触发高风险确认。
+
+## 建议角色
+- 🏗️ **解决方案架构师**：评估设计模式、扩展性与系统集成。
+- 👨‍💻 **高级开发者**：关注实现细节、代码质量与可维护性。
+- 📋 **产品经理**：确认需求边界与用户价值。
 
 ## 何时使用
 - 新功能、增强、端点、UI 流程、集成、数据模型
@@ -16,7 +21,7 @@ description: Use when 需要新增功能、端点、UI 流程、集成或数据�
 - 仅修 bug → 用 fix-bug；仅重构 → 用 refactor
 
 ## 必需子技能
-- **REQUIRED SUB-SKILL:** superpowers:verification-before-completion
+- **REQUIRED SUB-SKILL:** verification-before-completion
 
 ## 快速参考
 | 阶段 | 关口 | 输出 |
@@ -47,10 +52,10 @@ description: Use when 需要新增功能、端点、UI 流程、集成或数据�
 > "Plan ready. I will proceed unless you want changes. If any High-Risk Confirmation Triggers apply, I will ask explicitly before implementation."
 
 **高风险确认条件**
-- Destructive or irreversible operations (data deletion, history rewrite, breaking migrations)
-- Security/auth changes, access control, or sensitive data handling
-- Breaking API/contract changes or compatibility risks
-- Scope expands beyond the agreed plan in a way that increases risk
+- 破坏性或不可逆操作（数据删除、历史重写、破坏性迁移）
+- 安全、鉴权变更，访问控制或敏感数据处理
+- 破坏 API、契约或兼容性风险
+- 范围超出既定计划且增加了风险
 
 ---
 
@@ -72,17 +77,17 @@ description: Use when 需要新增功能、端点、UI 流程、集成或数据�
 
 ## 示例计划
 ```markdown
-Requirement: CSV export on Reports page
-Success: download CSV A,B,C <2s
-Research: ReportPage.tsx; reports API; utils/csv.ts
-Approach: client-side export (rec) /reports/export endpoint
-Scope: ReportPage + ReportPage.test.tsx
-Considerations: 10k cap, permissions
+需求：在报表页添加 CSV 导出功能
+成功标准：下载的 CSV 包含 A,B,C 列，且耗时 <2s
+调研：ReportPage.tsx; reports API; utils/csv.ts
+方案：客户端导出（推荐）或 /reports/export 端点
+范围：ReportPage.tsx + ReportPage.test.tsx
+考量点：10k 行限制，导出权限
 ```
 
-## 常见错误与借口
-| 想法 | 事实 |
-|---|---|
+## 借口 vs 事实
+| 借口 | 事实 |
+| --- | --- |
 | “很小/很急，可以跳过计划” | 跳过计划会交付错误结果，仍需计划。 |
 | “我先写了代码/先做小试探” | 补写计划 ≠ 计划。回到阶段 1。 |
 | “我默认处理或跳过问题” | 假设会导致返工，需询问/调研。 |
