@@ -12,27 +12,29 @@ Clone this repo to your home directory:
 git clone https://github.com/dacheng-gao/ai ~/.ai
 ```
 
-Then follow the setup instructions for your AI tool below.
+Then follow the setup steps for your AI tool below.
 
 ---
 
 ## Codex
 
-### Configure Global Rules
+### Rules
 
-Add the following to `~/.codex/AGENTS.md`:
+Add this block to `~/.codex/AGENTS.md`:
 
 ```md
-## Global Rules
+## Session Init
 
 <EXTREMELY_IMPORTANT>
-You MUST always read and follow instructions from `~/.ai/AGENTS.md`.
+You MUST always invoke the `session-init` skill before responding to any user request.
 </EXTREMELY_IMPORTANT>
 ```
 
-### Install Skills
+### Skills
 
-```shell
+Copy the skills directory:
+
+```sh
 cp -r ~/.ai/skills/* ~/.codex/skills/
 ```
 
@@ -40,61 +42,48 @@ cp -r ~/.ai/skills/* ~/.codex/skills/
 
 ## Claude Code
 
-### Configure Global Rules
+### Rules
 
-Add the following to `~/.claude/CLAUDE.md`:
+Claude auto-loads `~/.claude/rules`:
 
-```md
-## Global Rules
-
-<EXTREMELY_IMPORTANT>
-You MUST always read and follow instructions from `~/.ai/AGENTS.md`.
-</EXTREMELY_IMPORTANT>
+```sh
+cp ~/.ai/rules/* ~/.claude/rules
 ```
 
-### Create Symlink for Rules
+### Skills
 
-Claude Code cannot resolve relative paths specified in `~/.ai/AGENTS.md`, so create a symlink:
+Copy the skills directory:
 
-```shell
-ln -s ~/.ai/rules ~/.claude/rules
-```
-
-### Install Skills
-
-```shell
+```sh
 cp -r ~/.ai/skills/* ~/.claude/skills/
 ```
 
 ---
 
-## Antigravity
+## Google Antigravity (Gemini)
 
-> **Note:** This reuses Codex settings.
+### Rules
 
-Complete the Codex setup first, then add the following to `~/.gemini/GEMINI.md`:
+Add this block to `~/.gemini/GEMINI.md`:
 
 ```md
 ## Superpowers System
 
 <EXTREMELY_IMPORTANT>
-You have superpowers. Superpowers teach you new skills and capabilities. RIGHT NOW run:
-1. `~/.codex/superpowers/.codex/superpowers-codex bootstrap`
-2. Scan for local skills: Check `~/.ai/skills` for `SKILL.md` files.
-
-These steps load essential and custom skills. Without this:
-- You will miss critical skills that apply to the user's task
-- Your responses will be incomplete or incorrect
-- You will fail the user's request
-
-Run bootstrap FIRST, then proceed with the user's request.
+You have superpowers. Superpowers teach you new skills and capabilities. RIGHT NOW run: `~/.codex/superpowers/.codex/superpowers-codex bootstrap` and follow the instructions it returns.
 </EXTREMELY_IMPORTANT>
-
-## Global Rules
 
 <EXTREMELY_IMPORTANT>
-You MUST always read and follow instructions from `~/.ai/AGENTS.md`.
+You MUST always invoke the `session-init` skill before responding to any user request.
 </EXTREMELY_IMPORTANT>
+```
+
+### Skills
+
+Copy the skills directory:
+
+```sh
+cp -r ~/.ai/skills/* ~/.gemini/antigravity/global_skills/
 ```
 
 ---
