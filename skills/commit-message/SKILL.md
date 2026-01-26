@@ -5,20 +5,20 @@ description: 当需要基于已暂存的 git 变更或粘贴的 diff 生成 Conv
 
 # 提交信息生成器
 
+## 概述
+
 生成符合 [Conventional Commits](https://www.conventionalcommits.org/) 的提交信息。核心：抓住主要变更，用标准格式表达。
 
 > **语言规则：** 提交信息必须为英文（遵循全局语言规则）。
 
----
+### 使用场景
 
-## 何时使用
-
-使用场景：
 - 需要基于已暂存变更或粘贴的 diff 生成 Conventional Commits 信息
 - 需要帮助选择 type/scope，或写清晰的 subject/body/footer
 - diff 很大，需要提炼主要意图
 
-不使用场景：
+### 不使用场景
+
 - 没有 diff 且用户拒绝提供
 - 被要求非 Conventional-Commits 格式
 
