@@ -1,99 +1,71 @@
-# AI Agent Instructions
+# AI Agent Toolbox 🚀
 
-Reusable rules and skills for AI-assisted development.
+让你的 AI 更聪明：可复用的规则和技能库，提升开发效率。
 
-> **Prerequisite:** Set up [Superpowers](https://github.com/obra/superpowers) first.
-
-## Quick Start
-
-Clone this repo to your home directory:
-
-```sh
-git clone https://github.com/dacheng-gao/ai ~/.ai
-```
-
-Then follow the setup steps for your AI tool below.
+> **前置条件:** 首先设置 [Superpowers](https://github.com/obra/superpowers)。
 
 ---
 
 ## Codex
 
-### Rules
+复制以下指令到 Codex，它将完成安装：
 
-Add this block to `~/.codex/AGENTS.md`:
-
-```md
-## Superpowers System
-
-<EXTREMELY_IMPORTANT>
-You have superpowers. Superpowers teach you new skills and capabilities. RIGHT NOW run: `~/.codex/superpowers/.codex/superpowers-codex bootstrap` and follow the instructions it returns.
-</EXTREMELY_IMPORTANT>
-
-## Session Init
-
-<EXTREMELY_IMPORTANT>
-You MUST always invoke the `session-init` skill before responding to any user request.
-</EXTREMELY_IMPORTANT>
+```
+Fetch and follow instructions from https://raw.githubusercontent.com/dacheng-gao/ai/main/.codex/INSTALL.md
 ```
 
-### Skills
+升级时复制以下指令：
 
-Copy the skills directory:
-
-```sh
-mkdir -p ~/.codex/skills
-cp -r skills/* ~/.codex/skills/
+```
+Fetch and follow instructions from https://raw.githubusercontent.com/dacheng-gao/ai/main/.codex/UPGRADE.md
 ```
 
 ---
 
 ## Claude Code
 
-### Rules
+复制以下指令到 Claude Code，它将完成安装：
 
-Claude auto-loads `~/.claude/rules`:
-
-```sh
-mkdir -p ~/.claude/rules
-cp rules/* ~/.claude/rules/
+```
+Fetch and follow instructions from https://raw.githubusercontent.com/dacheng-gao/ai/main/.claude/INSTALL.md
 ```
 
-### Skills
+升级时复制以下指令：
 
-Copy the skills directory:
-
-```sh
-mkdir -p ~/.claude/skills
-cp -r skills/* ~/.claude/skills/
+```
+Fetch and follow instructions from https://raw.githubusercontent.com/dacheng-gao/ai/main/.claude/UPGRADE.md
 ```
 
 ---
 
 ## Google Antigravity (Gemini)
 
-### Rules
+复制以下指令到 Antigravity，它将完成安装：
 
-Add this block to `~/.gemini/GEMINI.md`:
-
-```md
-## Superpowers System
-
-<EXTREMELY_IMPORTANT>
-You have superpowers. Superpowers teach you new skills and capabilities. RIGHT NOW run: `~/.codex/superpowers/.codex/superpowers-codex bootstrap` and follow the instructions it returns.
-</EXTREMELY_IMPORTANT>
-
-<EXTREMELY_IMPORTANT>
-You MUST always invoke the `session-init` skill before responding to any user request.
-</EXTREMELY_IMPORTANT>
+```
+Fetch and follow instructions from https://raw.githubusercontent.com/dacheng-gao/ai/main/.gemini/INSTALL.md
 ```
 
-### Skills
+升级时复制以下指令：
 
-Copy the skills directory:
+```
+Fetch and follow instructions from https://raw.githubusercontent.com/dacheng-gao/ai/main/.gemini/UPGRADE.md
+```
 
-```sh
-mkdir -p ~/.gemini/antigravity/global_skills
-cp -r skills/* ~/.gemini/antigravity/global_skills/
+---
+
+## OpenCode
+
+复制以下指令到 OpenCode，它将完成安装：
+
+```
+Fetch and follow instructions from https://raw.githubusercontent.com/dacheng-gao/ai/main/.opencode/INSTALL.md
+```
+
+升级时复制以下指令：
+
+```
+Fetch and follow instructions from https://raw.githubusercontent.com/dacheng-gao/ai/main/.opencode/UPGRADE.md
 ```
 
 ---

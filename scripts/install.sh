@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 #
-# install-skills.sh - Copy skills to AI tool directories
+# install.sh - Copy skills and rules to AI tool directories
 #
 # Usage:
-#   ./scripts/install-skills.sh [targets...]
+#   ./scripts/install.sh [targets...]
 #
 # Options:
 #   -n, --dry-run    Show what would be copied without copying
@@ -14,19 +14,22 @@
 #   claude           Copy to ~/.claude/skills/
 #   codex            Copy to ~/.codex/skills/
 #   antigravity      Copy to ~/.gemini/antigravity/global_skills/
+#   opencode         Copy to ~/.config/opencode/ (rules and skills)
 #   all              Copy to all targets (default)
 #
 # Examples:
-#   ./scripts/install-skills.sh              # Install to all targets
-#   ./scripts/install-skills.sh claude       # Install to claude only
-#   ./scripts/install-skills.sh codex claude # Install to codex and claude
-#   ./scripts/install-skills.sh -n all       # Dry run for all targets
+#   ./scripts/install.sh              # Install to all targets
+#   ./scripts/install.sh claude       # Install to claude only
+#   ./scripts/install.sh codex claude # Install to codex and claude
+#   ./scripts/install.sh opencode     # Install to opencode (rules and skills)
+#   ./scripts/install.sh -n all       # Dry run for all targets
 
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_DIR="$(dirname "$SCRIPT_DIR")"
 SOURCE_DIR="$REPO_DIR/skills"
+RULES_DIR="$REPO_DIR/rules"
 
 DRY_RUN=false
 VERBOSE=false
@@ -37,6 +40,7 @@ get_target_dir() {
         claude)      echo "$HOME/.claude/skills" ;;
         codex)       echo "$HOME/.codex/skills" ;;
         antigravity) echo "$HOME/.gemini/antigravity/global_skills" ;;
+        opencode)    echo "$HOME/.config/opencode" ;;
     esac
 }
 
@@ -78,9 +82,42 @@ copy_skills() {
     echo "✓ Installed $count skills to $target_name"
 }
 
+copy_rules() {
+    local target_name="$1"
+    local target_dir="$2"
+
+    if [[ "$DRY_RUN" == true ]]; then
+        echo "[DRY-RUN] Would copy rules to $target_name: $target_dir"
+        return 0
+    fi
+
+    if [[ ! -d "$target_dir" ]]; then
+        mkdir -p "$target_dir"
+    fi
+
+    local count=0
+    for rule_file in "$RULES_DIR"/*.md; do
+        if [[ -f "$rule_file" ]]; then
+            local rule_name
+            rule_name=$(basename "$rule_file")
+            local target_rule_file="$target_dir/$rule_name"
+
+            if [[ "$VERBOSE" == true ]]; then
+                echo "Copying $rule_name to $target_dir/"
+            fi
+
+            cp "$rule_file" "$target_rule_file"
+
+            ((count++))
+        fi
+    done
+
+    echo "✓ Installed $count rules to $target_name"
+}
+
 main() {
     local selected_targets=()
-    local all_targets=(claude codex antigravity)
+    local all_targets=(claude codex antigravity opencode)
 
     while [[ $# -gt 0 ]]; do
         case "$1" in
@@ -100,7 +137,7 @@ main() {
                 selected_targets=("${all_targets[@]}")
                 shift
                 ;;
-            claude|codex|antigravity)
+            claude|codex|antigravity|opencode)
                 selected_targets+=("$1")
                 shift
                 ;;
@@ -124,6 +161,10 @@ main() {
     skill_count=$(find "$SOURCE_DIR" -mindepth 1 -maxdepth 1 -type d | wc -l | tr -d ' ')
     echo "Found $skill_count skills in $SOURCE_DIR"
 
+    local rule_count
+    rule_count=$(find "$RULES_DIR" -maxdepth 1 -name '*.md' | wc -l | tr -d ' ')
+    echo "Found $rule_count rules in $RULES_DIR"
+
     if [[ "$DRY_RUN" == true ]]; then
         echo "Dry run mode - no files will be copied"
     fi
@@ -131,7 +172,13 @@ main() {
     for target in "${selected_targets[@]}"; do
         local target_dir
         target_dir=$(get_target_dir "$target")
-        copy_skills "$target" "$target_dir"
+
+        if [[ "$target" == "opencode" ]]; then
+            copy_rules "$target" "$target_dir/rules"
+            copy_skills "$target" "$target_dir/skills"
+        else
+            copy_skills "$target" "$target_dir"
+        fi
     done
 
     echo "Done!"

@@ -1,0 +1,92 @@
+# Antigravity 安装指南
+
+本指南帮助您将 AI Agent Rules 和 Skills 集成到 Google Antigravity (Gemini) 中。
+
+## 前置条件
+
+- 已安装 [Superpowers](https://github.com/obra/superpowers)
+- 已安装 Google Antigravity (Gemini)
+
+## 安装步骤
+
+### 1. 克隆本仓库
+
+```sh
+git clone https://github.com/dacheng-gao/ai ~/.ai
+cd ~/.ai
+```
+
+### 2. 创建 Antigravity 配置目录
+
+```sh
+mkdir -p ~/.gemini/antigravity/global_skills
+```
+
+### 3. 复制入口文件
+
+```sh
+cp ~/.ai/AGENTS.md ~/.gemini/GEMINI.md
+cat >> ~/.gemini/GEMINI.md <<'EOF'
+
+---
+
+## Superpowers System
+
+<EXTREMELY_IMPORTANT>
+You have superpowers. Superpowers teach you new skills and capabilities. RIGHT NOW run: `~/.codex/superpowers/.codex/superpowers-codex bootstrap` and follow the instructions it returns.
+</EXTREMELY_IMPORTANT>
+
+## Session Init
+
+<EXTREMELY_IMPORTANT>
+You MUST always invoke the `session-init` skill before responding to any user request.
+</EXTREMELY_IMPORTANT>
+EOF
+```
+
+### 4. 复制技能文件
+
+```sh
+cp -r ~/.ai/skills/* ~/.gemini/antigravity/global_skills/
+```
+
+## 验证安装
+
+启动 Antigravity，并运行：
+
+```
+列出所有可用的技能
+```
+
+Antigravity 应该能够识别并使用 `~/.ai` 中的技能。
+
+## 常见问题
+
+### 技能未识别
+
+确保技能文件位于正确的目录：
+```sh
+ls -la ~/.gemini/antigravity/global_skills/
+```
+
+每个技能目录应包含 `SKILL.md` 文件。
+
+### GEMINI.md 未被读取
+
+确保 GEMINI.md 文件位于正确的路径：
+```sh
+cat ~/.gemini/GEMINI.md
+```
+
+### 规则文件位置
+
+Antigravity 期望规则文件在 `~/.ai/rules/` 中。确保路径正确：
+
+```sh
+ls -la ~/.ai/rules/
+```
+
+## 下一步
+
+- 查看 [Superpowers 文档](https://github.com/obra/superpowers) 了解如何使用技能
+- 阅读 `~/.ai/skills/` 下的各个 `SKILL.md` 文件了解具体技能用法
