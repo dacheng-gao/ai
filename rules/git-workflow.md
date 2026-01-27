@@ -1,9 +1,11 @@
 # Git 工作流
 
-## 全局约束
+## 技术约束
 - 禁止使用 `git worktree`；仅在当前主工作区修改。
+
+## 提交约束
 - 未获得用户明确批准，不执行 `git commit`（包含 amend/rebase 产生的新提交）。任何未获准的 commit 均属违规。
-- 即便用户要求“直接 commit”或时间紧迫，也必须先请求批准。未获准直接提交将导致任务失败。
+- 即便用户要求"直接 commit"或时间紧迫，也必须先请求批准。未获准直接提交将导致任务失败。
 
 ## 提交信息规范 (Conventional Commits)
 提交信息必须遵循 [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) 规范，并使用**英文**书写。

@@ -61,7 +61,8 @@ AI 辅助开发的语言规范。
 **例外（默认中文）：**
 - OpenSpec 工具生成文档（如 `proposal.md` / `design.md` / `tasks.md` / `spec.md`）
 - plan 文档（如 docs/plans）
-- **项目规则/技能文件**（`rules/`、`skills/`）使用中文
+- 项目规则/技能文件（`rules/`、`skills/`）
+
 > 可被项目配置覆盖；默认英语无需确认。
 
 ---
