@@ -6,7 +6,30 @@ description: 通用迭代质量框架。默认适用于：多文件改动、复�
 # 迭代直到完成
 
 ## 概述
-严格执行"评审-计划-执行-再评审"循环，直到需求与验证全部通过。这是一个通用质量框架，适用于大多数开发任务。
+
+**这是一个元编排技能** - 组织其他项目技能进行迭代，直到需求完全满足。
+
+本项目依赖 [superpowers plugin](https://github.com/obra/superpowers) 提供的基础流程。
+
+## 迭代决策流程
+
+```
+用户请求
+    ↓
+判断任务类型
+    ↓
+┌─────────────┬─────────────┬─────────────┐
+│   bug       │  feature    │  refactor   │
+│  fix-bug    │develop-feat │   refactor  │
+└──────┬──────┴──────┬──────┴──────┬──────┘
+       │              │              │
+       └──────────────┴──────────────┘
+                    ↓
+         每轮迭代后完成度检查
+                    ↓
+         有缺口？→ 继续下一轮
+         无缺口？→ 停止
+```
 
 ## 何时使用
 
@@ -14,62 +37,38 @@ description: 通用迭代质量框架。默认适用于：多文件改动、复�
 - 多文件改动或复杂逻辑变更
 - 需要精确满足明确成功标准的任务
 - 质量敏感场景（核心功能、安全相关、用户体验关键路径）
-- 用户明确要求迭代或质量保证
-
-**可选使用：**
-- 简单单文件修改
-- 明确的低风险改动（如文档更新、配置调整）
 
 **不适用：**
 - 纯研究/探索任务（无明确交付物）
 - 纯问答/解释任务
 
-## 建议角色
-- 🏗️ **解决方案架构师**：评估每次迭代的影响和风险
-- 👨‍💻 **高级开发者**：实施最小有效变更
-- 🧪 **QA 工程师**：验证每次迭代的完成度
+## 技能调用链
 
-## 子技能
-- **根据任务类型选择：** fix-bug（缺陷）、develop-feature（新功能）、refactor（重构）
-- **REQUIRED:** verification-before-completion（每轮迭代结束后的验证）
-- **OPTIONAL:** review-code（迭代间隙的代码评审）
+根据任务类型，本技能会调用对应的项目技能：
 
-## 迭代决策流程
-```dot
-digraph loop_until_done {
-    rankdir=TB;
-    start [label="任务是否非平凡？", shape=diamond];
-    note [label="非平凡：多文件/复杂逻辑/质量敏感", shape=note];
-    review [label="评审请求", shape=box];
-    plan [label="计划 + 执行", shape=box];
-    check [label="核对变更与请求", shape=box];
-    decision [label="完成度检查", shape=diamond];
-    stop [label="停止：提交证据", shape=box];
-    iterate [label="更新缺口并继续", shape=box];
+| 任务类型 | 调用技能 | 内部调用 superpowers |
+|---------|---------|---------------------|
+| Bug 修复 | fix-bug | systematic-dbg → tdd → verify |
+| 功能开发 | develop-feature | brainstorming → writing-plans → tdd → verify |
+| 重构 | refactor | brainstorming → writing-plans → tdd → verify |
 
-    start -> note [label="是"];
-    start -> stop [label="否（简单任务）"];
-    note -> review -> plan -> check -> decision;
-    decision -> stop [label="全部完成"];
-    decision -> iterate [label="存在缺口"];
-    iterate -> review;
-}
-```
+每个项目技能内部会调用相应的 superpowers 技能。
 
 ## 迭代协议
 
 ### 初始评审（第 0 轮）
+
 1. **重述请求**：成功标准、约束条件
 2. **识别缺口**：缺失信息、依赖、风险
-3. **任务分类**：bug / 功能 / 重构
-4. **选择子技能**：fix-bug / develop-feature / refactor
+3. **任务分类**：bug / feature / refactor
+4. **调用对应的项目技能**
 
 ### 迭代循环（第 N 轮）
-1. **计划**：基于当前缺口制定本轮计划
-2. **执行**：最小变更 + 必要测试
-3. **验证**：运行测试/检查，记录证据
-4. **评审**：对照成功标准，列出剩余缺口
-5. **决策**：全部完成 → 停止；存在缺口 → 继续下一轮
+
+1. 项目技能执行（内部调用 superpowers 技能）
+2. 验证：运行测试/检查，记录证据
+3. 评审：对照成功标准，列出剩余缺口
+4. 决策：全部完成 → 停止；存在缺口 → 继续下一轮
 
 ### 完成度检查（每一轮必须回答）
 
@@ -111,38 +110,37 @@ digraph loop_until_done {
 
 ## 示例
 
-### 示例 1：Bug 修复迭代
+### Bug 修复迭代
 
 **请求：** "登录返回 500 错误，帮我修复"
 
 **迭代 1：**
-- 计划：添加失败测试复现问题 → 定位根因 → 最小修复
-- 执行：发现 `user` 可能为 `undefined`，添加空值检查
+- 调用 fix-bug → systematic-debugging（根因：user 可能为 undefined）
+- 调用 fix-bug → test-driven-development（添加空值检查）
 - 验证：基础登录测试通过
 - 缺口：过期 token 场景未测试
 - 决策：继续
 
 **迭代 2：**
-- 计划：添加过期 token 测试 → 验证边界情况
-- 执行：补充测试，发现仍返回 500，修复
+- 继续调用 fix-bug → test-driven-development（补充边界测试）
 - 验证：所有测试通过
 - 缺口：无
 - 决策：停止
 
-### 示例 2：功能开发迭代
+### 功能开发迭代
 
 **请求：** "给报表页加 CSV 导出"
 
 **迭代 1：**
-- 计划：调研现有工具 → 实现客户端导出 → 添加测试
-- 执行：实现基础导出，支持当前页数据
+- 调用 develop-feature → brainstorming（确认需求）
+- 调用 develop-feature → writing-plans（制定计划）
+- 调用 develop-feature → test-driven-development（实现基础导出）
 - 验证：功能可用
 - 缺口：大数据量性能未验证，权限检查缺失
 - 决策：继续
 
 **迭代 2：**
-- 计划：添加行数限制 → 集成现有权限检查 → 性能测试
-- 执行：限制 10k 行，复用 `/reports` 权限
+- 继续调用 develop-feature → test-driven-development（添加限制和权限）
 - 验证：10k 行导出 <2s，权限正确
 - 缺口：无
 - 决策：停止
@@ -163,7 +161,7 @@ digraph loop_until_done {
 
 ### 与子技能协调
 - 调用 fix-bug/develop-feature 但不遵循其协议
-- 迭代时偏离子技能的核心原则（如 fix-bug 的最小变更）
+- 迭代时偏离子技能的核心原则
 
 ## 借口 vs 事实
 
@@ -176,7 +174,7 @@ digraph loop_until_done {
 | "差不多行了" | 仅当全部完成条件满足时才能停止。 |
 | "缺信息先猜测" | 信息缺失必须询问，猜测导致返工。 |
 
-## 红旗 - 立刻停止
+## 红旗 - 立即停止
 
 以下行为违反迭代协议，必须立刻纠正：
 

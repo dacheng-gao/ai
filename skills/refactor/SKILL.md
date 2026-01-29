@@ -6,84 +6,158 @@ description: 当代码结构调整可能改变行为、时序或输出（性能�
 # 重构
 
 ## 概述
-先定义行为边界，再在测试保护下重构。时序/并发变化也算行为变化。
 
-## 必需子技能
-- **REQUIRED SUB-SKILL:** verification-before-completion
+**这是一个编排技能** - 组织 superpowers 基础技能来完成重构流程。
 
-## 核心流程
-1. 定义意图 + 行为边界
-2. 建立基线（测试 + 关键指标）
-3. 小步实现
-4. 验证行为与性能
-5. 记录范围 + 回滚点
+本项目依赖 [superpowers plugin](https://github.com/obra/superpowers) 提供的基础开发流程。
 
-## 行为边界清单
-- 公共 API 与返回结构
-- 数据 schema 与迁移兼容性
-- 输出顺序与格式
-- 错误类型、消息与状态码
-- 时序、并发与副作用
-- 资源占用（CPU、内存、I/O）
+## 必需子技能 (REQUIRED SUB-SKILLS)
+
+按以下顺序调用：
+
+1. **superpowers:brainstorming** - 分析现有设计，探索重构方案
+   - 理解当前架构
+   - 提出重构选项
+   - 确认行为边界
+
+2. **superpowers:writing-plans** - 编写重构计划
+   - 定义行为边界（什么可以变，什么不能变）
+   - 分解为安全的步骤
+   - 保存到 `docs/plans/`
+
+3. **superpowers:test-driven-development** - 测试保护下的重构
+   - 先写/更新测试（捕获现有行为）
+   - 在测试保护下重构
+   - 保持测试绿色
+
+4. **superpowers:verification-before-completion** - 完成前验证
 
 ## 快速参考
-| 步骤 | 输出 |
+
+| 阶段 | 调用技能 | 输出 |
+|---|---|---|
+| 1. 分析 | brainstorming | 重构方案 |
+| 2. 计划 | writing-plans | 重构计划 + 行为边界 |
+| 3. 实施 | test-driven-development | 重构代码 + 测试 |
+| 4. 验证 | verification-before-completion | 验证证据 |
+
+## 何时使用
+
+- 性能优化、重写、模块拆分
+- 同步改异步、数据模型迁移
+- 任何可能改变行为、时序或输出的调整
+
+**不适用：** 仅修 bug → fix-bug；新功能 → develop-feature
+
+## 工作流程
+
+```
+用户请求重构
+       ↓
+调用 superpowers:brainstorming
+       ↓
+   确认行为边界
+       ↓
+调用 superpowers:writing-plans
+       ↓
+   计划包含边界定义
+       ↓
+调用 superpowers:test-driven-development
+       ↓
+   先写测试捕获现有行为
+   然后在测试保护下重构
+       ↓
+调用 superpowers:verification-before-completion
+       ↓
+   完成
+```
+
+## 行为边界清单
+
+重构的核心是**定义行为边界**，必须明确列出：
+
+- [ ] 公共 API 与返回结构
+- [ ] 数据 schema 与迁移兼容性
+- [ ] 输出顺序与格式
+- [ ] 错误类型、消息与状态码
+- [ ] 时序、并发与副作用
+- [ ] 资源占用（CPU、内存、I/O）
+
+## 项目特定补充
+
+在 superpowers 技能基础上，本项目额外要求：
+
+- [ ] 重构计划保存在 `docs/plans/YYYY-MM-DD-<名称>-refactor.md`
+- [ ] 行为边界必须明确写入计划
+- [ ] 变更前必须有基线测试
+- [ ] 大型重构需要回滚计划
+
+## 完成标准
+
+- [ ] brainstorming 完成方案分析
+- [ ] writing-plans 完成重构计划（含边界定义）
+- [ ] TDD 完成（测试保护下的重构）
+- [ ] 所有测试通过，无回归
+- [ ] verification-before-completion 通过
+
+## 常见错误
+
+### 流程违规
+- 跳过边界定义直接重构
+- 重构后才写测试
+- 无基线测试就声称"行为不变"
+
+### 调用问题
+- 只说"用 superpowers"但不指定具体技能名
+- 调用顺序错误
+- 中途跳过验证
+
+## 借口 vs 事实
+
+| 借口 | 事实 |
 | --- | --- |
-| 边界 | 允许的行为变化清单 |
-| 基线 | 证明现状的测试 + 指标 |
-| 变更 | 小而可审的重构提交 |
-| 验证 | 回归测试 + 性能检查 |
-| 记录 | 变更记录 + 回滚计划 |
+| "重构不改行为，不需要测试" | 时序与副作用会改变行为，必须先写测试捕获。 |
+| "我先重构再写测试" | 重构后的测试不能证明行为不变，违反 TDD。 |
+| "边界很明显，不需要写" | "明显"的边界经常被遗漏，必须明确列出。 |
+| "有 feature flag 就安全" | flag 降低风险，不是验证，仍需测试。 |
 
-## 示例
-```ts
-type Api = {
-  fetchUser(): Promise<{ id: string }>;
-  fetchPosts(): Promise<string[]>;
-};
+## 红旗 - 立即停止
 
-// 边界：输出契约与错误保持不变；时序可能变化。
-test('loadUserProfile keeps output contract', async () => {
+- 重构前未定义行为边界
+- 写代码前未调用 test-driven-development
+- 声称"行为不变"但无基线测试
+- 说"用 superpowers"但不指定具体技能名
+
+## 示例：行为边界定义
+
+```typescript
+// 重构前：先写测试定义边界
+test('loadUserProfile behavior boundary', async () => {
   const api: Api = {
     fetchUser: async () => ({ id: 'u1' }),
     fetchPosts: async () => ['p1', 'p2'],
   };
 
-  await expect(loadUserProfile(api)).resolves.toEqual({
-    userId: 'u1',
-    postCount: 2,
-  });
+  const result = await loadUserProfile(api);
+
+  // 边界：输出结构不变
+  expect(result).toHaveProperty('userId');
+  expect(result).toHaveProperty('postCount');
+
+  // 边界：数据来源不变
+  expect(result.userId).toBe('u1');
+  expect(result.postCount).toBe(2);
 });
-
-export async function loadUserProfile(api: Api) {
-  const [user, posts] = await Promise.all([
-    api.fetchUser(),
-    api.fetchPosts(),
-  ]);
-
-  return { userId: user.id, postCount: posts.length };
-}
 ```
 
-## 常见错误
-- 以“只是重构”为由跳过基线测试
-- 顺手扩大范围
-- 用性能宣称替代测试
-- 改了行为却未记录边界
-- 高风险变更无回滚计划
+## 与原技能的区别
 
-## 借口 vs 事实
-| 借口 | 事实 |
-| --- | --- |
-| “重构不改行为” | 时序与副作用会改变行为，应定义边界。 |
-| “手测够了” | 手测不能防回归，基线测试可以。 |
-| “有 feature flag 就不必测” | flag 只降风险，不是验证。 |
-| “测试可以后补” | 重构后的测试不能证明安全性。 |
-| “来不及回滚” | 沉没成本不是质量策略。 |
+**原版本：** 自定义重构流程（定义边界 → 基线 → 实现 → 验证）
 
-## 红旗 - 立刻停止
-- 没有明确的行为边界清单
-- 基线测试缺失或失败
-- “测试后补”
-- “只是清理而已”
-- 跨模块大范围变更无范围控制
+**新版本：** 编排者模式，调用 superpowers 技能
+
+好处：
+- 方案探索由 brainstorming 处理
+- 计划编写由 writing-plans 处理
+- 测试保护由 TDD 强制执行
+- superpowers 更新时自动受益
