@@ -38,6 +38,22 @@ Fetch and follow instructions from https://raw.githubusercontent.com/dacheng-gao
 
 ---
 
+## Cline
+
+复制以下指令到 Cline，它将完成安装：
+
+```
+Fetch and follow instructions from https://raw.githubusercontent.com/dacheng-gao/ai/main/.cline/INSTALL.md
+```
+
+升级时复制以下指令：
+
+```
+Fetch and follow instructions from https://raw.githubusercontent.com/dacheng-gao/ai/main/.cline/UPGRADE.md
+```
+
+---
+
 ## Google Antigravity (Gemini)
 
 复制以下指令到 Antigravity，它将完成安装：
