@@ -13,6 +13,7 @@ AI Agent 工作规范框架。通过 Rules（全局行为约束，每次会话�
 2. `rules/git-workflow.md` - Git 工作流程规范
 3. `rules/language-rules.md` - 语言使用规范（中文编写，技术内容用英文）
 4. `rules/output-style.md` - 输出格式和风格要求
+5. `rules/code-quality.md` - 代码质量规范（SOLID、安全、Clean Code、复杂度指标）
 
 **加载方式：**
 - 在会话开始时一次性加载所有规则文件
