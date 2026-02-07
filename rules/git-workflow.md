@@ -23,6 +23,22 @@
 ## 提交信息规范 (Conventional Commits)
 提交信息必须遵循 [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) 规范，并使用**英文**书写。
 
+### 格式
+
+```
+<type>[(scope)]: <subject>
+
+[body]
+
+[footer]
+```
+
+| 要素 | 规则 |
+|---------|------|
+| **Subject** | 祈使语气，≤72 字符（建议 ≤50），不以句号结尾 |
+| **Body** | 说明 *what* 与 *why*（不是 *how*），72 字符换行，可选 |
+| **Footer** | `BREAKING CHANGE:`, `Fixes #123`, `Refs #456`，可选 |
+
 ### 常用类型 (Type)
 - `feat`: 新功能
 - `fix`: 修补 bug
@@ -31,7 +47,10 @@
 - `refactor`: 重构（既不是修补 bug 也不加新功能）
 - `perf`: 性能优化
 - `test`: 添加缺失测试或更正现有测试
-- `chore`: 对构建过程或辅助工具和库（如文档生成）的更改
+- `build`: 构建系统或外部依赖的变更
+- `ci`: CI/CD 配置
+- `chore`: 不修改源代码或测试的其他变更
+- `revert`: 回滚先前提交
 
 ### 提交信息纯净性
 - **禁止**在提交信息中包含任何 AI 智能体署名信息，包括但不限于：

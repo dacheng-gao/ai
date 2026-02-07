@@ -54,39 +54,7 @@ GIT_PAGER=cat git diff --staged
 
 ## 步骤 3：生成提交信息
 
-### 快速参考
-
-#### 提交类型
-
-| 类型 | 何时使用 |
-|------|----------|
-| `feat` | 面向用户的新功能 |
-| `fix` | Bug 修复 |
-| `docs` | 仅文档 |
-| `style` | 仅格式，无代码变化 |
-| `refactor` | 代码重构，无行为变化 |
-| `perf` | 性能优化 |
-| `test` | 添加/修复测试 |
-| `build` | 构建系统、依赖 |
-| `ci` | CI/CD 配置 |
-| `chore` | 维护、工具 |
-| `revert` | 回滚先前提交 |
-
-#### 格式规则
-
-```
-<type>[(scope)]: <subject>
-
-[body]
-
-[footer]
-```
-
-| 要素 | 规则 |
-|---------|------|
-| **Subject** | 祈使语气，≤72 字符（建议 ≤50），不以句号结尾 |
-| **Body** | 说明 *what* 与 *why*（不是 *how*），72 字符换行，可选 |
-| **Footer** | `BREAKING CHANGE:`, `Fixes #123`, `Refs #456`，可选 |
+> 类型与格式规范见 `rules/git-workflow.md`。
 
 ### 选择 Scope
 

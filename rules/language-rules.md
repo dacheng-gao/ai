@@ -42,13 +42,7 @@
 | 💻 **代码标识符** | 变量名、函数名、类名、文件名 | 英语 |
 | 🔑 **i18n Key** | 翻译键名 | 英语 |
 
-**Git 提交格式**：Conventional Commits — `type(scope): description`
-
-```
-feat(auth): add OAuth2 support
-fix(api): handle null response
-docs(readme): update installation steps
-```
+**Git 提交格式**：Conventional Commits，详见 `rules/git-workflow.md`
 
 > 注：Git UI 中的评审意见用英语；聊天中的代码评审报告用中文。
 
