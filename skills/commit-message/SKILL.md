@@ -17,5 +17,6 @@ description: 生成 git 提交信息时使用。基于 diff 输出 Conventional 
 
 ## 约束
 
-- 遵守 `rules/git-workflow.md:8-9`：执行 commit 前必须输出 message 给用户确认
-- 禁止未经确认直接执行 commit
+- 执行 `git commit` 前必须输出 message 给用户确认，禁止未经确认直接执行
+- 提交信息必须符合 `rules/git-workflow.md` 全部规范
+- diff 内容与提交信息必须一致：type 准确反映变更性质，scope 准确反映变更范围
