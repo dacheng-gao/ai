@@ -17,6 +17,7 @@ AI Agent 工作规范框架。通过 Rules（全局行为约束）和 Skills（�
 
 | 任务特征 | 触发技能 |
 |---------|----------|
+| GitHub URL/引用（#123, PR 456） | `github` |
 | 新功能、端点、UI 流程、集成、数据模型 | `develop-feature` |
 | 缺陷、回归、崩溃、错误输出、性能下降 | `fix-bug` |
 | 结构调整、性能优化、模块拆分、重写 | `refactor` |
@@ -30,6 +31,7 @@ AI Agent 工作规范框架。通过 Rules（全局行为约束）和 Skills（�
 
 | 信号 | 路由 |
 |------|------|
+| GitHub URL、#123、PR 456、issue N | `github` |
 | 有明确故障/错误表现 | `fix-bug` |
 | 无故障但结构需调整 | `refactor` |
 | 新增用户可感知能力 | `develop-feature` |
