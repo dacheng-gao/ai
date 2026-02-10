@@ -5,16 +5,20 @@ description: 评审代码、PR、diff 或补丁时使用。检查正确性、安
 
 # 代码评审
 
-找出可阻断合并的问题，给出可执行修复建议。
+找出可阻断合并的问题。给出可执行的修复建议（非泛化建议）。
 
 ## 适用与路由
 - 评审他人代码：使用本技能
-- 接收评审反馈：调用 `superpowers:receiving-code-review`
-- 需要二次审阅/门禁时调用 `superpowers:requesting-code-review`
+- 当收到他人对自己代码的评审反馈时 → 调用 `superpowers:receiving-code-review`
+- 当完成任务需要二次审阅确认时 → 调用 `superpowers:requesting-code-review`
+
+Superpowers 不可用时：receiving → 逐条回应反馈，验证每条建议的技术正确性后再实施；requesting → 按通用退出标准自审。
 
 ## 检查维度
 
-按 `rules/code-quality.md` 的 Correctness → Security → Performance → Maintainability 逐项检查。评审时额外关注：作者是否提供了 Verification 证据（测试结果、构建日志等）。
+按五维门禁逐项检查。额外关注：
+- 作者是否提供了验证证据（测试结果、构建日志等）
+- AI 生成代码：幻觉 API 调用、过度工程化、拼凑式逻辑（表面合理但语义错误）
 
 ## 输出格式
 
@@ -30,4 +34,3 @@ description: 评审代码、PR、diff 或补丁时使用。检查正确性、安
 - 五个维度均已逐项检查，每个维度标注 Pass/Concern
 - 发现项已按严重度排序并给出可执行的修复建议（非泛化建议）
 - 高风险区域（鉴权、外部输入、数据变更）已显式确认检查
-- 满足通用退出标准（请求回看 + 产出物回读）

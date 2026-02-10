@@ -46,7 +46,6 @@
 | `commit-message` | 生成提交信息 |
 | `answer` | 解释代码、知识问答 |
 | `github` | GitHub URL/Issue/PR 集成 |
-| `session-init` | 非 Claude Code 工具的会话初始化 |
 | `loop-until-done` | 默认通用工作流 |
 
 ### 支持的 AI 工具

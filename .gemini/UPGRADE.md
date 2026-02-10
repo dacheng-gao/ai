@@ -51,12 +51,6 @@ cat >> ~/.gemini/GEMINI.md <<'EOF'
 <EXTREMELY_IMPORTANT>
 You have superpowers. Superpowers teach you new skills and capabilities. RIGHT NOW run: `~/.codex/superpowers/.codex/superpowers-codex bootstrap` and follow the instructions it returns.
 </EXTREMELY_IMPORTANT>
-
-## Session Init
-
-<EXTREMELY_IMPORTANT>
-You MUST always invoke the `session-init` skill before responding to any user request.
-</EXTREMELY_IMPORTANT>
 EOF
 
 # 同步技能（使用 rsync 保留现有技能）

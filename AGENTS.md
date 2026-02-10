@@ -1,45 +1,35 @@
 # AGENTS Instructions
 
-AI Agent 工作规范框架。通过 Rules（全局行为约束）和 Skills（按需触发的专项工作流）约束 Agent 行为，实现：
+按以下 Rules（全局行为约束）和 Skills（按需触发的专项工作流）执行：
 - 输出简洁有效，减少 Token 浪费
 - 精准符合用户需求
 - 自检迭代，证据驱动
 
 ## 规则体系
 
-规则文件位于 `rules/` 目录。非 Claude Code 工具须先调用 `session-init` 技能加载规则。
+规则文件位于 `rules/` 目录。
 
 **冲突优先级**：`roles.md` > `git-workflow.md` > `language-rules.md` > `code-quality.md` > `output-style.md`
 
+> 规则冲突按优先级裁决，高优先级规则的约束覆盖低优先级规则。
+
 ## 技能路由
 
-收到用户请求后，按以下优先级匹配首个技能：
+收到用户请求后，按表序从高到低匹配首个技能：
 
-| 任务特征 | 触发技能 |
-|---------|----------|
-| GitHub URL/引用（#123, PR 456） | `github` |
-| 新功能、端点、UI 流程、集成、数据模型 | `develop-feature` |
-| 缺陷、回归、崩溃、错误输出、性能下降 | `fix-bug` |
-| 结构调整、性能优化、模块拆分、重写 | `refactor` |
+| 信号 | 技能 |
+|------|------|
+| GitHub URL、`#123`、`PR 456`、`issue N` | `github` |
+| 缺陷、回归、崩溃、错误输出、性能下降（需有明确故障表现） | `fix-bug` |
+| 新功能、端点、UI 流程、集成、数据模型（含"优化"指功能改进、"重构"实为加新功能） | `develop-feature` |
+| 结构调整、模块拆分、重写（无故障） | `refactor` |
 | 代码/PR/diff 评审 | `review-code` |
 | 架构、平台设计、系统评估 | `architecture-review` |
 | 生成提交信息 | `commit-message` |
-| 解释代码、回答问题、知识问答 | `answer` |
-| 以上均不匹配 | `loop-until-done`（默认） |
+| 纯解释/问答（无执行/变更） | `answer` |
+| 以上均不匹配 | `loop-until-done` |
 
-### 路由边界判定
-
-| 信号 | 路由 |
-|------|------|
-| GitHub URL、#123、PR 456、issue N | `github` |
-| 有明确故障/错误表现 | `fix-bug` |
-| 无故障但结构需调整 | `refactor` |
-| 新增用户可感知能力 | `develop-feature` |
-| 用户说"优化"但指功能改进 | `develop-feature`（非 `refactor`） |
-| 用户说"重构"但实际是加新功能 | `develop-feature`（非 `refactor`） |
-| 仍不明确 | `loop-until-done` |
-
-> 路由不确定时询问用户意图，不自行假设。
+> 路由不确定时询问用户意图，不自行假设。请求跨多个技能时，按优先级选择主技能执行；主技能完成后询问是否继续处理剩余部分。
 
 ## 通用退出标准
 
@@ -53,3 +43,26 @@ AI Agent 工作规范框架。通过 Rules（全局行为约束）和 Skills（�
 4. **测试**：测试通过（或已记录测试计划与理由）
 5. **无回归**：不引入新的故障或行为变化
 6. **diff 自审**：回读自己的改动 diff，检查是否包含调试代码、遗留注释、超出请求范围的变更
+7. **质量门禁**：五维（正确性/安全/性能/可维护性/验证）逐项判定 Pass/Concern，存在 Concern 则未通过
+
+**迭代验证**：退出标准检查未全部通过 → 修复后重新检查，硬上限 3 轮。达到上限仍有未通过项 → 向用户说明残余问题与权衡理由，不隐藏。
+
+## 中断恢复
+
+技能执行中断（上下文溢出、工具故障、用户中止）时：
+1. 输出已完成步骤与当前进度摘要
+2. 列出未完成项与已知阻塞点
+3. 缩小范围至可在当前上下文完成的最小子集，恢复执行
+
+## Superpowers
+
+通过 `superpowers:<name>` 调用高阶提示词模板。Claude Code 自动加载；其他环境按下表 fallback 降级。未列出的 superpower 不可用时按常识降级。
+
+| Superpower | Fallback |
+|-----------|----------|
+| `brainstorming` | 3-5 行内联计划，列出核心步骤和验收标准 |
+| `writing-plans` | 在回复中输出计划（可选落盘） |
+| `test-driven-development` | 先写失败测试 → 实现 → 验证通过 |
+| `systematic-debugging` | 复现 → 收集证据 → 定位根因 → 修复 |
+| `verification-before-completion` | 按通用退出标准验证 |
+| `receiving-code-review` | 逐条回应反馈，验证技术正确性后再实施 |

@@ -22,8 +22,9 @@ description: GitHub 集成。识别 GitHub 链接、使用 gh CLI 获取上下�
 |------|------|---------|
 | `#123` 或 `/issues/123` | Issue | `gh issue view 123` |
 | `#456` 或 `/pull/456` | PR | `gh pr view 456` |
-| `/commit/abc123` 或 `abc123` | Commit | `gh commit view abc123` |
+| `/commit/abc123` 或 `abc123` | Commit | `git show abc123` 或 `gh api repos/{owner}/{repo}/commits/abc123` |
 | `/releases/tag/v1.0` | Release | `gh release view v1.0` |
+| `/actions/runs/123` | Workflow Run | `gh run view 123` |
 
 使用 `--json` 获取结构化数据，输出格式化摘要。
 
@@ -40,6 +41,8 @@ commit/PR 场景下询问关联方式（`Fixes #N` / `Refs #N` / 跳过），根
 | 关闭 issue | `gh issue close N` |
 | 合并 PR | `gh pr merge N` |
 | 添加标签 | `gh issue edit N --add-label "..."` |
+| 查看 workflow 日志 | `gh run view N --log-failed` |
+| 重新运行 workflow | `gh run rerun N` |
 
 ## 错误处理
 
@@ -51,4 +54,3 @@ commit/PR 场景下询问关联方式（`Fixes #N` / `Refs #N` / 跳过），根
 ## 退出标准
 - GitHub 资源信息已获取并格式化展示
 - 用户请求的操作已执行（或因权限/条件未满足而说明原因）
-- 满足通用退出标准
