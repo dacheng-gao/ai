@@ -1,0 +1,132 @@
+{
+  "permissions": {
+    "allow": [
+      "Read",
+      "Glob",
+      "Grep",
+      "Write",
+      "Edit",
+      "WebSearch",
+      "WebFetch",
+      "Task",
+      "TaskCreate",
+      "TaskList",
+      "TaskUpdate",
+      "TaskGet",
+      "Bash(git status*)",
+      "Bash(git diff*)",
+      "Bash(git log*)",
+      "Bash(git branch*)",
+      "Bash(git show*)",
+      "Bash(git blame*)",
+      "Bash(gh issue view*)",
+      "Bash(gh pr view*)",
+      "Bash(gh api*)",
+      "Bash(GIT_PAGER=cat git diff*)",
+      "Bash(GIT_PAGER=cat git log*)",
+      "Bash(npm test*)",
+      "Bash(npm run test*)",
+      "Bash(npm run build*)",
+      "Bash(npm run lint*)",
+      "Bash(npm run typecheck*)",
+      "Bash(npx tsc*)",
+      "Bash(npx vitest*)",
+      "Bash(npx jest*)",
+      "Bash(npx eslint*)",
+      "Bash(cargo test*)",
+      "Bash(cargo check*)",
+      "Bash(cargo clippy*)",
+      "Bash(cargo build*)",
+      "Bash(go test*)",
+      "Bash(go vet*)",
+      "Bash(go build*)",
+      "Bash(pytest*)",
+      "Bash(python -m pytest*)",
+      "Bash(mypy*)",
+      "Bash(ruff*)"
+    ],
+    "deny": [
+      "Bash(rm -rf *)",
+      "Bash(git push --force*)",
+      "Bash(git reset --hard*)",
+      "Bash(git clean -f*)",
+      "Write(.env*)",
+      "Write(**/credentials*)",
+      "Write(**/*.pem)",
+      "Write(**/*.key)",
+      "Edit(.env*)",
+      "Edit(**/credentials*)",
+      "Edit(**/*.pem)",
+      "Edit(**/*.key)",
+      "Bash(curl *| sh*)",
+      "Bash(curl *| bash*)",
+      "Bash(wget *| sh*)",
+      "Bash(wget *| bash*)"
+    ]
+  },
+  "hooks": {
+    "PreCompact": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${HOME}/.claude/hooks/pre-compact.sh"
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "matcher": "compact",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${HOME}/.claude/hooks/post-compact.sh"
+          }
+        ]
+      },
+      {
+        "matcher": "startup",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${HOME}/.claude/hooks/session-start.sh"
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${HOME}/.claude/hooks/pre-write-check.sh",
+            "timeout": 10
+          }
+        ]
+      },
+      {
+        "matcher": "Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${HOME}/.claude/hooks/pre-write-check.sh",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt": "检查 assistant 最后一条回复。按以下规则返回 JSON：\n\n规则 1（直接放行）：回复是问答、澄清、中间步骤、或仅包含计划/建议 → {\"ok\":true}\n规则 2（检查退出标准）：回复声称完成了代码变更/功能开发/bug 修复 → 检查是否同时包含 (a) 每个要求的完成状态 (b) 验证命令及其输出。两项都有 → {\"ok\":true}。缺项 → {\"ok\":false,\"reason\":\"请补充：(缺失项)\"}\n\n必须返回合法 JSON，不要输出其他内容。",
+            "model": "haiku"
+          }
+        ]
+      }
+    ]
+  }
+}

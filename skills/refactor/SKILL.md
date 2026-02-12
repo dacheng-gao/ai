@@ -5,16 +5,30 @@ description: 代码结构调整（性能优化、模块拆分、重写、同步�
 
 # 重构
 
+## 当前状态
+
+!`git status --short 2>/dev/null | head -20`
+!`git diff HEAD --stat 2>/dev/null | head -30`
+
 ## 工作流
 
 1. `superpowers:brainstorming`（以下条件**全部**满足时可跳过）：
    - 用户指定了具体重构策略
    - 行为边界已明确
    - 改动范围 ≤2 文件且无公共 API 变更
-2. `superpowers:test-driven-development`（测试保护）
-3. `superpowers:verification-before-completion`
+2. **计划**：
+   - 跨模块重构（时序变化、迁移、回滚风险）→ Claude Code 用 Plan Mode（EnterPlanMode），非 Claude Code 用 `superpowers:writing-plans`
+   - 单模块重构 → 内联 3-5 行计划
+3. `superpowers:test-driven-development`（测试保护）
+4. `superpowers:verification-before-completion`
 
-`superpowers:writing-plans` 仅在复杂重构时强制：跨模块、时序变化、迁移或回滚风险。
+## Agent 协作
+
+| 场景 | Agent 组合 | 执行方式 |
+|------|-----------|---------|
+| 跨模块重构，需理解依赖关系 | `researcher`(模块依赖) + `researcher`(调用链) | 并行 |
+| 重构完成，执行验证 | `verifier`(typecheck+lint) + `verifier`(test) | 并行 |
+| 全量测试 >30s | `verifier` | `run_in_background=true` |
 
 ## 行为边界（开始前必须显式列出，完成后逐项验证）
 - 公共 API/返回结构

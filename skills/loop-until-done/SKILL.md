@@ -26,11 +26,20 @@ description: 不匹配专项技能时的默认工作流：计划→执行→验�
 - 定义范围边界（不做哪些）
 - 涉及多文件/模块时列出影响范围
 
-### 3. 计划（内联）
-用 3-5 行编号列表描述执行步骤（每行：`N. [动作] [对象]`）。复杂任务（≥3 个独立步骤或跨模块）→ 调用 `superpowers:writing-plans`
+### 3. 计划
+- ≥5 步或跨模块 → Claude Code 用 Plan Mode（EnterPlanMode），非 Claude Code 用 `superpowers:writing-plans`
+- 简单任务（≤4 步、单模块）→ 内联 3-5 行编号列表（每行：`N. [动作] [对象]`）
 
 ### 4. 执行
 按计划完成改动或分析
 
 ### 5. 验证迭代
 按通用退出标准验证，未通过则修复后重新检查（上限3轮）
+
+## Agent 协作
+
+| 场景 | Agent | 用途 |
+|------|-------|------|
+| 需要多轮搜索理解代码库 | `researcher` | 探索架构/数据流 |
+| 代码变更后验证 | `verifier` | typecheck + lint + test |
+| 非 Claude Code 环境需要计划 | `planner` | 生成实施计划 |

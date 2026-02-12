@@ -1,9 +1,14 @@
 ---
 name: review-code
 description: 评审代码、PR、diff 或补丁时使用。检查正确性、安全性、性能与可维护性。
+argument-hint: "[PR-url | #N | file...]"
 ---
 
 # 代码评审
+
+## 当前变更（如有）
+
+!`GIT_PAGER=cat git diff --stat 2>/dev/null`
 
 找出可阻断合并的问题。给出可执行的修复建议（非泛化建议）。
 

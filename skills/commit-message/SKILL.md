@@ -1,11 +1,14 @@
 ---
 name: commit-message
 description: 生成 git 提交信息时使用。基于 diff 输出 Conventional Commits 格式。
+argument-hint: "[--all | <file>...]"
 ---
 
 # 提交信息生成器
 
-基于 diff 生成 Conventional Commits 提交信息。
+## 当前 Staged 变更
+
+!`GIT_PAGER=cat git diff --staged --stat 2>/dev/null || echo "（无 staged 变更，请先 git add）"`
 
 ## 工作流
 

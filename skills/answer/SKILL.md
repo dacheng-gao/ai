@@ -1,6 +1,7 @@
 ---
 name: answer
 description: 解释代码、回答技术问题或概念问答时使用。直接给出答案，不启动开发流程。
+allowed-tools: Read, Grep, Glob, WebSearch, WebFetch, Bash
 ---
 
 # 回答问题

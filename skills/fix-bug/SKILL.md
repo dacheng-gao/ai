@@ -5,12 +5,26 @@ description: 处理缺陷、回归、崩溃、错误输出或性能下降时使�
 
 # 修复缺陷
 
+## 当前状态
+
+!`git branch --show-current 2>/dev/null && git log --oneline -5 2>/dev/null`
+!`git status --short 2>/dev/null | head -20`
+
 ## 工作流
 
 0. **目标转换** — 将缺陷描述转为可验证目标（如"修复登录失败" → "写测试复现失败 → 让测试从 FAIL 变 PASS"）
 1. `superpowers:systematic-debugging` — 先说明复现条件与证据
 2. `superpowers:test-driven-development` — 必须补至少一条覆盖根因的测试
 3. `superpowers:verification-before-completion`
+
+## Agent 协作
+
+| 场景 | Agent 组合 | 执行方式 |
+|------|-----------|---------|
+| 多条定位线索（日志 + 代码路径） | `researcher`(日志/错误) + `researcher`(代码路径) | 并行 |
+| 根因涉及多模块交互 | `researcher`(数据流追踪) | 串行 |
+| 修复完成，执行验证 | `verifier`(typecheck+lint) + `verifier`(test) | 并行 |
+| 全量测试 >30s | `verifier` | `run_in_background=true` |
 
 ## 异常处理
 - 根因无法确认 → 列出候选假设与已排除项，请用户提供更多上下文

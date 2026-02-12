@@ -5,6 +5,11 @@ description: 跨会话交接、上下文保存或长任务中断续接时使用�
 
 # 跨会话交接
 
+## 当前状态
+
+!`git branch --show-current 2>/dev/null && git log --oneline -5 2>/dev/null`
+!`git status --short 2>/dev/null`
+
 ## 触发时机
 
 - 用户明确要求保存进度或交接
