@@ -127,17 +127,6 @@
           }
         ]
       }
-    ],
-    "Stop": [
-      {
-        "hooks": [
-          {
-            "type": "prompt",
-            "prompt": "Check the assistant's last reply. Return ONLY raw JSON with no markdown, no code blocks, no explanation.\n\nRules:\n- Rule 1: If reply is Q&A, clarification, intermediate step, or plan/suggestion only → return {\"ok\":true}\n- Rule 2: If reply claims completion of code change/feature/bugfix → check for (a) completion status of each requirement AND (b) verification command with output. Both present → {\"ok\":true}. Missing → {\"ok\":false,\"reason\":\"Missing: (missing items)\"}\n\nOutput format: {\"ok\":boolean} or {\"ok\":false,\"reason\":\"string\"}\nNo other text allowed.",
-            "model": "sonnet"
-          }
-        ]
-      }
     ]
   }
 }
