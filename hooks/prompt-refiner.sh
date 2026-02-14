@@ -131,12 +131,12 @@ EOF
   exit 0
 
 else
-  # Vague — signal Claude to run intent review and generate execution spec
+  # Vague — signal Claude to start clarification dialog
   cat <<EOF
 {
   "hookSpecificOutput": {
     "hookEventName": "UserPromptSubmit",
-    "additionalContext": "<refine-prompt>用户请求较模糊（清晰度: ${SCORE}）。执行 Prompt Review：\n1. 快速扫描代码库（Glob/Grep ≤3 次）识别相关文件和上下文\n2. 推断用户意图\n3. 生成结构化执行方案（含目标/范围/行为规格/验收标准）\n4. 输出方案给用户确认或修改，确认后再执行\n\n如分析后判断请求已足够明确，可跳过方案生成直接执行。</refine-prompt>"
+    "additionalContext": "<refine-prompt>用户请求较模糊（清晰度: ${SCORE}）。执行意图澄清流程：\n1. 理解请求，必要时快速扫描代码库（≤3 次）\n2. 复述你的理解让用户确认\n3. 对不明确的地方逐一提问澄清\n4. 双方达成共识后，再生成执行方案\n\n核心原则：先理解，后执行。宁可多问，不要假设。</refine-prompt>"
   }
 }
 EOF

@@ -246,12 +246,17 @@ EnterPlanMode 不可用时（非 Claude Code 环境、工具受限）：
 
 通过 `agents/` 目录定义的专用子 agent。在 Task 工具中通过 `subagent_type` 指定。
 
+**协作接口规范**：详见同级目录下的 `INTERFACE.md`（需与本文档放在同一目录），定义了 Agent 的标准输入/输出、Skill 调度模式、错误处理等。
+
 | Agent | 模型 | 用途 | 时机 |
 |-------|------|------|------|
 | `researcher` | sonnet | 深度代码库探索，返回结构化结论 | 需要多轮搜索理解架构/数据流时 |
-| `verifier` | haiku | 执行 typecheck → lint → test 验证流程 | 代码变更完成后、退出标准验证时 |
 | `planner` | sonnet | 任务分解与实现计划生成 | 复杂需求的计划阶段 |
+| `implementer` | sonnet | 代码实现执行，按计划编写代码 | Agent First 工作流的核心执行单元 |
+| `tester` | sonnet | 测试用例编写，单元/集成测试 | 实现完成后、验证阶段前 |
 | `reviewer` | sonnet | 独立代码评审（隔离大量 diff） | 技能流水线中的自审步骤 |
+| `verifier` | sonnet | 执行 typecheck → lint → test 验证流程 | 代码变更完成后、退出标准验证时 |
+| `documenter` | sonnet | 文档编写，README/CHANGELOG/API 文档 | 功能完成后、发布前 |
 | `security-auditor` | sonnet | 安全专项审计 | 涉及鉴权/外部输入/敏感数据时 |
 | `prompt-refiner` | sonnet | 提示词深度优化 | 模糊请求需结构化转化时 |
 
@@ -264,7 +269,9 @@ EnterPlanMode 不可用时（非 Claude Code 环境、工具受限）：
 | 场景 | 并行组合 |
 |------|---------|
 | Feature 启动（需理解多个模块） | researcher(架构) + researcher(依赖/接口) |
-| 代码变更完成 | verifier(typecheck+lint) + verifier(test) |
+| 计划阶段 | planner(主计划) + researcher(技术调研) |
+| 实现阶段 | implementer(核心逻辑) + researcher(边界验证) |
+| 代码变更完成 | verifier(typecheck+lint) + reviewer(代码评审) |
 | Bug 定位（多条线索） | researcher(日志/错误) + researcher(代码路径) |
 | 大规模评审 | reviewer(变更理解) + reviewer(影响分析) |
 
