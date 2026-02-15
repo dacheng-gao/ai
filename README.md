@@ -24,7 +24,7 @@
 用户请求 → 技能路由（自动匹配最合适的工作流）→ 执行 → 自检迭代 → 交付
 ```
 
-**Rules（5 个规则文件）** — 始终生效的全局约束：
+**Rules（6 个规则文件）** — 始终生效的全局约束：
 
 | 规则 | 职责 |
 |------|------|
@@ -33,6 +33,7 @@
 | `language-rules.md` | 按受众决定语言（开发者中文、对外英文） |
 | `code-quality.md` | 五维质量门禁（正确性/安全/性能/可维护性/验证） |
 | `output-style.md` | 简洁输出、请求忠实度、自审迭代 |
+| `fast-path.md` | 简单任务快速路径条件与自动升级 |
 
 **Skills（10 个技能）** — 按任务类型自动路由：
 
@@ -46,6 +47,7 @@
 | `commit-message` | 生成提交信息 |
 | `answer` | 解释代码、知识问答 |
 | `github` | GitHub URL/Issue/PR 集成 |
+| `handoff` | 跨会话交接、上下文保存 |
 | `loop-until-done` | 默认通用工作流 |
 
 ### 支持的 AI 工具
@@ -62,20 +64,6 @@ Fetch and follow instructions from https://raw.githubusercontent.com/dacheng-gao
 
 ```
 Fetch and follow instructions from https://raw.githubusercontent.com/dacheng-gao/ai/main/.claude/UPGRADE.md
-```
-
-## Codex
-
-复制以下指令到 Codex，它将完成安装：
-
-```
-Fetch and follow instructions from https://raw.githubusercontent.com/dacheng-gao/ai/main/.codex/INSTALL.md
-```
-
-升级时复制以下指令：
-
-```
-Fetch and follow instructions from https://raw.githubusercontent.com/dacheng-gao/ai/main/.codex/UPGRADE.md
 ```
 
 ## License

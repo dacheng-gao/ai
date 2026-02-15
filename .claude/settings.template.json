@@ -43,7 +43,13 @@
       "Bash(pytest*)",
       "Bash(python -m pytest*)",
       "Bash(mypy*)",
-      "Bash(ruff*)"
+      "Bash(ruff*)",
+      "Bash(jc *)",
+      "Bash(bun test*)",
+      "Bash(bun run*)",
+      "Bash(pnpm test*)",
+      "Bash(pnpm run*)",
+      "Bash(golangci-lint*)"
     ],
     "deny": [
       "Bash(rm -rf *)",
@@ -65,17 +71,6 @@
     ]
   },
   "hooks": {
-    "UserPromptSubmit": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "${HOME}/.claude/hooks/prompt-refiner.sh",
-            "timeout": 5
-          }
-        ]
-      }
-    ],
     "PreCompact": [
       {
         "hooks": [

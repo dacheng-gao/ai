@@ -16,7 +16,7 @@ BASENAME=$(basename "$FILE_PATH")
 
 # Sensitive file hard block (exit 2)
 case "$BASENAME" in
-  .env|.env.*|.env.*)
+  .env|.env.*)
     echo "BLOCKED: refusing to modify sensitive file: $FILE_PATH" >&2
     exit 2
     ;;

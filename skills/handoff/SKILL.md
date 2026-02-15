@@ -19,7 +19,7 @@ description: 跨会话交接、上下文保存或长任务中断续接时使用�
 
 ## 保存流程
 
-1. 将当前进度写入 HANDOFF 文件（默认 `docs/HANDOFF.md`，不存在时询问用户路径）
+1. 将当前进度写入 HANDOFF 文件（默认 `.claude/HANDOFF.md`，不存在时写入项目根目录 `HANDOFF.md`）
 2. 提交未暂存的代码变更（遵循 `git-workflow` 规则）
 3. 告知用户 HANDOFF 文件位置与恢复方式
 

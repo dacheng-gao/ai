@@ -44,13 +44,11 @@
 
 ## 语言专项底线
 
-| 语言 | 底线要求 |
-|------|----------|
-| TypeScript/JavaScript | `strict` 模式 + 类型约束，禁止 `any`（`unknown` + 类型守卫替代），优先 `const` |
-| Python | 公共 API 使用 type hints，资源操作使用 `with` |
-| Go | 不忽略 `error`，禁止 goroutine 泄漏（必须使用 context 控制生命周期） |
-| Java/C# | 资源正确释放，异常处理有针对性，禁止阻塞式反模式 |
-| Rust | 处理所有 `Result`/`Option`，避免 `unwrap()`（测试除外），生命周期标注明确 |
+按各语言严格模式和惯用法编码。重点关注：
+- TypeScript：`strict` 模式，禁止 `any`（`unknown` + 类型守卫替代）
+- Go：不忽略 `error`，goroutine 必须用 context 控制生命周期
+- Rust：处理所有 `Result`/`Option`，避免 `unwrap()`（测试除外）
+- Python：公共 API 使用 type hints，资源操作使用 `with`
 
 ## 红旗（出现即优先修复）
 
