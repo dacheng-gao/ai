@@ -26,7 +26,9 @@
 
 ## 技能路由
 
-收到用户请求后，先检查快速路径条件（`rules/fast-path.md`），命中则直接执行。否则按表序匹配技能：
+**第一步：检查快速路径** — 满足 `rules/fast-path.md` 全部条件时直接执行，跳过后续流程。
+
+否则按表序匹配技能：
 
 | 信号 | 技能 |
 |------|------|
@@ -106,17 +108,17 @@
 
 通过 Skill 工具调用 `superpowers:<name>`。
 
-### 技能 × Superpowers 默认激活矩阵
+### 技能 × Superpowers
 
-每个技能的 SKILL.md 定义了具体调用时机和跳过条件。快速路径跳过所有 Superpowers。
+快速路径跳过所有 Superpowers。各技能的 SKILL.md 定义具体调用时机和跳过条件。
 
-| 技能 | 默认激活的 Superpowers（满足跳过条件时跳过） |
-|------|------------------------------------------|
-| `develop-feature` | brainstorming → writing-plans（复杂时） → test-driven-development → verification-before-completion |
-| `fix-bug` | systematic-debugging → test-driven-development → verification-before-completion |
-| `refactor` | brainstorming（复杂时） → test-driven-development → verification-before-completion |
-| `review-code` | verification-before-completion |
-| `loop-until-done` | writing-plans（≥3 步时） → verification-before-completion |
+| 技能 | Superpowers 流程 |
+|------|-----------------|
+| `develop-feature` | brainstorming → writing-plans → tdd → verify |
+| `fix-bug` | systematic-debugging → tdd → verify |
+| `refactor` | brainstorming → tdd → verify |
+| `review-code` | verify |
+| `loop-until-done` | writing-plans → verify |
 
 ## 中断恢复
 

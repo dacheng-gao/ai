@@ -41,7 +41,8 @@ fi
 
 # Check if file has uncommitted changes in git
 CWD=$(echo "$INPUT" | jq -r '.cwd // "."')
-cd "$CWD" 2>/dev/null || cd "$(dirname "$FILE_PATH")" 2>/dev/null || exit 0
+
+cd "$CWD" 2>/dev/null || exit 0
 
 if git rev-parse --is-inside-work-tree &>/dev/null; then
   STATUS=$(git status --porcelain -- "$FILE_PATH" 2>/dev/null || true)

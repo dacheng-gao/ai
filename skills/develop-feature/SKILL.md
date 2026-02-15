@@ -19,7 +19,7 @@ description: 新增功能、端点、UI 流程、集成或数据模型变更时�
    - 改动范围 ≤2 文件且无 schema/API 变更
 2. 用 WHEN/THEN 场景描述关键行为（每条场景可直接转为测试用例）
 3. **计划**：
-   - 涉及 schema / API / 鉴权 / 多模块 / 迁移 → Claude Code 用 Plan Mode（EnterPlanMode），非 Claude Code 用 `superpowers:writing-plans`
+   - 跨模块或涉及公共契约变更 → Claude Code 用 Plan Mode（EnterPlanMode），非 Claude Code 用 `superpowers:writing-plans`
    - 简单功能（≤4 步、单模块）→ 内联 3-5 行计划
 4. `superpowers:test-driven-development`
 5. `superpowers:verification-before-completion`

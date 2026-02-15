@@ -50,9 +50,13 @@
 | `handoff` | 跨会话交接、上下文保存 |
 | `loop-until-done` | 默认通用工作流 |
 
-### 支持的 AI 工具
+## 文档约定
 
-## Claude Code
+SKILL.md 中的 `!command` 语法（如 `!`git status``）会在 skill 加载时执行命令，将输出内联到提示词中。Claude 看到的是命令执行结果，而非命令本身。
+
+## 安装
+
+### Claude Code
 
 复制以下指令到 Claude Code，它将完成安装：
 
