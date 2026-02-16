@@ -9,20 +9,20 @@
 
 规则文件位于 `rules/` 目录。
 
-**冲突优先级**：`roles.md` > `git-workflow.md` > `language-rules.md` > `code-quality.md` > `output-style.md`
+**冲突优先级**：`roles.md` > `git-workflow.md` > `language-rules.md` > `code-quality.md` > `output-style.md` > `fast-path.md`
 
 > 规则冲突按优先级裁决，高优先级规则的约束覆盖低优先级规则。
 
 ## 意图澄清
 
-需要澄清时按以下流程执行：
+快速澄清（≤3 次工具调用可完成）按以下流程内联执行：
 
 1. **快速扫描**：Glob/Grep（≤3 次）识别相关文件
 2. **一次性提问**：用 AskUserQuestion 同时提出所有关键问题
 3. **生成方案**：获得确认后，输出执行方案（含**目标**、**范围**、**行为规格** WHEN/THEN、**验收标准**、**不做**）
 4. **执行**：用户确认后进入技能路由
 
-`type` 对应技能：`feat` → develop-feature、`fix` → fix-bug、`refactor` → refactor、`review` → review-code、`chore` → loop-until-done
+复杂需求（需 >3 次工具调用或深度规格化）→ 调用 `prompt-refiner` agent。
 
 ## 技能路由
 
@@ -58,12 +58,11 @@
 |--------|-----------|
 | `develop-feature` | → `review-code`（自审） → `commit-message` |
 | `fix-bug` | → `review-code`（回归检查） → `commit-message` |
-| `refactor` | → verifier（全量验证） → `commit-message` |
+| `refactor` | → `verifier` agent（全量验证） → `commit-message` |
 
 流水线规则：
 - 主技能退出标准通过后才进入下一步
-- 每步完成后简短告知用户结果，询问"继续下一步？"
-- 用户说"全部执行"时，后续步骤连续执行不再逐步确认
+- 每步完成后询问"继续？"；用户说"全部执行"时后续连续执行
 
 ## 通用退出标准
 
@@ -80,7 +79,7 @@
 
 ## 任务追踪
 
-复杂任务（≥3 步骤或跨多文件）使用 TaskCreate 建立结构化清单：
+快速路径任务跳过任务追踪。复杂任务（≥3 步骤或跨多文件）使用 TaskCreate 建立结构化清单：
 
 | 时机 | 操作 |
 |------|------|
@@ -90,7 +89,7 @@
 | 步骤间有依赖 | 用 `addBlockedBy` 声明阻塞关系 |
 | 中断恢复时 | 从 TaskList 获取当前进度，继续未完成项 |
 
-> 简单任务（≤2 步、单文件）直接执行，不建 task。
+> 简单任务（≤3 步、≤2 文件）直接执行，不建 task。
 
 ## 用户交互决策
 
@@ -119,6 +118,17 @@
 | `refactor` | brainstorming → tdd → verify |
 | `review-code` | verify |
 | `loop-until-done` | writing-plans → verify |
+
+## Agent 协作
+
+通过 Task 工具启动子 agent。通用协作模式：
+
+| 场景 | Agent | 执行方式 |
+|------|-------|----------|
+| 需理解架构/依赖 | `researcher` | 并行（多线索时） |
+| 代码变更后验证 | `verifier`(typecheck+lint) + `verifier`(test) | 并行 |
+| 全量测试 >30s | `verifier` | `run_in_background=true`，完成后 TaskOutput 获取结果 |
+| 涉及安全敏感 | `security-auditor` | 提交前串行 |
 
 ## 中断恢复
 

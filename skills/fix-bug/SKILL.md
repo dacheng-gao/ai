@@ -1,6 +1,7 @@
 ---
 name: fix-bug
 description: 处理缺陷、回归、崩溃、错误输出或性能下降时使用。复现→定位→修复→验证。
+argument-hint: "[缺陷描述或 issue 链接]"
 ---
 
 # 修复缺陷
@@ -17,16 +18,15 @@ description: 处理缺陷、回归、崩溃、错误输出或性能下降时使�
 2. `superpowers:test-driven-development` — 必须补至少一条覆盖根因的测试
 3. `superpowers:verification-before-completion`
 
-## Agent 协作
+## 特有 Agent 协作
 
-| 场景 | Agent 组合 | 执行方式 |
-|------|-----------|---------|
-| 多条定位线索（日志 + 代码路径） | `researcher`(日志/错误) + `researcher`(代码路径) | 并行 |
+| 场景 | Agent | 执行方式 |
+|------|-------|----------|
+| 多条定位线索 | `researcher`(日志) + `researcher`(代码路径) | 并行 |
 | 根因涉及多模块交互 | `researcher`(数据流追踪) | 串行 |
-| 修复完成，执行验证 | `verifier`(typecheck+lint) + `verifier`(test) | 并行 |
-| 全量测试 >30s | `verifier` | `run_in_background=true` |
 
 ## 异常处理
+- 无法复现 → 列出已尝试的复现方法，请用户提供复现环境/步骤/日志
 - 根因无法确认 → 列出候选假设与已排除项，请用户提供更多上下文
 - 修复引入新回归 → 回滚修复，重新进入 systematic-debugging
 - 多个根因候选 → 按证据强度排序，先修复最可能的，验证后再处理其他

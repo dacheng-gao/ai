@@ -17,25 +17,23 @@ description: 代码结构调整（性能优化、模块拆分、重写、同步�
    - 行为边界已明确
    - 改动范围 ≤2 文件且无公共 API 变更
 2. **计划**：
-   - 跨模块重构（时序变化、迁移、回滚风险）→ Claude Code 用 Plan Mode（EnterPlanMode），非 Claude Code 用 `superpowers:writing-plans`
+   - 跨模块重构（时序变化、迁移、回滚风险）→ EnterPlanMode
    - 单模块重构 → 内联 3-5 行计划
 3. `superpowers:test-driven-development`（测试保护）
 4. `superpowers:verification-before-completion`
 
-## Agent 协作
+## 特有 Agent 协作
 
-| 场景 | Agent 组合 | 执行方式 |
-|------|-----------|---------|
-| 跨模块重构，需理解依赖关系 | `researcher`(模块依赖) + `researcher`(调用链) | 并行 |
-| 重构完成，执行验证 | `verifier`(typecheck+lint) + `verifier`(test) | 并行 |
-| 全量测试 >30s | `verifier` | `run_in_background=true` |
+| 场景 | Agent | 执行方式 |
+|------|-------|----------|
+| 跨模块重构 | `researcher`(模块依赖) + `researcher`(调用链) | 并行 |
 
 ## 行为边界（开始前必须显式列出，完成后逐项验证）
 - 公共 API/返回结构
 - 错误语义（错误类型/状态码/消息）
 - 时序与副作用
 - 数据兼容性（schema/迁移）
-- 资源特征（CPU/内存/I/O）：通过基准对比验证（测试耗时、profile 快照等）；无基准时标注"资源影响未验证"
+- 资源特征（CPU/内存/I/O）：通过基准对比验证（测试耗时、profile 快照等）；无基准时在退出报告中标注"资源影响未验证"
 
 ## 异常处理
 - 无法明确行为边界 → 列出不确定项，请用户确认可接受的行为变化范围
