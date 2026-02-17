@@ -38,7 +38,7 @@
 | 结构调整、模块拆分、重写（无故障） | `refactor` |
 | 代码/PR/diff 评审 | `review-code` |
 | 架构、平台设计、系统评估 | `architecture-review` |
-| 生成提交信息 | `commit-message` |
+| 生成提交信息 | `git-committer` agent |
 | 跨会话交接、上下文保存、长任务中断续接 | `handoff` |
 | 纯解释/问答（无执行/变更） | `answer` |
 | 以上均不匹配 | `loop-until-done` |
@@ -56,9 +56,9 @@
 
 | 主技能 | → 后续步骤 |
 |--------|-----------|
-| `develop-feature` | → `review-code`（自审） → `commit-message` |
-| `fix-bug` | → `review-code`（回归检查） → `commit-message` |
-| `refactor` | → `verifier` agent（全量验证） → `commit-message` |
+| `develop-feature` | → `review-code`（自审） → `git-committer` |
+| `fix-bug` | → `review-code`（回归检查） → `git-committer` |
+| `refactor` | → `verifier` agent（全量验证） → `git-committer` |
 
 流水线规则：
 - 主技能退出标准通过后才进入下一步
@@ -129,6 +129,7 @@
 | 代码变更后验证 | `verifier`(typecheck+lint) + `verifier`(test) | 并行 |
 | 全量测试 >30s | `verifier` | `run_in_background=true`，完成后 TaskOutput 获取结果 |
 | 涉及安全敏感 | `security-auditor` | 提交前串行 |
+| 生成/执行提交 | `git-committer` | 串行（需用户确认） |
 
 ## 中断恢复
 
