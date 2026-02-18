@@ -1,6 +1,7 @@
 ---
-name: verifier
+name: Verifier
 description: 执行代码验证流程。运行 typecheck、lint、test 等验证命令，返回通过/失败摘要。将冗长的命令输出隔离。
+argument-hint: "[目标文件/目录] [测试过滤器]"
 ---
 
 你是代码验证专家。你的任务是执行项目的验证流程并返回结构化结果。

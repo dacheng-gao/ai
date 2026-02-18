@@ -1,12 +1,14 @@
 ---
 name: refactor
 description: 代码结构调整（性能优化、模块拆分、重写、同步改异步）时使用。保行为、改结构。
+argument-hint: "[重构描述或目标]"
 ---
 
 # 重构
 
 ## 当前状态
 
+!`git branch --show-current 2>/dev/null && git log --oneline -5 2>/dev/null`
 !`git status --short 2>/dev/null | head -20`
 !`git diff HEAD --stat 2>/dev/null | head -30`
 
@@ -21,6 +23,14 @@ description: 代码结构调整（性能优化、模块拆分、重写、同步�
    - 单模块重构 → 内联 3-5 行计划
 3. `superpowers:test-driven-development`（测试保护）
 4. `superpowers:verification-before-completion`
+
+## Superpowers 调用
+
+| Superpower | 默认 | 跳过条件 |
+|------------|------|---------|
+| brainstorming | ✓ | 指定策略 + 边界明确 + ≤2 文件 + 无 API 变更 |
+| test-driven-development | ✓ | 无 |
+| verification-before-completion | ✓ | 无 |
 
 ## 特有 Agent 协作
 
@@ -40,5 +50,8 @@ description: 代码结构调整（性能优化、模块拆分、重写、同步�
 - 重构中测试持续红色 → 回退到上次绿色状态，缩小重构步幅
 
 ## 退出标准
-- 行为边界清单中每项均有验证证据（测试结果或对比说明）
-- 基线测试 + 新测试全部通过
+
+| # | 标准 | 验证方式 |
+|---|------|---------|
+| 1 | 行为边界已保持 | 清单中每项均有验证证据（测试结果或对比说明） |
+| 2 | 测试全部通过 | 基线测试 + 新测试 |

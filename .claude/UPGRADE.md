@@ -8,8 +8,9 @@ cd ~/.ai
 # 1. 拉取最新代码
 git pull origin main
 
-# 2. 同步核心文件
-cp AGENTS.md ~/.claude/CLAUDE.md
+# 2. 同步核心配置文件
+cp CLAUDE.md ~/.claude/CLAUDE.md
+cp AGENTS.md ~/.claude/AGENTS.md
 
 # 3. 同步规则
 cp rules/*.md ~/.claude/rules/
@@ -37,7 +38,7 @@ echo "Skills: $(ls ~/.claude/skills/*/SKILL.md 2>/dev/null | wc -l | tr -d ' ')"
 cp ~/.claude/settings.json ~/.claude/settings.json.backup
 
 # 2. 删除旧文件
-rm ~/.claude/CLAUDE.md
+rm -f ~/.claude/CLAUDE.md ~/.claude/AGENTS.md
 rm -rf ~/.claude/rules ~/.claude/skills ~/.claude/agents ~/.claude/hooks
 
 # 3. 执行全新安装

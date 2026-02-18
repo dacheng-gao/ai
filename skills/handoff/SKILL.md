@@ -1,6 +1,7 @@
 ---
 name: handoff
 description: 跨会话交接、上下文保存或长任务中断续接时使用。结构化保存→新会话恢复。
+argument-hint: "[任务描述]"
 ---
 
 # 跨会话交接
@@ -8,7 +9,7 @@ description: 跨会话交接、上下文保存或长任务中断续接时使用�
 ## 当前状态
 
 !`git branch --show-current 2>/dev/null && git log --oneline -5 2>/dev/null`
-!`git status --short 2>/dev/null`
+!`git status --short 2>/dev/null | head -20`
 
 ## 触发时机
 

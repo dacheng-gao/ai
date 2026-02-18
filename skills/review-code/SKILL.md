@@ -17,7 +17,14 @@ argument-hint: "[PR-url | #N | file...]"
 - 当收到他人对自己代码的评审反馈时 → 调用 `superpowers:receiving-code-review`
 - 当完成任务需要二次审阅确认时 → 调用 `superpowers:requesting-code-review`
 
-Superpowers 不可用时：receiving → 逐条回应反馈，验证每条建议的技术正确性后再实施；requesting → 按通用退出标准自审。
+## Superpowers 调用
+
+| Superpower | 默认 | 跳过条件 |
+|------------|------|---------|
+| receiving-code-review | 收到评审反馈时 | 无 |
+| requesting-code-review | 需二次审阅时 | 无 |
+
+> Superpowers 不可用时：receiving → 逐条回应反馈，验证每条建议的技术正确性后再实施；requesting → 按通用退出标准自审。
 
 ## 检查维度
 
@@ -36,6 +43,9 @@ Superpowers 不可用时：receiving → 逐条回应反馈，验证每条建议
 无问题时：`未发现阻断问题`，补一句残余风险或测试缺口。
 
 ## 退出标准
-- 五个维度均已逐项检查，每个维度标注 Pass/Concern
-- 发现项已按严重度排序并给出可执行的修复建议（非泛化建议）
-- 高风险区域（鉴权、外部输入、数据变更）已显式确认检查
+
+| # | 标准 | 验证方式 |
+|---|------|---------|
+| 1 | 五维门禁已检查 | 每个维度标注 Pass/Concern |
+| 2 | 发现项可执行 | 按严重度排序并给出可执行的修复建议（非泛化建议） |
+| 3 | 高风险区域已确认 | 鉴权、外部输入、数据变更已显式确认检查 |

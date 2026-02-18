@@ -22,8 +22,9 @@ fi
 # 3. 创建目录结构
 mkdir -p ~/.claude/rules ~/.claude/skills ~/.claude/agents ~/.claude/hooks
 
-# 4. 复制核心文件
-cp ~/.ai/AGENTS.md ~/.claude/CLAUDE.md
+# 4. 复制核心配置文件
+cp ~/.ai/CLAUDE.md ~/.claude/CLAUDE.md
+cp ~/.ai/AGENTS.md ~/.claude/AGENTS.md
 
 # 5. 复制规则文件
 cp ~/.ai/rules/*.md ~/.claude/rules/
@@ -53,68 +54,6 @@ echo "Rules: $(ls ~/.claude/rules/*.md | wc -l) files"
 echo "Skills: $(ls ~/.claude/skills/*/SKILL.md | wc -l) skills"
 echo "Agents: $(ls ~/.claude/agents/*.md | wc -l) agents"
 echo "Hooks: $(ls ~/.claude/hooks/*.sh | wc -l) hooks"
-```
-
-## 安装验证
-
-在 Claude Code 中运行以下命令验证：
-
-```
-列出所有可用的技能
-```
-
-预期输出应包含以下技能：
-- answer
-- architecture-review
-- commit-message
-- develop-feature
-- fix-bug
-- github
-- handoff
-- loop-until-done
-- refactor
-- review-code
-
-## 目录结构
-
-```
-~/.claude/
-├── CLAUDE.md              # 主入口（从 AGENTS.md 复制）
-├── settings.json          # 配置文件（permissions + hooks）
-├── rules/                # 全局规则
-│   ├── code-quality.md
-│   ├── fast-path.md
-│   ├── git-workflow.md
-│   ├── language-rules.md
-│   ├── output-style.md
-│   └── roles.md
-
-├── skills/               # 技能定义
-│   ├── answer/
-│   ├── architecture-review/
-│   ├── commit-message/
-│   ├── develop-feature/
-│   ├── fix-bug/
-│   ├── github/
-│   ├── handoff/
-│   ├── loop-until-done/
-│   ├── refactor/
-│   └── review-code/
-├── agents/               # Agent 定义
-│   ├── documenter.md
-│   ├── implementer.md
-│   ├── planner.md
-│   ├── prompt-refiner.md
-│   ├── researcher.md
-│   ├── reviewer.md
-│   ├── security-auditor.md
-│   ├── tester.md
-│   └── verifier.md
-└── hooks/                # 生命周期钩子
-    ├── post-compact.sh
-    ├── pre-compact.sh
-    ├── pre-write-check.sh
-    └── session-start.sh
 ```
 
 ## 故障排除
@@ -150,7 +89,7 @@ cp ~/.claude/settings.json ~/.claude/settings.json.backup
 rm -rf ~/.claude
 
 # 或者只删除 AGENTS 相关文件
-rm ~/.claude/CLAUDE.md
+rm ~/.claude/CLAUDE.md ~/.claude/AGENTS.md
 rm -rf ~/.claude/rules ~/.claude/skills ~/.claude/agents ~/.claude/hooks
 ```
 

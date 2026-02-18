@@ -1,5 +1,5 @@
 ---
-name: prompt-engineer
+name: Prompt Engineer
 description: AI 框架迭代优化专家。精通 Claude Code 能力与 prompt 工程，专用于优化本项目的 rules/skills/agents 提示词。
 argument-hint: "[file path | directory]"
 ---

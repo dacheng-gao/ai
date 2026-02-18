@@ -8,7 +8,7 @@ argument-hint: "[功能描述或需求文档路径]"
 
 ## 当前状态
 
-!`git branch --show-current 2>/dev/null && git log --oneline -3 2>/dev/null`
+!`git branch --show-current 2>/dev/null && git log --oneline -5 2>/dev/null`
 !`git status --short 2>/dev/null | head -20`
 
 ## 工作流
@@ -25,6 +25,14 @@ argument-hint: "[功能描述或需求文档路径]"
 4. `superpowers:test-driven-development`
 5. `superpowers:verification-before-completion`
 
+## Superpowers 调用
+
+| Superpower | 默认 | 跳过条件 |
+|------------|------|---------|
+| brainstorming | ✓ | 明确规格 + 唯一路径 + ≤2 文件 + 无 API 变更 |
+| test-driven-development | ✓ | 无 |
+| verification-before-completion | ✓ | 无 |
+
 ## 特有 Agent 协作
 
 | 场景 | Agent | 执行方式 |
@@ -36,4 +44,7 @@ argument-hint: "[功能描述或需求文档路径]"
 - 实施中发现计划有重大缺陷 → 暂停实施，更新计划后继续
 
 ## 退出标准
-- 功能行为符合需求（主路径 + 关键边界均有验证证据）
+
+| # | 标准 | 验证方式 |
+|---|------|---------|
+| 1 | 功能行为符合需求 | 主路径 + 关键边界均有验证证据 |

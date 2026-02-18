@@ -4,9 +4,8 @@ set -euo pipefail
 # SessionStart(startup) hook: detect HANDOFF.md and prompt recovery
 
 HANDOFF_PATHS=(
-  "docs/HANDOFF.md"
-  "HANDOFF.md"
   ".claude/HANDOFF.md"
+  "HANDOFF.md"
 )
 
 FOUND=""

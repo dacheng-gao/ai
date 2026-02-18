@@ -18,6 +18,14 @@ argument-hint: "[缺陷描述或 issue 链接]"
 2. `superpowers:test-driven-development` — 必须补至少一条覆盖根因的测试
 3. `superpowers:verification-before-completion`
 
+## Superpowers 调用
+
+| Superpower | 默认 | 跳过条件 |
+|------------|------|---------|
+| systematic-debugging | ✓ | 无 |
+| test-driven-development | ✓ | 无 |
+| verification-before-completion | ✓ | 无 |
+
 ## 特有 Agent 协作
 
 | 场景 | Agent | 执行方式 |
@@ -34,5 +42,8 @@ argument-hint: "[缺陷描述或 issue 链接]"
 - 连续 3 次修复同一问题失败 → 停止 patch，升级为架构层面审视，向用户报告
 
 ## 退出标准
-- 根因已定位并有证据支撑（含复现步骤 + 修复后验证结果）
-- 修复范围最小化（diff 中无无关改动）
+
+| # | 标准 | 验证方式 |
+|---|------|---------|
+| 1 | 根因已定位并有证据支撑 | 含复现步骤 + 修复后验证结果 |
+| 2 | 修复范围最小化 | diff 中无无关改动 |

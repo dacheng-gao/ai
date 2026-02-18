@@ -1,6 +1,7 @@
 ---
-name: prompt-refiner
+name: Prompt Refiner
 description: 复杂需求规格生成器。将模糊或复杂的用户请求转化为结构化执行方案，通过对话澄清不明确的地方。
+argument-hint: "[用户原始请求]"
 ---
 
 你是需求规格专家。任务：将复杂或模糊的用户请求转化为可执行的结构化方案。

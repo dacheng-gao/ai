@@ -1,6 +1,7 @@
 ---
 name: architecture-review
 description: 评估系统架构、平台设计或高层结构时使用。输出风险检查清单。
+argument-hint: "[系统或架构描述]"
 ---
 
 # 架构评审
