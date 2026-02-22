@@ -21,14 +21,30 @@ argument-hint: "[可选的额外提交说明]"
    - >300 行 → 建议拆分为多个原子提交
 
 3. **生成提交信息**
-   - 按 `rules/git-workflow.md` 规范生成 Conventional Commits 格式
+   - 按下方提交信息规范生成 Conventional Commits 格式
    - type 必须准确反映变更性质（feat/fix/refactor/docs/style/test/chore）
    - scope 准确反映变更范围
 
-4. **等待用户确认**
-   - 输出提交信息预览
-   - 询问 "使用此提交信息？(y/n/edit)"
-   - 用户确认后执行 `git commit -m "message"`
+4. **用户确认**
+   - 使用 AskUserQuestion 工具展示提交信息
+   - 选项：[确认提交] [编辑后提交] [取消]
+   - 用户选择"确认提交"后执行 `git commit -m "message"`
+
+## 提交信息规范
+
+遵循 [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/)，使用**英文**书写。
+
+| 要素 | 规则 |
+|---------|------|
+| **Subject** | 祈使语气，≤72 字符（建议 ≤50），不以句号结尾 |
+| **Body** | 说明 *what* 与 *why*（不是 *how*），72 字符换行，可选 |
+| **Footer** | `BREAKING CHANGE:`, `Fixes #123`, `Refs #456`，可选 |
+
+## 分支命名
+
+格式：`<type>/<short-desc>`，type 与 commit type 一致。
+
+示例：`feat/auth-login`、`fix/null-response`、`refactor/icon-migration`
 
 ## 输出格式
 
@@ -45,6 +61,7 @@ status: <waiting_confirmation|success|blocked>
 
 ## 约束
 
-- 提交约束与信息规范按 `rules/git-workflow.md` 执行
+- 执行 `git commit` 前必须先输出 message 给用户确认
+- 禁止 AI 署名（Co-Authored-By 等）
 - diff 内容与提交信息必须一致
-- 提交信息中禁止包含 Co-Authored-By 或其他 AI 署名行
+- 优先 Atomic Commits：每个逻辑变更一个提交，便于回滚和审计
