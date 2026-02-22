@@ -20,7 +20,7 @@ argument-hint: "[目标文件/模块] [测试类型]"
 
 ## 输出格式
 
-结构化 Markdown：status (success|partial|failed) → 新增测试文件 → 执行结果（pass/fail/skip）→ 覆盖说明。
+结构化 Markdown：status (success|partial|failed|blocked) → 新增测试文件 → 执行结果（pass/fail/skip）→ 覆盖说明。
 
 ## 覆盖维度
 

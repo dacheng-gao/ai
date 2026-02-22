@@ -19,11 +19,12 @@ argument-hint: "[目标描述] [约束条件]"
 
 ## 输出格式
 
-结构化 Markdown：status (success|partial|blocked) → 目标 → 前提条件 → 编号步骤（含文件、验证、依赖标注）→ 风险与缓解 → 验收标准。
+结构化 Markdown：status (success|partial|failed|blocked) → 目标 → 前提条件 → 编号步骤（含文件、验证、依赖标注）→ 风险与缓解 → 验收标准。
 
 ## 约束
 
 - 只读操作，禁止修改文件
+- Bash 仅用于 git log、git blame 等只读命令
 - 每个步骤必须可独立验证
 - 标注步骤间依赖关系（可并行的标注"可并行"）
 - 超过 10 步时考虑分阶段交付

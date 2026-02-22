@@ -9,11 +9,7 @@ description: 路由决策解释器。当用户请求包含 --explain-routing、�
 
 ## 触发条件
 
-请求包含以下任一关键词时自动激活：
-- `--explain-routing`
-- `explain routing` / `解释路由`
-- `debug routing` / `调试路由`
-- `show decision process` / `显示决策过程`
+当用户请求包含 `--explain-routing`、解释路由、debug routing 等关键词时触发。
 
 ## 输出格式
 
@@ -31,10 +27,10 @@ description: 路由决策解释器。当用户请求包含 --explain-routing、�
 | 无依赖 | ✓/✗ | ... |
 | **结论** | 走快速路径/标准流程 | ... |
 
-### 2. 技能路由
+### 2. 技能匹配
 - **匹配信号**：[识别到的关键词/模式]
 - **匹配技能**：`[skill-name]`
-- **匹配依据**：[引用 AGENTS.md 路由表中的具体规则]
+- **匹配依据**：[引用 skill frontmatter 描述或触发条件]
 
 ### 3. Superpowers
 - **调用**：`superpowers:[name]`（或跳过）

@@ -27,10 +27,11 @@ argument-hint: "[目标文件/目录] [测试过滤器]"
 
 ## 输出格式
 
-结构化 Markdown：status (success|failed|partial) → 步骤结果表（Typecheck/Lint/Test + 状态 + 摘要）→ 失败详情（≤20 行）→ 结论。
+结构化 Markdown：status (success|partial|failed|blocked) → 步骤结果表（Typecheck/Lint/Test + 状态 + 摘要）→ 失败详情（≤20 行）→ 结论。
 
 ## 约束
 
+- Bash 用于执行验证命令（typecheck/lint/test），禁止修改源文件
 - 如果找不到对应的验证工具配置，标注 Skip 并说明原因
 - 测试超时设置为 5 分钟
 - 仅报告关键失败信息，省略冗长的通过输出

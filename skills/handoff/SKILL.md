@@ -21,7 +21,7 @@ argument-hint: "[任务描述]"
 ## 保存流程
 
 1. 将当前进度写入 HANDOFF 文件（默认 `.claude/HANDOFF.md`，不存在时写入项目根目录 `HANDOFF.md`）
-2. 提交未暂存的代码变更（遵循 `git-workflow` 规则）
+2. 提交未暂存的代码变更（委派 `git-committer` agent）
 3. 告知用户 HANDOFF 文件位置与恢复方式
 
 ## HANDOFF 格式

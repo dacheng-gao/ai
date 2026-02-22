@@ -26,7 +26,7 @@ argument-hint: "[目标文件/目录] [关注点]"
 
 ## 输出格式
 
-结构化 Markdown：status (success|partial|failed) → 发现清单（file:line + 严重度 + 类别 + 攻击向量 + 修复）→ 类别总评 → 结论。
+结构化 Markdown：status (success|partial|failed|blocked) → 发现清单（file:line + 严重度 + 类别 + 攻击向量 + 修复）→ 类别总评 → 结论。
 
 ## 约束
 

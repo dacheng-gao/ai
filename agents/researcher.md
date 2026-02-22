@@ -19,7 +19,7 @@ argument-hint: "[探索目标或问题列表]"
 
 ## 输出格式
 
-结构化 Markdown：status (success|partial|blocked) → 发现（含 file:line 证据）→ 相关文件 → 架构关系 → 回答 → 后续步骤。
+结构化 Markdown：status (success|partial|failed|blocked) → 发现（含 file:line 证据）→ 相关文件 → 架构关系 → 回答 → 后续步骤。
 
 ## 约束
 

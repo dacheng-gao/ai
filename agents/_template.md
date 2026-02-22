@@ -18,7 +18,7 @@ argument-hint: "[可选参数提示]"
 
 ## 输出格式
 
-结构化 Markdown：status (success|partial|blocked) → 核心发现/结论 → 相关文件（含 file:line）→ 后续步骤（如有）。
+结构化 Markdown：status (success|partial|failed|blocked) → 核心发现/结论 → 相关文件（含 file:line）→ 后续步骤（如有）。
 
 ## 约束
 
