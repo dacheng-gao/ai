@@ -3,6 +3,7 @@
 ## 快速升级
 
 ```bash
+# 需预装 rsync 与 jq
 cd ~/.ai
 
 # 1. 拉取最新代码
@@ -12,17 +13,17 @@ git pull origin main
 cp CLAUDE.md ~/.claude/CLAUDE.md
 cp AGENTS.md ~/.claude/AGENTS.md
 
-# 3. 同步规则
-cp rules/*.md ~/.claude/rules/
+# 3. 同步规则（删除上游已移除文件，避免残留旧规则）
+rsync -av --delete rules/ ~/.claude/rules/
 
 # 4. 同步技能（使用 rsync 保持目录结构）
 rsync -av --delete skills/ ~/.claude/skills/
 
 # 5. 同步 Agent 定义
-cp agents/*.md ~/.claude/agents/
+rsync -av --delete agents/ ~/.claude/agents/
 
 # 6. 同步 Hooks
-cp hooks/*.sh ~/.claude/hooks/
+rsync -av --delete hooks/ ~/.claude/hooks/
 chmod +x ~/.claude/hooks/*.sh
 
 # 7. 验证

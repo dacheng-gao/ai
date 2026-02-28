@@ -1,74 +1,78 @@
-# AI Agent Toolbox 🚀
+# AI Agent
 
-让你的 AI 更聪明：可复用的规则和技能库，提升开发效率。
+面向 Claude Code/Codex 的 AI 工程工作流仓库。
+核心定位：`superagents` 是复杂任务的默认入口；`rules` 定义约束，`skills` 定义执行流程。
 
-> **前置条件:** 首先设置 [Superpowers](https://github.com/obra/superpowers)。
+> 前置条件：先安装 [superpowers](https://github.com/obra/superpowers)。
 
----
+## Superagents 的地位
 
-## 项目概述
+- `skills/superagents` 是编排层，负责 1 master + N workers 的多 Agent 协作。
+- 对 bug / feature / refactor / 复杂 review，优先走 `superagents`，再落到具体技能。
+- 与仓库强制路由一致：先 `superpowers:using-superpowers`，再选择最小技能集合执行。
 
-本项目是一个**跨 AI 编码工具**的行为规范框架，通过 **Rules**（全局行为约束）和 **Skills**（按需触发的专项工作流）统一约束 AI Agent 的工作方式。
+## Superagents 怎么用
 
-### 解决的问题
+直接在任务里显式触发：
 
-原生 AI 编码助手常见的痛点：
-- **输出冗余**：大量客套、复述、未请求的扩展内容，浪费 Token
-- **偏离需求**：自行"改进"代码、添加未要求的功能，交付物与请求不符
-- **缺乏验证**：声称"已完成"但未实际验证，遗留隐患
-- **语言混乱**：中英文混用不一致，无明确的受众导向规则
-
-### 工作原理
-
-```
-用户请求 → 技能匹配（自动选择最合适的工作流）→ 执行 → 自检迭代 → 交付
+```text
+[$superagents](/Users/gdc/.codex/skills/superagents/SKILL.md) <任务描述>
 ```
 
-**Rules（规则文件）** — 始终生效的全局约束：
+常见场景：
+- 缺陷修复：定位根因并修复回归，附验证证据
+- 功能开发：实现需求并补齐测试与评审
+- 复杂重构：保持外部行为不变，分阶段迁移
 
-| 规则 | 职责 |
-|------|------|
-| `roles.md` | 多视角分析（架构/实现/安全/产品/质量/提示词） |
-| `language-rules.md` | 按受众决定语言（开发者中文、对外英文） |
-| `code-quality.md` | 五维质量门禁（正确性/安全/性能/可维护性/验证） |
-| `output-style.md` | 简洁输出、请求忠实度、自审迭代 |
-| `fast-path.md` | 简单任务快速路径条件与自动升级 |
+最小执行流：
+1. 路由：`using-superpowers`
+2. 选型：最小 Superpowers 组合（debugging/TDD/review/verification）
+3. 执行：`research -> plan -> implement -> review -> verify -> report`
+4. 门禁：`Typecheck/Build -> Lint -> Test`
+5. 交付：Done/Partial/Skipped + `file:line`/命令摘要证据
 
-**Skills（专项技能）** — 按任务类型自动路由：
+复用模板：`skills/superagents/templates/universal-engineering-task-prompt.md`
 
-| 技能 | 触发场景 |
-|------|----------|
-| `develop-feature` | 新功能、端点、UI 流程、集成 |
-| `fix-bug` | 缺陷、回归、崩溃、性能下降 |
-| `refactor` | 结构调整、模块拆分、重写 |
-| `review-code` | 代码/PR/diff 评审 |
-| `architecture-review` | 架构与平台设计评估 |
-| `routing-explainer` | 解释路由决策过程 |
-| `answer` | 解释代码、知识问答 |
-| `github` | GitHub URL/Issue/PR 集成 |
-| `handoff` | 跨会话交接、上下文保存 |
-| `loop-until-done` | 默认通用工作流 |
+## 仓库结构
 
-> **注**：提交信息生成由 `git-committer` agent 处理，不在此技能列表中。
+- `rules/`：全局约束（质量、语言、输出、快速路径）
+- `skills/`：专项工作流（`superagents`、`fix-bug`、`develop-feature`、`refactor` 等）
+- `agents/`：执行角色（researcher/planner/implementer/reviewer/verifier/reporter）
+- `AGENTS.md`：路由、协作与交付规范
+- `CLAUDE.md`：仓库级强制路由规则
 
 ## 文档约定
 
-SKILL.md 中的 `!command` 语法（如 `!`git status``）会在 skill 加载时执行命令，将输出内联到提示词中。Claude 看到的是命令执行结果，而非命令本身。
+`SKILL.md` 里的 `!command` 会在 skill 加载时执行，并把输出注入上下文，例如：
+
+```text
+!`git status`
+```
 
 ## 安装
 
 ### Claude Code
 
-复制以下指令到 Claude Code，它将完成安装：
-
-```
+```text
 Fetch and follow instructions from https://raw.githubusercontent.com/dacheng-gao/ai/main/.claude/INSTALL.md
 ```
 
-升级时复制以下指令：
+升级：
 
-```
+```text
 Fetch and follow instructions from https://raw.githubusercontent.com/dacheng-gao/ai/main/.claude/UPGRADE.md
+```
+
+### Codex
+
+```text
+Fetch and follow instructions from https://raw.githubusercontent.com/dacheng-gao/ai/main/.codex/INSTALL.md
+```
+
+升级：
+
+```text
+Fetch and follow instructions from https://raw.githubusercontent.com/dacheng-gao/ai/main/.codex/UPGRADE.md
 ```
 
 ## License

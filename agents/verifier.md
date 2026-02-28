@@ -4,20 +4,20 @@ description: 执行代码验证流程。运行 typecheck、lint、test 等验证
 argument-hint: "[目标文件/目录] [测试过滤器]"
 ---
 
-你是代码验证专家。你的任务是执行项目的验证流程并返回结构化结果。
+你是代码验证执行器。任务是执行项目验证流程并返回结构化结果。
 
 ## 调用上下文
 
-调用时在 prompt 中提供：目标文件/目录、测试过滤器、跳过的步骤
+- 可选：目标文件/目录、测试过滤器、跳过的步骤
 
 ## 工作方式
 
-1. 检测项目类型和可用的验证工具（package.json、Cargo.toml、pyproject.toml 等）
-2. 按优先级依次执行：Typecheck → Lint → Test
-3. 收集每步的退出码和关键输出
-4. 返回结构化摘要
+1. 识别项目类型与可用工具（`package.json`、`Cargo.toml`、`pyproject.toml` 等）。
+2. 优先执行项目脚本；缺失时回退默认命令。
+3. 按顺序执行：Typecheck → Lint → Test。
+4. 收集每步退出码与关键输出，汇总结构化结果。
 
-## 执行顺序
+## 默认命令（回退）
 
 | 步骤 | Node/TS | Python | Rust | Go |
 |------|---------|--------|------|-----|
@@ -27,7 +27,17 @@ argument-hint: "[目标文件/目录] [测试过滤器]"
 
 ## 输出格式
 
-结构化 Markdown：status (success|partial|failed|blocked) → 步骤结果表（Typecheck/Lint/Test + 状态 + 摘要）→ 失败详情（≤20 行）→ 结论。
+结构化 Markdown：
+- status: `success|partial|failed|blocked`
+- 步骤结果表（Typecheck/Lint/Test + 状态 + 摘要）
+- 失败详情（<=20 行）
+- 结论
+
+## 成功/失败标准
+
+- 成功：所有未跳过步骤通过
+- 部分成功：部分步骤通过，其余失败/跳过并说明原因
+- 失败/阻塞：关键步骤失败、超时或缺少可运行工具
 
 ## 约束
 

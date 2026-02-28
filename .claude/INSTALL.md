@@ -5,6 +5,7 @@
 - Claude Code 已安装
 - Git 已安装
 - jq 已安装（JSON 处理）
+- rsync 已安装（目录同步）
 
 ## 安装步骤
 
@@ -26,17 +27,17 @@ mkdir -p ~/.claude/rules ~/.claude/skills ~/.claude/agents ~/.claude/hooks
 cp ~/.ai/CLAUDE.md ~/.claude/CLAUDE.md
 cp ~/.ai/AGENTS.md ~/.claude/AGENTS.md
 
-# 5. 复制规则文件
-cp ~/.ai/rules/*.md ~/.claude/rules/
+# 5. 同步规则（删除上游已移除文件，避免残留旧规则）
+rsync -av --delete ~/.ai/rules/ ~/.claude/rules/
 
 # 6. 复制技能（使用 rsync 保持目录结构）
 rsync -av --delete ~/.ai/skills/ ~/.claude/skills/
 
-# 7. 复制 Agent 定义
-cp ~/.ai/agents/*.md ~/.claude/agents/
+# 7. 同步 Agent 定义
+rsync -av --delete ~/.ai/agents/ ~/.claude/agents/
 
-# 8. 复制并设置 Hooks
-cp ~/.ai/hooks/*.sh ~/.claude/hooks/
+# 8. 同步并设置 Hooks
+rsync -av --delete ~/.ai/hooks/ ~/.claude/hooks/
 chmod +x ~/.claude/hooks/*.sh
 
 # 9. 设置 settings.json

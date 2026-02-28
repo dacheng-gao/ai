@@ -44,7 +44,7 @@
       "Bash(python -m pytest*)",
       "Bash(mypy*)",
       "Bash(ruff*)",
-      "Bash(jc *)",
+      "Bash(jq *)",
       "Bash(bun test*)",
       "Bash(bun run*)",
       "Bash(pnpm test*)",

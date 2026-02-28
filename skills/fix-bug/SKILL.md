@@ -13,18 +13,10 @@ argument-hint: "[缺陷描述或 issue 链接]"
 
 ## 工作流
 
-0. **目标转换** — 将缺陷描述转为可验证目标（如"修复登录失败" → "写测试复现失败 → 让测试从 FAIL 变 PASS"）
-1. `superpowers:systematic-debugging` — 先说明复现条件与证据
-2. `superpowers:test-driven-development` — 必须补至少一条覆盖根因的测试
-3. `superpowers:verification-before-completion`
-
-## Superpowers 调用
-
-| Superpower | 默认 | 跳过条件 |
-|------------|------|---------|
-| systematic-debugging | ✓ | 无 |
-| test-driven-development | ✓ | 无 |
-| verification-before-completion | ✓ | 无 |
+1. 目标转换：把缺陷描述转为可验证目标
+2. `superpowers:systematic-debugging`：先明确复现条件、复现命令、复现证据
+3. `superpowers:test-driven-development`：至少补 1 条覆盖根因的测试
+4. `superpowers:verification-before-completion`：回归测试必须覆盖根因场景
 
 ## 特有 Agent 协作
 
@@ -34,16 +26,17 @@ argument-hint: "[缺陷描述或 issue 链接]"
 | 根因涉及多模块交互 | `researcher`(数据流追踪) | 串行 |
 
 ## 异常处理
-- 无法复现 → 列出已尝试的复现方法，请用户提供复现环境/步骤/日志
-- 根因无法确认 → 列出候选假设与已排除项，请用户提供更多上下文
-- 修复引入新回归 → 回滚修复，重新进入 systematic-debugging
-- 多个根因候选 → 按证据强度排序，先修复最可能的，验证后再处理其他
-- 根因在第三方代码 → 实现 workaround，记录上游 issue 编号或链接，标注 TODO
-- 连续 3 次修复同一问题失败 → 停止 patch，升级为架构层面审视，向用户报告
+- 无法复现：列出已尝试方法，请用户补充环境/步骤/日志
+- 根因无法确认：列出候选假设和已排除项，请用户补充上下文
+- 修复引入回归：回滚修复，重新进入 systematic-debugging
+- 多个根因候选：按证据强度排序，先修最可能项并验证
+- 根因在第三方代码：提供 workaround，记录上游 issue 链接并标注 TODO
+- 连续 3 次修复失败：停止打补丁，升级为架构层面审视并向用户报告
+- 专属 Superpower 不可用：改为手动“复现→最小修复→回归验证”并保留证据
 
 ## 退出标准
 
 | # | 标准 | 验证方式 |
 |---|------|---------|
-| 1 | 根因已定位并有证据支撑 | 含复现步骤 + 修复后验证结果 |
+| 1 | 根因已定位并有证据 | 含复现步骤 + 修复后验证结果 |
 | 2 | 修复范围最小化 | diff 中无无关改动 |
