@@ -1,7 +1,11 @@
-# AI Agent
+# AI Supergents
 
-面向 Claude Code/Codex 的 AI 工程工作流仓库。
-核心定位：`superagents` 是复杂任务的默认入口；`rules` 定义约束，`skills` 定义执行流程。
+面向 Claude Code 和 Codex 的 AI 工程工作流。
+
+核心定位：
+- `superagents` 是复杂任务的默认入口
+- `rules` 定义约束
+- `skills` 定义执行流程
 
 > 前置条件：先安装 [superpowers](https://github.com/obra/superpowers)。
 
