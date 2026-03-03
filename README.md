@@ -3,7 +3,7 @@
 面向 Claude Code 和 Codex 的 AI 工程工作流。
 
 核心定位：
-- `superagents` 是复杂任务的默认入口
+- `superagents` 是工程任务主入口（先路由到最佳技能，复杂任务走多 Agent 编排）
 - `rules` 定义约束
 - `skills` 定义执行流程
 
@@ -12,7 +12,7 @@
 ## Superagents 的地位
 
 - `skills/superagents` 是编排层，负责 1 master + N workers 的多 Agent 协作。
-- 对 bug / feature / refactor / 复杂 review，优先走 `superagents`，再落到具体技能。
+- 对 bug / feature / refactor / 复杂 review，默认走 `superagents`；单一场景可直达最佳专项技能。
 - 与仓库强制路由一致：先 `superpowers:using-superpowers`，再选择最小技能集合执行。
 
 ## Superagents 怎么用

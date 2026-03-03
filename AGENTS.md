@@ -1,4 +1,4 @@
-# AGENTS Instructions
+# AGENTS.md
 
 ## Karpathy-Inspired Guidelines
 
@@ -39,18 +39,11 @@
 
 ## 任务追踪
 
-- 快速路径任务：跳过任务追踪
+默认由 `skills/superagents/SKILL.md` 的编排与追踪规则执行。
+
+- 快速路径任务：按 `rules/fast-path.md` 执行，可跳过任务追踪
 - 复杂任务（≥3 步或跨多文件）：使用 TaskCreate/TaskUpdate/TaskList
-
-| 时机 | 操作 |
-|------|------|
-| 任务分解后 | TaskCreate 为每个步骤创建 task（含 activeForm） |
-| 开始某步骤 | TaskUpdate → `in_progress` |
-| 完成某步骤 | TaskUpdate → `completed`，并用 TaskList 选择下一个 |
-| 步骤存在依赖 | 用 `addBlockedBy` 声明阻塞关系 |
-| 中断恢复 | 从 TaskList 读取进度并继续未完成项 |
-
-简单任务（≤3 步、≤2 文件）直接执行，不建 task。
+- 非 superagents 路径也必须满足最小追踪：步骤状态可见、阻塞关系可见、完成证据可追溯
 
 ## 用户交互决策
 
@@ -67,56 +60,24 @@
 ## Superpowers 使用准则
 
 - 每次响应前必须先调用 `superpowers:using-superpowers`（见 `CLAUDE.md`）
-- 固定顺序：`using-superpowers` → 选择最小 Skill 集合 → Skill 内专属 Superpowers → 验证与交付
-- 单次命中多个 Skill：先窄后宽（先专用 Skill，再兜底 `loop-until-done`）
+- 固定顺序：`using-superpowers` → 选择最小 Skill 集合 → 执行对应 Skill → 验证与交付
+- 工程任务默认进入 `superagents`；轻量单一任务可直达专用 Skill（`answer/git/github/handoff` 等）
 - 规则冲突优先级：安全 > 正确性 > 用户明确要求 > `CLAUDE.md` 强制项 > 其余规则/技能说明
 
-### Superpowers 场景映射（默认）
-
-| 场景 | Superpower | 说明 |
-|------|------------|------|
-| 需求模糊/多方案 | `superpowers:brainstorming` | 收敛边界与方案 |
-| 新功能/缺陷/重构实现 | `superpowers:test-driven-development` | 先验证行为再落地实现 |
-| 交付前自检 | `superpowers:verification-before-completion` | 确保验证证据完整 |
-| 收到评审反馈 | `superpowers:receiving-code-review` | 消化反馈并转成修复动作 |
-| 需要二次评审 | `superpowers:requesting-code-review` | 产出可执行审查输入 |
+具体场景映射与编排细节以 `skills/superagents/SKILL.md` 为准。
 
 ## Agent 协作
 
-### 职责边界
+职责边界保持两层：
 
-| 层级 | 职责 | 示例 |
-|------|------|------|
-| Skill | 路由层：匹配任务类型并调用对应 Superpowers/Agents | `review-code` 调用 `reviewer` |
-| Agent | 执行层：按单一职责完成具体任务 | `reviewer` 执行代码评审 |
+- Skill：负责路由与流程编排
+- Agent：负责单一职责执行（research/plan/implement/review/verify/report）
 
-Skill 不内联复杂逻辑，应委派 Agent 执行。
+委派原则（全局最小约束）：
 
-### 委派优先原则
-
-主 agent 负责编排，默认通过 Task 工具委派子 agent，保持主上下文精简。
-
-主 agent 保留（不委派）：
-- 编排决策
-- 用户交互（AskUserQuestion、确认提示）
-- 快速路径执行（满足 `rules/fast-path.md` 全部条件时）
-- 最终结果汇总与呈现
-- 任务协调（TaskCreate/TaskUpdate/TaskList）
-
-其余工作委派：
-
-| 工作类型 | Agent | 执行方式 |
-|---------|-------|----------|
-| 代码探索/架构理解 | `researcher` | 并行（多线索） |
-| 需求分步计划 | `planner` | 串行（计划先于实现） |
-| 代码实现/修改 | `implementer` | 串行或并行（按模块拆分） |
-| 测试编写 | `tester` | 串行（实现后） |
-| 代码评审 | `reviewer` | 并行（多模块） |
-| 验证（typecheck/lint/test） | `verifier` | 并行；>30s 用 `run_in_background=true` |
-| 结果汇报 | `reporter` | 串行（收敛后汇总） |
-| 安全审计 | `security-auditor` | 提交前串行 |
-| 提示词审查 | `prompt-engineer` | 串行 |
-| 生成/执行提交 | `git-committer` | 串行（需用户确认） |
+- 主 agent 只保留：编排决策、用户交互、任务协调、最终汇总
+- 可委派工作默认委派，避免主上下文膨胀
+- 多 Agent 并发、角色分工、冲突处理以 `skills/superagents/SKILL.md` 为准
 
 ## 文件引用规范
 
