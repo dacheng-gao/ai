@@ -43,7 +43,7 @@
 
 - 快速路径任务：按 `rules/fast-path.md` 执行，可跳过任务追踪
 - 复杂任务（≥3 步或跨多文件）：使用 TaskCreate/TaskUpdate/TaskList
-- 非 superagents 路径也必须满足最小追踪：步骤状态可见、阻塞关系可见、完成证据可追溯
+- 所有档位路径（Lite/Standard/Full）都必须满足最小追踪：步骤状态可见、阻塞关系可见、完成证据可追溯
 
 ## 用户交互决策
 
@@ -61,7 +61,9 @@
 
 - 每次响应前必须先调用 `superpowers:using-superpowers`（见 `CLAUDE.md`）
 - 固定顺序：`using-superpowers` → 选择最小 Skill 集合 → 执行对应 Skill → 验证与交付
-- 工程任务默认进入 `superagents`；轻量单一任务可直达专用 Skill（`answer/git/github/handoff` 等）
+- 所有请求强制进入 `superagents`（自动触发，无需显式 `$superagents`）
+- `superagents` 内部按复杂度走 `Lite/Standard/Full` 三档流程
+- `answer/git/github/handoff/fix-bug/develop-feature/refactor/review-code/architecture-review` 仅作为 `superagents` 内部 lane
 - 规则冲突优先级：安全 > 正确性 > 用户明确要求 > `CLAUDE.md` 强制项 > 其余规则/技能说明
 
 具体场景映射与编排细节以 `skills/superagents/SKILL.md` 为准。
