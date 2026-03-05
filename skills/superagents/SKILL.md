@@ -61,10 +61,33 @@ argument-hint: "[任务描述 | issue 链接 | 需求文档路径]"
 
 ## 编排总则
 1. 固定入口：先 `superpowers:using-superpowers`
-2. 最小覆盖：仅选择完成任务所需的最少 Superpowers
-3. 双轨执行：Superpowers（方法）+ 仓库 Agents（执行）同时生效
-4. 证据闭环：关键结论附 `file:line`、命令摘要或链接
-5. 质量基线：review 与自检优化统一遵循 `rules/code-quality.md`
+2. 开场对齐：任何实施前先向用户回显 `目标/范围/不做/关键假设`
+3. 请求规范化：将用户原始请求收敛为可执行摘要（目标/范围/不做/验收）
+4. 最小覆盖：仅选择完成任务所需的最少 Superpowers
+5. 双轨执行：Superpowers（方法）+ 仓库 Agents（执行）同时生效
+6. 证据闭环：关键结论附 `file:line`、命令摘要或链接
+7. 质量基线：review 与自检优化统一遵循 `rules/code-quality.md`
+
+## 开场对齐与请求规范化门禁（执行前）
+1. 路由完成后、任何实现前，必须先向用户输出任务理解摘要。
+2. 摘要最少包含：`目标`、`范围`、`不做`、`关键假设`、`验收`。
+3. 输出建议使用固定字段：`intent_summary/scope/out_of_scope/assumptions/open_questions/proceed`。
+4. `Lite` 且需求明确：允许 1-2 句回显后继续执行。
+5. `Standard/Full` 且需求明确、实现路径唯一：开场对齐后继续执行。
+6. 涉及业务决策、缺少关键输入、明显歧义或多方案权衡：一次性提出关键问题并等待用户确认；`AskUserQuestion` 不可用时改为普通文本提问。
+7. 已进入 `superpowers:brainstorming` 时，提问节奏切换为“一次一问”。
+8. 需求模糊、跨模块交互或存在多个设计分歧：调用 `superpowers:brainstorming` 收敛边界，再进入计划/实现。
+
+## `brainstorming` 触发阈值
+满足任一项即触发：
+1. 涉及跨模块交互，且边界或职责划分不清晰。
+2. 存在 2 个及以上等价方案，需比较权衡后决策。
+3. 用户显式要求先讨论设计/方案而非直接实施。
+4. 关键验收标准无法通过一次性澄清确定。
+
+不触发（直接澄清后执行）：
+1. 仅缺少单一参数或输入值。
+2. 单文件低风险修改且实现路径唯一。
 
 ## 流程档位（固定三档）
 
@@ -114,14 +137,16 @@ argument-hint: "[任务描述 | issue 链接 | 需求文档路径]"
 
 ## 工作流
 1. 路由预检（master）：执行 `superpowers:using-superpowers`，判定 `lane + 档位`，并记录证据
-2. 目标转换（master）：明确目标、范围、验收、不做项；涉及业务决策/缺少关键输入时先澄清
-3. Lite 快速收敛（可选）：若命中 `Lite`，执行“请求对照 → 最小修改/执行 → 最小验证 → 汇报”，然后结束
-4. 并行探索（research）：`Standard/Full` 至少 1 个 `researcher`；需要外部资料时追加 1 个；输出必须含 `file:line` 或链接
-5. 规划拆分（planner）：产出步骤、依赖、并行标记、负责人、验收条件；每步可独立验证
-6. 实现与评审（implement/review）：按文件边界执行；`Full` 启用并行 implement + 双评审；禁止同文件并行写
-7. 自检优化（master+implement）：按 `rules/code-quality.md` 第 6 节执行最小优化回路；禁止顺手扩大范围
-8. 验证门禁（verifier）：`Standard/Full` 固定顺序 Typecheck/Build → Lint → Test；失败回退修复并回到第 6 步，最多 3 轮
-9. 汇报交付（reporter）：输出 Done/Partial/Skipped、关键改动、验证证据、残余风险、后续建议
+2. 开场对齐 + 请求规范化（master）：向用户回显 `目标/范围/不做/关键假设/验收`（`Lite` 可 1-2 句）
+3. 需求澄清（master）：仅在业务决策/缺少关键输入/明显歧义或多方案权衡时提问并等待回答；`brainstorming` 激活后切换为一次一问
+4. 方案收敛（planner，可选）：命中 `brainstorming` 触发阈值时调用 `superpowers:brainstorming` 后再继续
+5. Lite 快速收敛（可选）：若命中 `Lite` 且已无疑问，执行“请求对照 → 最小修改/执行 → 最小验证 → 汇报”，然后结束
+6. 并行探索（research）：`Standard/Full` 至少 1 个 `researcher`；需要外部资料时追加 1 个；输出必须含 `file:line` 或链接
+7. 规划拆分（planner）：产出步骤、依赖、并行标记、负责人、验收条件；每步可独立验证
+8. 实现与评审（implement/review）：按文件边界执行；`Full` 启用并行 implement + 双评审；禁止同文件并行写
+9. 自检优化（master+implement）：按 `rules/code-quality.md` 第 6 节执行最小优化回路；禁止顺手扩大范围
+10. 验证门禁（verifier）：`Standard/Full` 固定顺序 Typecheck/Build → Lint → Test；失败回退修复并回到第 8 步，最多 3 轮
+11. 汇报交付（reporter）：输出 Done/Partial/Skipped、关键改动、验证证据、残余风险、后续建议
 
 ## 会话预算与收敛
 - 禁止“无限 loop”表述；默认最多 `3` 轮 `review → optimize → verify`。
@@ -172,9 +197,10 @@ argument-hint: "[任务描述 | issue 链接 | 需求文档路径]"
 - 模板文件：`skills/superagents/templates/universal-engineering-task-prompt.md`
 - 模板装配顺序（强制）：
   1. 模板 A（入口路由）：统一进入 `superagents` 后判定 `lane + 档位`
-  2. 模板 B（工程编排）：输出 `目标/范围/不做/验收/lane_plan`
-  3. 模板 C（子任务委派）：向 worker 下发统一任务单，保证证据格式一致
-  4. 模板 D（用户汇报）：按 Done/Partial/Skipped + 验证证据交付
+  2. 模板 A2（开场对齐）：先向用户回显任务理解；必要时提问并等待确认
+  3. 模板 B（工程编排）：输出 `目标/范围/不做/验收/lane_plan`
+  4. 模板 C（子任务委派）：向 worker 下发统一任务单，保证证据格式一致
+  5. 模板 D（用户汇报）：按 Done/Partial/Skipped + 验证证据交付
 - 约束：
   1. 提示词必须保持“最小必要信息”，禁止重复同义规则
   2. 每条“完成/通过”结论必须可追溯到 `file:line` 或命令摘要

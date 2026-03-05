@@ -30,6 +30,25 @@
 
 与 `AGENTS.md` 的关系：其中“用户交互决策”表是本节补充；冲突时以 `AGENTS.md` 决策表为准。
 
+## 开场对齐（执行前）
+
+- 在任何实施前，先回显任务理解：`目标/范围/不做/关键假设`
+- 在开场对齐中，将用户原始请求规范化为可执行摘要（目标/范围/不做/验收）
+- `Lite` 且需求明确：允许用 1-2 句回显后直接执行
+- `Standard/Full` 且需求明确、实现路径唯一：开场对齐后直接执行
+- 涉及业务决策、缺少关键输入、明显歧义或多方案权衡：一次性提出关键问题并等待确认，确认前不开始改动
+- 需求模糊、跨模块交互或多方案分歧：调用 `superpowers:brainstorming` 收敛后再执行
+- 已进入 `superpowers:brainstorming` 时，提问节奏切换为“一次一问”
+- `AskUserQuestion` 不可用时，改为普通文本提问并明确 `proceed: wait_for_user`
+
+建议输出骨架（执行前）：
+- `intent_summary`
+- `scope`
+- `out_of_scope`
+- `assumptions`
+- `open_questions`
+- `proceed: yes | wait_for_user`
+
 ## 输出结构
 
 - 先给结果/结论

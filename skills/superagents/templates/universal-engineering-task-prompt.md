@@ -1,6 +1,6 @@
 # Superagents 精简提示词模板包（统一入口版）
 
-用于 superagents 的四段式提示词装配：`入口路由 -> 编排计划 -> 子任务委派 -> 用户汇报`。
+用于 superagents 的五段式提示词装配：`入口路由 -> 开场对齐 -> 编排计划 -> 子任务委派 -> 用户汇报`。
 
 目标：
 - 精简：只保留高信号指令，避免重复
@@ -30,6 +30,38 @@
 - reason: <不超过3条>
 - evidence: <关键词或 file:line 或命令摘要>
 - next: <下一步动作>
+```
+
+---
+
+## 模板 A2：开场对齐（执行前）
+
+```text
+你已完成路由并确定 `lane + depth`。在任何实现前，先向用户回显任务理解。
+
+输入：
+- 用户原始请求：`<user_request>`
+- 路由结果：`<lane/depth>`
+- 当前证据：`<keywords|file:line|command summary>`
+
+必做：
+1. 先将原始请求规范化为可执行摘要（目标/范围/不做/验收）。
+2. 输出：`目标/范围/不做/关键假设`。
+3. `Lite` 且需求明确：可 1-2 句回显并继续。
+4. `Standard/Full` 且需求明确、实现路径唯一：开场对齐后继续执行。
+5. 仅在业务决策、缺少关键输入、明显歧义或多方案权衡时提问并等待用户确认。
+6. 需求模糊、跨模块交互或多方案分歧：调用 `superpowers:brainstorming` 收敛边界后再进入模板 B。
+7. 已进入 `superpowers:brainstorming` 时，提问改为“一次一问”。
+8. `AskUserQuestion` 不可用时，改为普通文本提问并保持 `proceed: wait_for_user`。
+
+输出（固定结构）：
+- refined_request:
+- intent_summary:
+- scope:
+- out_of_scope:
+- assumptions:
+- open_questions:
+- proceed: yes | wait_for_user
 ```
 
 ---
@@ -113,6 +145,7 @@
 ## 快速装配说明
 
 1. 先用模板 A 做入口判定。
-2. 在统一入口内确定 `lane + depth` 后，用模板 B 产出执行计划。
-3. 每个 worker 任务都使用模板 C，确保交付口径统一。
-4. 最终仅用模板 D 对用户输出，避免冗长技术内语。
+2. 用模板 A2 先做开场对齐与请求规范化，必要时提问并等待确认。
+3. 在统一入口内确定 `lane + depth` 且疑问收敛后，用模板 B 产出执行计划。
+4. 每个 worker 任务都使用模板 C，确保交付口径统一。
+5. 最终仅用模板 D 对用户输出，避免冗长技术内语。

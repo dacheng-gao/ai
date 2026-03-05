@@ -19,8 +19,21 @@ cp AGENTS.md ~/.codex/AGENTS.md
 # 4. 同步规则（删除上游已移除文件，避免残留旧规则）
 rsync -av --delete rules/ ~/.codex/rules/
 
-# 5. 同步技能（使用 rsync 保持目录结构）
-rsync -av --delete skills/ ~/.codex/skills/
+# 5. 同步技能（保留 superpowers 软链接，避免被 --delete 清理）
+rsync -av --delete --exclude 'superpowers' skills/ ~/.codex/skills/
+
+# 5.1 确保 superpowers 软链接存在
+if [ -d ~/.codex/superpowers/skills ]; then
+    rm -rf ~/.codex/skills/superpowers
+    ln -sfn ~/.codex/superpowers/skills ~/.codex/skills/superpowers
+else
+    if [ -e ~/.codex/skills/superpowers ] || [ -L ~/.codex/skills/superpowers ]; then
+        rm -rf ~/.codex/skills/superpowers
+        echo "警告: 未检测到 ~/.codex/superpowers/skills，已移除陈旧的 ~/.codex/skills/superpowers"
+    else
+        echo "警告: 未检测到 ~/.codex/superpowers/skills，请先安装 superpowers 插件"
+    fi
+fi
 
 # 6. 同步 Agent 定义
 rsync -av --delete agents/ ~/.codex/agents/
@@ -31,6 +44,16 @@ chmod +x ~/.codex/hooks/*.sh 2>/dev/null || true
 
 # 8. 验证
 echo "Skills: $(ls ~/.codex/skills/*/SKILL.md 2>/dev/null | wc -l | tr -d ' ')"
+if [ -L ~/.codex/skills/superpowers ]; then
+    SUPERPOWERS_TARGET="$(readlink ~/.codex/skills/superpowers)"
+    if [ -d "$SUPERPOWERS_TARGET" ]; then
+        echo "Superpowers Link: ok -> $SUPERPOWERS_TARGET"
+    else
+        echo "Superpowers Link: broken -> $SUPERPOWERS_TARGET"
+    fi
+else
+    echo "Superpowers Link: missing"
+fi
 ```
 
 ## 完全重装
