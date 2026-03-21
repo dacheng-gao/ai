@@ -6,7 +6,7 @@ set -euo pipefail
 
 cat <<'CONTEXT'
 <context-recovery>
-上下文已压缩。请检查 TaskList 恢复当前任务进度。
+上下文已压缩。请检查 TaskList 或等价计划工具，恢复当前任务进度。
 </context-recovery>
 CONTEXT
 

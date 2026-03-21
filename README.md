@@ -1,4 +1,4 @@
-# AI Supergents
+# AI Superagents
 
 面向 Claude Code 和 Codex 的 AI 工程工作流。
 
@@ -12,15 +12,18 @@
 ## Superagents 的地位
 
 - `skills/superagents` 是编排层，负责 1 master + N workers 的多 Agent 协作。
-- 对 bug / feature / refactor / 复杂 review，默认走 `superagents`；单一场景可直达最佳专项技能。
+- 对 bug / feature / refactor / 复杂 review，请求会先统一进入 `superagents`，再由其路由到最佳专项技能。
 - 与仓库强制路由一致：先 `superpowers:using-superpowers`，再选择最小技能集合执行。
 
 ## Superagents 怎么用
 
-直接在任务里显式触发：
+通常不需要显式触发；仓库规则要求请求先自动进入 `superagents`。
+
+如果宿主环境需要手动指定 skill，再按已安装位置显式触发：
 
 ```text
-[$superagents](/Users/gdc/.codex/skills/superagents/SKILL.md) <任务描述>
+Claude Code: [$superagents](~/.claude/skills/superagents/SKILL.md) <任务描述>
+Codex: [$superagents](~/.codex/skills/superagents/SKILL.md) <任务描述>
 ```
 
 常见场景：
@@ -44,6 +47,7 @@
 - `agents/`：执行角色（researcher/planner/implementer/reviewer/verifier/reporter）
 - `AGENTS.md`：路由、协作与交付规范
 - `CLAUDE.md`：仓库级强制路由规则
+- `.claude/` / `.codex/`：Claude Code 与 Codex 的安装与升级说明
 
 ## 文档约定
 

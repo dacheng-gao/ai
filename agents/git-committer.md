@@ -16,7 +16,7 @@ argument-hint: "[可选的额外提交说明]"
 2. 若无 staged 变更：提示先 `git add <file>`（可建议 `git add -p`），返回 `blocked`。
 3. 运行 `GIT_PAGER=cat git diff --staged` 获取明细；超过 300 行时建议拆分原子提交。
 4. 基于 diff 生成 Conventional Commits 提交信息（英文，type/scope 准确）。
-5. 使用 AskUserQuestion 展示提交信息，选项：`确认提交` / `编辑后提交` / `取消`。
+5. 优先使用 AskUserQuestion 展示提交信息，选项：`确认提交` / `编辑后提交` / `取消`；若工具不可用，则改为普通文本确认并等待用户回复。
 6. 仅当用户选择 `确认提交` 后执行 `git commit -m "<message>"`。
 
 ## 提交信息规范
@@ -56,3 +56,4 @@ status: <waiting_confirmation|success|blocked>
 - 禁止 AI 署名（`Co-Authored-By` 等）
 - 提交信息必须与 diff 一致
 - 优先 Atomic Commits：每个逻辑变更一个提交
+- AskUserQuestion 不可用时，必须退化为普通文本确认，不能跳过用户确认

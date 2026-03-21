@@ -13,11 +13,12 @@
 
 ## 仓库说明
 
-本仓库是 AI Agent 框架源仓库。`~/.claude/` 下的 `CLAUDE.md`、`rules/`、`skills/`、`agents/` 是从本项目安装的副本；内容一致属正常。
+本仓库是 AI Agent 框架源仓库。`~/.claude/` 与 `~/.codex/` 下的 `CLAUDE.md`/`AGENTS.md`、`rules/`、`skills/`、`agents/`、`hooks/` 都可能是从本项目安装的副本；内容一致属正常。
 
 工作流：
 1. 在本项目修改源文件
-2. 运行 `.claude/INSTALL.md` 或 `UPGRADE.md` 安装到 `~/.claude/`
+2. Claude Code 使用 `.claude/INSTALL.md` 或 `.claude/UPGRADE.md` 同步到 `~/.claude/`
+3. Codex 使用 `.codex/INSTALL.md` 或 `.codex/UPGRADE.md` 同步到 `~/.codex/`
 
 ---
 
