@@ -1,6 +1,6 @@
 ---
 name: reviewing-product-requirements
-description: Use when feature ideas, issues, stakeholder notes, or partial specs need to be reviewed and turned into a concise, testable PRD with clear scope, acceptance, and open decisions.
+description: Use when feature ideas, issues, stakeholder notes, or partial specs need to be reviewed and turned into a concise, testable PRD with clear scope, user stories, acceptance, and open decisions.
 ---
 
 # Reviewing Product Requirements
@@ -26,6 +26,9 @@ description: Use when feature ideas, issues, stakeholder notes, or partial specs
 
 - 先定义问题，再评价方案；避免把用户提出的做法直接当需求
 - 默认做范围压缩，优先保住 `v1` 的最小可交付
+- `用户故事` 必须写出用户、任务、目标，不能退化成功能列表或实现动作
+- `验收标准` 只写结果与判定条件，不写点击路径、接口步骤或实现提示
+- 关键假设仅在会影响范围、优先级、上线方式或测试覆盖时入文
 - 只写影响用户体验、范围、验收、风险的内容，不写技术实现细节
 - 输入不完整时输出 `PRD 草案`，不要伪装成完成态
 - 输出文档默认精简：每节 1-3 个 bullets，非适用章节直接省略
@@ -41,11 +44,13 @@ description: Use when feature ideas, issues, stakeholder notes, or partial specs
 - 标题是否过窄、误导或实现导向
 - `v1` 是否混入迁移、回写、策略系统、企业边角场景
 - 是否缺少用户、非目标、约束、成功标准、失败态、依赖
+- 是否存在影响范围或上线方式的关键假设未显式写出
 - 会影响范围或上线方式的业务决策，必须提升为 `Open Questions`
 
 3. 生成精简 PRD
-- 先写可观察行为，再写范围与约束
-- 每个核心目标都应落到 `FR`、验收标准或成功指标
+- 先写用户故事/关键任务，再写可观察行为、范围与约束
+- 每个核心目标都应落到 `用户故事`、`FR`、验收标准或成功指标
+- 每个 `FR` 至少能被一条验收标准或一组等价判定条件验证
 - 无法验证的需求，不算完成
 
 4. 收口
@@ -75,26 +80,32 @@ description: Use when feature ideas, issues, stakeholder notes, or partial specs
 5. `目标用户 / 关键场景`
 - 只写主要用户和主场景
 
-6. `范围`
+6. `用户故事 / 关键任务`
+- 用 1-3 条简短故事描述主要用户在主场景下要完成什么
+- 默认用“作为<用户>，我想<任务>，以便<目标>”或等价表达
+
+7. `范围`
 - `In Scope`
 - `Out of Scope`
 
-7. `功能需求`
+8. `功能需求`
 - `FR-1`, `FR-2`, ...
 - 写系统应表现出的行为，不写实现步骤
 
-8. `验收标准`
+9. `验收标准`
 - 只写可观察结果
 - QA 应能直接据此设计测试
+- 默认每条都能回答“如何判定已完成/失败”
 
-9. `风险 / 待定决策`
+10. `风险 / 待定决策`
 - 产品风险、范围风险、依赖风险
 - 真正影响范围或排期的问题才进入这里
 
 ### 选填
 
 仅在确实影响决策或上线时加入：
-- `约束与依赖`
+- `关键假设 / 约束与依赖`
+- `测试重点`
 - `成功指标`
 - `拆期`
 - `发布 / 迁移说明`
@@ -104,7 +115,9 @@ description: Use when feature ideas, issues, stakeholder notes, or partial specs
 - 默认目标是“短文档可决策”，不是“全量说明书”
 - 单节超过 3 个 bullets 时，优先合并或删减
 - 背景不要超过 3 句
+- `用户故事 / 关键任务` 默认控制在 1-3 条；超过时先合并相近场景
 - `功能需求` 默认控制在 5-9 条；超过时先检查是否范围膨胀
+- `验收标准` 默认按核心行为收敛到 3-7 条；避免把测试步骤整段抄进 PRD
 - `验收标准` 只覆盖关键可观察结果，不展开成测试步骤
 - 没有迁移、指标、拆期需求时，不补这些章节凑完整
 
@@ -113,17 +126,20 @@ description: Use when feature ideas, issues, stakeholder notes, or partial specs
 至少检查这些点：
 - 问题是否独立于方案存在
 - `v1` 范围是否被悄悄放大
+- 用户故事是否真实描述主要用户要完成的任务，而不是实现动作
+- 关键假设是否只保留会影响范围、优先级、上线或测试覆盖的项
 - 关键约束、依赖、权限是否入文
-- `Goal -> FR -> Acceptance` 是否能追踪
+- `Goal -> User Story -> FR -> Acceptance` 是否能追踪
 - 验收标准是否可测试
 - 待决业务问题是否被如实暴露，而不是藏进“假设”
 
 ## 完成定义
 
 满足以下条件，才可输出 `完成态 PRD`：
-- 问题、目标、非目标、范围已明确
+- 问题、目标、非目标、主要用户与范围已明确
+- 关键假设已在需要时显式写明，不依赖口头补充
 - 关键约束和依赖已写清，不依赖口头补充
-- 核心目标可追踪到 `FR` 或验收标准
+- 核心目标可追踪到 `用户故事`、`FR` 或验收标准
 - 不存在会改变范围、优先级或上线方式的关键未决问题
 
 否则输出 `PRD 草案 + Open Questions`。

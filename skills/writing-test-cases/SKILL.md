@@ -28,6 +28,8 @@ description: Use when a PRD, feature spec, or acceptance criteria already exist 
 - 先做测试建模，再写步骤；不要把 PRD 逐条翻成 case
 - 默认只覆盖关键路径、失败态、边界、权限、回归风险
 - 每条 case 都必须能追踪到 `FR` 或 `AC`
+- 不同用户 workflow 拆成不同 case；同一 workflow 的数据变体优先参数化或合并表达
+- 每个步骤都应包含动作和预期结果；重复前置与公共步骤优先抽成共享描述
 - 输出默认精简：优先可执行和可追踪，不做穷举矩阵
 
 ## 工作流
@@ -39,14 +41,17 @@ description: Use when a PRD, feature spec, or acceptance criteria already exist 
 2. 测试建模
 - 先识别：主路径、失败态、边界值、角色/权限、状态切换、迁移/兼容、回归影响
 - 多角色场景按角色拆分，不要混在一条 case 里
+- 先按 workflow 分组，再决定哪些需要独立 case、哪些只需参数化覆盖
 
 3. 生成测试计划
 - 写清测试目标、范围、优先级、环境前提、风险与不测项
 - 明确 `P0` 必测范围，防止所有 case 都变成最高优先级
+- 优先把上线阻断风险映射到 `P0`，其余覆盖降到 `P1/P2`
 
 4. 生成详细用例
 - 一条 case 只验证一个主行为
 - 步骤短、预期可观察、标签清晰
+- 每步默认写成“动作 -> 预期结果”
 - 同类 case 合并表达，避免数量膨胀
 
 ## 默认输出结构
@@ -82,6 +87,7 @@ description: Use when a PRD, feature spec, or acceptance criteria already exist 
 7. `覆盖追踪`
 - `AC-1 -> TC-001, TC-002`
 - `FR-3 -> TC-006`
+- 优先保证 `P0/P1` 覆盖所有上线关键 `AC`
 
 8. `详细测试用例`
 - `TC-001`
@@ -89,8 +95,7 @@ description: Use when a PRD, feature spec, or acceptance criteria already exist 
 - 对应需求 / 验收标准
 - 优先级
 - 前置条件
-- 步骤
-- 预期结果
+- 步骤（动作 -> 预期结果）
 - 标签
 
 ## 长度控制
@@ -99,6 +104,7 @@ description: Use when a PRD, feature spec, or acceptance criteria already exist 
 - 小功能默认 6-12 条 case；中等功能默认 12-20 条；更大范围先分主题，不一次性写满
 - `P0` 只覆盖上线阻断风险；不要把所有 case 都标成 `P0`
 - 重复路径优先参数化或合并，不重复抄整段步骤
+- 单条 case 默认控制在 3-7 步；超过时先检查是否混入多个 workflow
 - 预期结果只写判定点，不写调试动作和实现猜测
 - 若用户只要测试计划，不展开详细 case
 
@@ -109,6 +115,8 @@ description: Use when a PRD, feature spec, or acceptance criteria already exist 
 - 核心验收标准是否都有覆盖
 - 是否只写了主路径而漏掉失败态、边界或回归
 - 不同角色/权限是否被错误混写
+- 不同 workflow 是否被错误塞进同一条 case
+- 重复步骤是否本应合并为共享前置、共享步骤或参数化变体
 - 迁移、兼容、旧行为共存是否在适用时被覆盖
 - 预期结果是否可观察、可判定
 
@@ -119,6 +127,7 @@ description: Use when a PRD, feature spec, or acceptance criteria already exist 
 - 核心验收标准已映射到测试覆盖
 - 高风险路径、失败态、边界、权限和回归影响已体现到计划或 case
 - 用例优先级清晰，`P0` 覆盖最小上线风险
+- 用例拆分合理，未因重复 workflow 或数据变体导致数量失控
 
 否则输出 `测试草案 + 输入缺口/待确认问题`。
 
