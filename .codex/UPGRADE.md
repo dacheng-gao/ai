@@ -3,14 +3,14 @@
 ## 快速升级
 
 ```bash
-# 需预装 rsync 与 jq
+# 需预装 rsync
 cd ~/.ai
 
 # 1. 拉取最新代码
 git pull origin main
 
 # 2. 确保目录存在
-mkdir -p ~/.codex/rules ~/.codex/skills ~/.codex/agents ~/.codex/hooks
+mkdir -p ~/.codex/rules ~/.codex/skills ~/.codex/agents
 
 # 3. 同步核心配置文件
 cp CLAUDE.md ~/.codex/CLAUDE.md
@@ -38,11 +38,7 @@ fi
 # 6. 同步 Agent 定义
 rsync -av --delete agents/ ~/.codex/agents/
 
-# 7. 同步 Hooks
-rsync -av --delete hooks/ ~/.codex/hooks/
-chmod +x ~/.codex/hooks/*.sh 2>/dev/null || true
-
-# 8. 验证
+# 7. 验证
 echo "Skills: $(ls ~/.codex/skills/*/SKILL.md 2>/dev/null | wc -l | tr -d ' ')"
 if [ -L ~/.codex/skills/superpowers ]; then
     SUPERPOWERS_TARGET="$(readlink ~/.codex/skills/superpowers)"
@@ -66,7 +62,7 @@ cp ~/.codex/config.toml ~/.codex/config.toml.backup 2>/dev/null || true
 
 # 2. 删除旧文件
 rm -f ~/.codex/CLAUDE.md ~/.codex/AGENTS.md
-rm -rf ~/.codex/rules ~/.codex/skills ~/.codex/agents ~/.codex/hooks
+rm -rf ~/.codex/rules ~/.codex/skills ~/.codex/agents
 
 # 3. 执行全新安装
 # 按照 .codex/INSTALL.md 中的步骤执行

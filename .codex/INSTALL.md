@@ -4,7 +4,6 @@
 
 - Codex 已安装
 - Git 已安装
-- jq 已安装（JSON 处理）
 - rsync 已安装（目录同步）
 
 ## 安装步骤
@@ -21,7 +20,7 @@ else
 fi
 
 # 3. 创建目录结构
-mkdir -p ~/.codex/rules ~/.codex/skills ~/.codex/agents ~/.codex/hooks
+mkdir -p ~/.codex/rules ~/.codex/skills ~/.codex/agents
 
 # 4. 复制核心配置文件
 cp ~/.ai/CLAUDE.md ~/.codex/CLAUDE.md
@@ -49,11 +48,7 @@ fi
 # 7. 同步 Agent 定义
 rsync -av --delete ~/.ai/agents/ ~/.codex/agents/
 
-# 8. 同步并设置 Hooks
-rsync -av --delete ~/.ai/hooks/ ~/.codex/hooks/
-chmod +x ~/.codex/hooks/*.sh 2>/dev/null || true
-
-# 9. 检查 config.toml
+# 8. 检查 config.toml
 # Codex 使用 ~/.codex/config.toml，默认不覆盖用户现有配置
 if [ ! -f ~/.codex/config.toml ]; then
     echo "未检测到 ~/.codex/config.toml，可先运行一次 codex 让其自动生成"
@@ -61,12 +56,11 @@ else
     echo "检测到现有 config.toml，已保留原配置"
 fi
 
-# 10. 验证安装
+# 9. 验证安装
 echo "验证安装..."
 echo "Rules: $(ls ~/.codex/rules/*.md 2>/dev/null | wc -l | tr -d ' ') files"
 echo "Skills: $(ls ~/.codex/skills/*/SKILL.md 2>/dev/null | wc -l | tr -d ' ') skills"
 echo "Agents: $(ls ~/.codex/agents/*.md 2>/dev/null | wc -l | tr -d ' ') agents"
-echo "Hooks: $(ls ~/.codex/hooks/*.sh 2>/dev/null | wc -l | tr -d ' ') hooks"
 if [ -L ~/.codex/skills/superpowers ]; then
     SUPERPOWERS_TARGET="$(readlink ~/.codex/skills/superpowers)"
     if [ -d "$SUPERPOWERS_TARGET" ]; then
@@ -80,17 +74,6 @@ fi
 ```
 
 ## 故障排除
-
-### Hook 执行失败
-
-```bash
-# 检查 Hook 权限
-ls -la ~/.codex/hooks/*.sh
-# 应该都是 -rwxr-xr-x
-
-# 重新设置权限
-chmod +x ~/.codex/hooks/*.sh
-```
 
 ### superpowers 软链接丢失
 
@@ -109,14 +92,14 @@ else
 fi
 ```
 
-### jq 未找到
+### rsync 未找到
 
 ```bash
 # macOS
-brew install jq
+brew install rsync
 
 # Linux
-sudo apt-get install jq
+sudo apt-get install rsync
 ```
 
 ## 卸载
@@ -130,7 +113,7 @@ rm -rf ~/.codex
 
 # 或者只删除 AGENTS 相关文件
 rm -f ~/.codex/CLAUDE.md ~/.codex/AGENTS.md
-rm -rf ~/.codex/rules ~/.codex/skills ~/.codex/agents ~/.codex/hooks
+rm -rf ~/.codex/rules ~/.codex/skills ~/.codex/agents
 ```
 
 ## 更新

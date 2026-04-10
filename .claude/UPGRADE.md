@@ -3,7 +3,7 @@
 ## 快速升级
 
 ```bash
-# 需预装 rsync 与 jq
+# 需预装 rsync
 cd ~/.ai
 
 # 1. 拉取最新代码
@@ -22,11 +22,7 @@ rsync -av --delete skills/ ~/.claude/skills/
 # 5. 同步 Agent 定义
 rsync -av --delete agents/ ~/.claude/agents/
 
-# 6. 同步 Hooks
-rsync -av --delete hooks/ ~/.claude/hooks/
-chmod +x ~/.claude/hooks/*.sh
-
-# 7. 验证
+# 6. 验证
 echo "Skills: $(ls ~/.claude/skills/*/SKILL.md 2>/dev/null | wc -l | tr -d ' ')"
 ```
 
@@ -40,10 +36,10 @@ cp ~/.claude/settings.json ~/.claude/settings.json.backup
 
 # 2. 删除旧文件
 rm -f ~/.claude/CLAUDE.md ~/.claude/AGENTS.md
-rm -rf ~/.claude/rules ~/.claude/skills ~/.claude/agents ~/.claude/hooks
+rm -rf ~/.claude/rules ~/.claude/skills ~/.claude/agents
 
 # 3. 执行全新安装
-# 按照 INSTALL.md 中的步骤执行
+# 按照 .claude/INSTALL.md 中的步骤执行
 ```
 
 ## 回滚

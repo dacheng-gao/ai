@@ -13,7 +13,7 @@
 
 ## 仓库说明
 
-本仓库是 AI Agent 框架源仓库。`~/.claude/` 与 `~/.codex/` 下的 `CLAUDE.md`/`AGENTS.md`、`rules/`、`skills/`、`agents/`、`hooks/` 都可能是从本项目安装的副本；内容一致属正常。
+本仓库是 AI Agent 框架源仓库。`~/.claude/` 与 `~/.codex/` 下的 `CLAUDE.md`/`AGENTS.md`、`rules/`、`skills/`、`agents/` 都可能是从本项目安装的副本；内容一致属正常。
 
 工作流：
 1. 在本项目修改源文件
