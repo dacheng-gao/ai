@@ -1,90 +1,210 @@
 ---
 name: git
-description: 智能化 Git 操作。覆盖提交、冲突处理与安全回滚；提交场景委派 git-committer agent。
-argument-hint: "[操作描述，如 commit / resolve conflict / rollback]"
+description: Use when handling local Git CLI daily operations such as checking status or diff, staging files, creating conventional commits, restoring local changes, reverting commits, or resolving merge/rebase/cherry-pick conflicts.
+argument-hint: "[本地 git 请求，例如 status / add path / commit / restore file / revert sha / resolve conflict]"
 ---
 
-# Git 智能操作
+# 本地 Git CLI SOP
+
+面向本地 Git 日常操作的生产级 SOP。要求执行简单、显式、基于证据。
 
 ## 当前状态
 
 !`git branch --show-current 2>/dev/null && git log --oneline -5 2>/dev/null`
-!`git status --short 2>/dev/null | head -20`
+!`git status --short --branch 2>/dev/null | head -20`
 
-## 适用场景
-- 生成 Conventional Commit message 并在用户同意后提交
-- 处理 merge/rebase/cherry-pick 冲突
-- 安全回滚（revert/restore）
-- Git 状态与历史排查
+## 适用范围
 
-## 路由规则
-1. 含 `commit`/`提交`/`message` → 流程 A（智能提交）
-2. 含 `conflict`/`冲突`/`merge`/`rebase`/`cherry-pick` → 流程 B（冲突处理）
-3. 含 `revert`/`restore`/`回滚`/`撤销` → 流程 C（安全回滚）
-4. 其他 Git 请求 → 输出诊断摘要 + 最小可执行命令
+- 用 `status` 和 `diff` 检查本地变更
+- 用 `git add` 暂存文件
+- 生成 Conventional Commit 并在确认后提交
+- 用 `restore` 撤销本地未提交改动
+- 用 `revert` 撤销已提交历史
+- 处理 merge、rebase、cherry-pick 冲突
 
-## 流程 A：智能提交（委派 git-committer）
-1. 检查变更
-   - `git status --short`
-   - `GIT_PAGER=cat git diff --staged --stat`
-2. staged 为空时
-   - 有 unstaged：建议 `git add -p` 或 `git add <file>`
-   - 无任何变更：返回 `blocked`
-3. 调用 `git-committer` agent
-   - 基于 staged diff 生成 Conventional Commit message
-   - 向用户确认（确认提交 / 编辑后提交 / 取消）
-   - 仅在用户确认后执行 `git commit`
-4. 返回提交结果（commit hash + message）
+## 不适用范围
 
-## 流程 B：冲突处理
-1. 识别上下文
-   - `git status --short`
-   - 检测 `.git/MERGE_HEAD`、`.git/rebase-merge`、`.git/rebase-apply`、`.git/CHERRY_PICK_HEAD`
-2. 收集冲突文件
-   - `git diff --name-only --diff-filter=U`
-   - 为空则返回 `blocked`
-3. 解决策略
-   - 最小语义变更，禁止顺手重构
-   - 清理冲突标记（`<<<<<<<` / `=======` / `>>>>>>>`）
-   - 无法判断业务语义时，一次性确认关键分歧
-4. 大规模冲突（>5 文件或跨多个模块）触发 `superagents` 协调 implementer/reviewer
-5. 解决后执行
-   - `git add <resolved-files>`
-   - 运行最小必要验证（相关测试/构建/lint）
-   - 执行 `git merge --continue` / `git rebase --continue` / `git cherry-pick --continue`
+- 远端协作操作，例如 `fetch`、`pull`、`push`
+- 核心闭环之外的本地工作流辅助，例如 stash 或分支管理
+- 破坏性历史改写
+- GitHub 平台操作
 
-## 流程 C：安全回滚
-- 默认优先 `git revert` 与 `git restore`
-- `git reset --hard`、`git clean -fd` 属破坏性操作，必须用户明确确认
-- 改写历史前先建议创建安全分支：`git branch backup/<timestamp>`
+## 1) 预检查
 
-## 约束
-- 未获用户同意前，禁止执行 `git commit`
-- 禁止执行未请求的破坏性 Git 命令
-- 冲突修复仅改必要代码，不引入范围外改动
-- 结论必须附命令与输出摘要证据
+在任何写操作前，先做这些检查：
 
-## 输出格式
+- 确认当前目录是 Git 仓库：`git rev-parse --is-inside-work-tree`
+- 检查分支和工作区：`git status --short --branch`
+- 需要时检查 staged 范围：`git diff --staged --stat`
+- 需要时识别冲突上下文：
+  - `.git/MERGE_HEAD`
+  - `.git/rebase-merge`
+  - `.git/rebase-apply`
+  - `.git/CHERRY_PICK_HEAD`
+
+规则：
+
+- 如果当前目录不是 Git 仓库，立即停止，并报告失败命令
+- 需要捕获 diff 输出时，使用 `GIT_PAGER=cat`
+- 优先输出摘要，再决定是否展开完整 diff
+
+## 2) 意图路由
+
+把请求明确归到一个意图：
+
+- `inspect`：`status`、`diff`、变更检查、staged 和 unstaged 诊断
+- `stage`：`add`、暂存文件、暂存部分 hunks、为 commit 做准备
+- `commit`：生成提交信息、检查 staged diff、创建 commit
+- `undo`：`restore` 或 `revert`
+- `resolve-conflict`：merge、rebase、cherry-pick 冲突处理
+
+如果请求混合了多个意图，按顺序执行，并明确报告每个边界。
+
+## 3) 统一流程
+
+`preflight -> classify -> execute or gate -> verify -> report`
+
+- `execute`：可直接执行的安全读操作，或目标明确的低风险暂存
+- `gate`：任何会丢失工作区内容、创建 commit、或结束冲突流程的动作
+- `verify`：在声称成功前，运行最小但有效的后续检查
+- `report`：输出命令、结果摘要、下一步和最终状态
+
+## 4) 各意图操作手册
+
+### `inspect`
+
+默认命令：
+
+- `git status --short --branch`
+- `git diff --stat`
+- staged 上下文相关时用 `git diff --staged --stat`
+
+只有摘要不足时，才升级到完整 diff。
+
+行为：
+
+- 纯只读，直接执行
+- 先总结，再决定是否输出原始 diff
+
+### `stage`
+
+默认命令：
+
+- `git add <path>`
+- 只有用户明确要交互式暂存时才用 `git add -p <path>`
+
+规则：
+
+- 禁止默认执行 `git add .`
+- 如果范围不清，先 inspect，再要求用户给出精确路径或明确确认“全部暂存”
+- 暂存范围尽量小，保护原子提交
+
+### `commit`
+
+目标：根据 staged diff 生成一条准确的 Conventional Commit。
+
+必走流程：
+
+1. 运行 `git diff --staged --stat`
+2. 如果 staged diff 为空，直接以 `blocked` 停止
+3. 只在需要时运行 `git diff --staged`，用于准确推导提交信息
+4. 生成一条英文 Conventional Commit 候选信息
+5. 向用户展示候选信息并等待确认
+6. 只有确认后，才执行 `git commit -m "<message>"`
+
+提交规则：
+
+- `type` 只用：`feat|fix|refactor|docs|style|test|chore`
+- 使用最准确、最具体的合法 `type`
+- `subject` 使用祈使句，简短，不带句号
+- `body` 和 `footer` 仅在确实能提升清晰度时才加
+- 如果 staged diff 混入多个不相关改动，应先建议拆分再提交
+- 禁止编造 diff 中看不出的产品意图
+
+### `undo`
+
+支持的操作：
+
+- `git restore <path>`
+- `git restore --staged <path>`
+- 用户明确指定 source 时，可用 `git restore --source=<rev> <path>`
+- `git revert <sha>`
+
+规则：
+
+- 必须明确目标范围：working tree、index，或两者
+- 如果目标文件或 commit 不清楚，停止并提问，不要猜
+- 任何会丢失用户本地改动的 `restore` 都必须显式确认
+- 任何 `revert` 在执行前都必须显式确认
+- 撤销已提交历史时，优先 `revert`，不要改写历史
+
+### `resolve-conflict`
+
+目标：用最小语义改动完成当前 merge、rebase 或 cherry-pick。
+
+必走流程：
+
+1. 从 Git 状态文件识别上下文
+2. 列出未解决文件：`git diff --name-only --diff-filter=U`
+3. 编辑前逐个检查冲突文件
+4. 只解决冲突，不修改无关代码
+5. 清理冲突标记，并暂存已解决文件
+6. 对触及范围做最小必要验证
+7. 总结解决结果，并等待确认
+8. 只有确认后，才执行对应的 continue 命令：
+   - `git merge --continue`
+   - `git rebase --continue`
+   - `git cherry-pick --continue`
+
+规则：
+
+- 如果冲突的业务语义不明确，禁止猜测
+- 不要无解释地直接选 `ours` 或 `theirs`
+- 如果未解决文件已清空，但 Git 操作实际上不处于活动状态，则以 `blocked` 停止
+
+## 5) 输出格式
 
 ```markdown
-## 意图识别
-<commit|conflict|rollback|diagnose>
+## 意图
+<inspect|stage|commit|undo|resolve-conflict>
 
-## 执行结果
-<关键命令、输出摘要、影响文件>
+## 预检查
+<分支、工作区摘要、staged 摘要、相关冲突上下文>
+
+## 执行动作
+<已执行或已准备执行的命令>
+
+## 结果
+<关键输出摘要、影响文件、生成的 commit message、或已解决冲突>
 
 ## 下一步
-<最小可执行步骤>
+<最小下一动作，或停止原因>
 
 ---
-status: <success|partial|blocked>
+status: <success|partial|blocked|waiting_confirmation>
 ```
 
-## 退出标准
+硬规则：
 
-| # | 标准 | 验证方式 |
-|---|------|---------|
-| 1 | 路由命中正确 | 意图与流程 A/B/C/diagnose 一致 |
-| 2 | 关键结论有证据 | 包含关键命令与输出摘要 |
-| 3 | 危险操作已确认 | 破坏性命令前有明确用户确认 |
-| 4 | 状态可解释 | `success/partial/blocked` 与结果一致 |
+- 如果命令没有执行，就明确写“已准备”或“已提议”
+- 需要确认时，状态必须使用 `waiting_confirmation`
+- 没有命令证据时，禁止声称成功
+
+## 6) 错误处理
+
+- 不是 Git 仓库：停止，并报告 repo 检查失败的命令
+- `add` 目标无效：停止，并报告错误路径
+- `commit` 时 staged diff 为空：以 `blocked` 停止
+- `restore` 目标不清：停止，并要求明确 scope 或 path
+- `revert` 目标不清：停止，并要求提供 commit SHA
+- `resolve-conflict` 缺少冲突上下文：停止，并说明未检测到活跃的 merge、rebase 或 cherry-pick
+- 命令执行失败：报告精确命令和 stderr 摘要，不要掩盖失败
+- commit 推导不充分：给出保守 message，或补问一个缺失信息；禁止幻觉式补全意图
+
+## 7) 退出标准
+
+- 请求始终保持在本地 Git 范围内
+- 意图路由明确可解释
+- 写操作遵守正确的门禁规则
+- 结果都有命令和摘要作为证据
+- skill 保持自洽，不依赖外部 agent
