@@ -66,7 +66,7 @@ argument-hint: "[任务描述 | issue 链接 | 需求文档路径]"
 4. 最小覆盖：仅选择完成任务所需的最少 Superpowers
 5. 双轨执行：Superpowers（方法）+ 仓库 Agents（执行）同时生效
 6. 证据闭环：关键结论附 `file:line`、命令摘要或链接
-7. 质量基线：review 与自检优化统一遵循 `rules/code-quality.md`
+7. 质量基线：review 与自检优化统一遵循 `rules/deliverable-quality-gate.md`
 
 ## 开场对齐与请求规范化门禁（执行前）
 1. 路由完成后、任何实现前，必须先向用户输出任务理解摘要。
@@ -144,7 +144,7 @@ argument-hint: "[任务描述 | issue 链接 | 需求文档路径]"
 6. 并行探索（research）：`Standard/Full` 至少 1 个 `researcher`；需要外部资料时追加 1 个；输出必须含 `file:line` 或链接
 7. 规划拆分（planner）：产出步骤、依赖、并行标记、负责人、验收条件；每步可独立验证
 8. 实现与评审（implement/review）：按文件边界执行；`Full` 启用并行 implement + 双评审；禁止同文件并行写
-9. 自检优化（master+implement）：按 `rules/code-quality.md` 第 6 节执行最小优化回路；禁止顺手扩大范围
+9. 自检优化（master+implement）：按 `rules/deliverable-quality-gate.md` 第 7 节执行最小优化回路；禁止顺手扩大范围
 10. 验证门禁（verifier）：`Standard/Full` 固定顺序 Typecheck/Build → Lint → Test；失败回退修复并回到第 8 步，最多 3 轮
 11. 汇报交付（reporter）：输出 Done/Partial/Skipped、关键改动、验证证据、残余风险、后续建议
 
@@ -212,5 +212,5 @@ argument-hint: "[任务描述 | issue 链接 | 需求文档路径]"
 |---|------|---------|
 | 1 | 请求条目已逐项对照 | Done/Partial/Skipped 清单 |
 | 2 | 关键结论有证据 | 命令摘要、`file:line`、链接 |
-| 3 | 质量门禁完成 | 正确性、安全、性能、可维护性、验证 |
+| 3 | 质量门禁完成 | 目标达成、正确性/事实性、安全/隐私、可靠性/可运维性、可维护性/可读性、验证、可追溯性 |
 | 4 | 残余风险透明 | 未完成项与影响已显式列出 |

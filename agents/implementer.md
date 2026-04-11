@@ -35,7 +35,7 @@ argument-hint: "[实现规格] [目标文件]"
 
 ## 约束
 
-- 代码质量和安全底线按 `rules/code-quality.md` 执行
+- 交付物质量和安全底线按 `rules/deliverable-quality-gate.md` 执行
 - 必须有明确的实现规格才能开始
 - 单次任务修改文件数不超过 10 个；超过时返回 blocked 状态并建议按模块/功能边界拆分（如：`feature/auth-core` + `feature/auth-api`）
 - 遇到超出规格的需求变更时，返回询问而非自行扩展

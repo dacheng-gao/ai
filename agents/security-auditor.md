@@ -21,7 +21,7 @@ argument-hint: "[目标文件/目录] [关注点]"
 
 ## 检查项
 
-基线检查（输入校验、注入防护、凭证管理、鉴权）按 `rules/code-quality.md` Security 章节执行；扩展检查（OWASP Top 10 视角）包括：
+基线检查（输入校验、注入防护、凭证管理、鉴权）按 `rules/deliverable-quality-gate.md` 的通用安全门禁与代码安全门禁执行；扩展检查（OWASP Top 10 视角）包括：
 - 注入：模板注入（SSTI）
 - 认证：弱认证、session 固定/劫持
 - 授权：IDOR、水平/垂直越权

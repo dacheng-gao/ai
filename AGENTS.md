@@ -57,7 +57,7 @@
 | 1 | 请求回看 | 逐条对照原始请求，标记 Done/Partial/Skipped |
 | 2 | 产出物回读 | 审阅所有生成内容，检查遗漏/错误 |
 | 3 | 验证证据 | 提供命令 + 输出摘要，或说明无法验证原因 |
-| 4 | 质量门禁 | 按 `rules/code-quality.md` 检查：正确性→安全→性能→可维护性（按适用性验证） |
+| 4 | 质量门禁 | 按 `rules/deliverable-quality-gate.md` 检查：目标达成→正确性/事实性→安全/隐私→可靠性/可运维性→可维护性/可读性→验证→可追溯性（按适用性验证） |
 
 未通过则自动修复，最多 3 轮；仍失败必须明确残余风险，禁止隐藏。
 
@@ -112,8 +112,8 @@
 ## 文件引用规范
 
 引用项目内文件时使用相对路径：
-- Rules: `rules/code-quality.md`、`rules/fast-path.md`
+- Rules: `rules/deliverable-quality-gate.md`、`rules/fast-path.md`
 - Skills: `skills/develop-feature/SKILL.md`
 - Agents: `agents/reviewer.md`
 
-避免仅写文件名（如 `code-quality.md`），确保可追溯。
+避免仅写文件名（如 `deliverable-quality-gate.md`），确保可追溯。
