@@ -1,79 +1,22 @@
-# AGENTS 系统升级指南（Codex）
+# AGENTS 升级指南（Codex）
 
-## 快速升级
+升级目标：
+
+- 更新 `~/.codex/AGENTS.md`
+- 覆盖 `~/.codex/rules/`
+- 覆盖 `~/.codex/skills/`
+- 覆盖 `~/.codex/agents/`
+
+## 升级步骤
 
 ```bash
-# 需预装 rsync
 cd ~/.ai
-
-# 1. 拉取最新代码
 git pull origin main
 
-# 2. 确保目录存在
-mkdir -p ~/.codex/rules ~/.codex/skills ~/.codex/agents
+mkdir -p ~/.codex ~/.codex/rules ~/.codex/skills ~/.codex/agents
 
-# 3. 同步核心配置文件
-cp CLAUDE.md ~/.codex/CLAUDE.md
 cp AGENTS.md ~/.codex/AGENTS.md
-
-# 4. 同步规则（删除上游已移除文件，避免残留旧规则）
-rsync -av --delete rules/ ~/.codex/rules/
-
-# 5. 同步技能（保留 superpowers 软链接，避免被 --delete 清理）
-rsync -av --delete --exclude 'superpowers' skills/ ~/.codex/skills/
-
-# 5.1 确保 superpowers 软链接存在
-if [ -d ~/.codex/superpowers/skills ]; then
-    rm -rf ~/.codex/skills/superpowers
-    ln -sfn ~/.codex/superpowers/skills ~/.codex/skills/superpowers
-else
-    if [ -e ~/.codex/skills/superpowers ] || [ -L ~/.codex/skills/superpowers ]; then
-        rm -rf ~/.codex/skills/superpowers
-        echo "警告: 未检测到 ~/.codex/superpowers/skills，已移除陈旧的 ~/.codex/skills/superpowers"
-    else
-        echo "警告: 未检测到 ~/.codex/superpowers/skills，请先安装 superpowers 插件"
-    fi
-fi
-
-# 6. 同步 Agent 定义
-rsync -av --delete agents/ ~/.codex/agents/
-
-# 7. 验证
-echo "Skills: $(ls ~/.codex/skills/*/SKILL.md 2>/dev/null | wc -l | tr -d ' ')"
-if [ -L ~/.codex/skills/superpowers ]; then
-    SUPERPOWERS_TARGET="$(readlink ~/.codex/skills/superpowers)"
-    if [ -d "$SUPERPOWERS_TARGET" ]; then
-        echo "Superpowers Link: ok -> $SUPERPOWERS_TARGET"
-    else
-        echo "Superpowers Link: broken -> $SUPERPOWERS_TARGET"
-    fi
-else
-    echo "Superpowers Link: missing"
-fi
-```
-
-## 完全重装
-
-如果升级过程中遇到问题，可以执行完全重装：
-
-```bash
-# 1. 备份配置
-cp ~/.codex/config.toml ~/.codex/config.toml.backup 2>/dev/null || true
-
-# 2. 删除旧文件
-rm -f ~/.codex/CLAUDE.md ~/.codex/AGENTS.md
-rm -rf ~/.codex/rules ~/.codex/skills ~/.codex/agents
-
-# 3. 执行全新安装
-# 按照 .codex/INSTALL.md 中的步骤执行
-```
-
-## 回滚
-
-如果升级后出现问题，可以使用 git 回滚：
-
-```bash
-cd ~/.ai
-git checkout HEAD~1  # 或指定 commit
-# 然后重新执行同步步骤
+cp -R rules/. ~/.codex/rules/
+cp -R skills/. ~/.codex/skills/
+cp -R agents/. ~/.codex/agents/
 ```

@@ -65,6 +65,8 @@ Codex: [$superagents](~/.codex/skills/superagents/SKILL.md) <任务描述>
 Fetch and follow instructions from https://raw.githubusercontent.com/dacheng-gao/ai/main/.claude/INSTALL.md
 ```
 
+安装内容：`CLAUDE.md`、`AGENTS.md`、`rules/`、`skills/`、`agents/`
+
 升级：
 
 ```text
@@ -76,6 +78,8 @@ Fetch and follow instructions from https://raw.githubusercontent.com/dacheng-gao
 ```text
 Fetch and follow instructions from https://raw.githubusercontent.com/dacheng-gao/ai/main/.codex/INSTALL.md
 ```
+
+安装内容：`AGENTS.md`、`rules/`、`skills/`、`agents/`
 
 升级：
 

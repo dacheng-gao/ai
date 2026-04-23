@@ -1,5 +1,7 @@
 # AGENTS.md
 
+> AGENTS.md, rules, and skills are installed to the user's home directory and apply globally.
+
 ## 定位
 
 本文件是此环境中 AI agent 的宪法层约束。
@@ -66,5 +68,11 @@
 - 不要在本文件中硬编码固定回复模板。
 - 不要重复那些变化频率高于本文件原则的下位指导。
 - 保持本文件足够短，确保始终高信号。
+
+## 全局规则
+
+使用内置工具读取 `rules/*.md` 全部的规则文件，并严格遵循它们！
+
+## 兜底原则
 
 如有疑问，选择那个既安全、改动最小、又能真实解决问题并被诚实验证的方案。
