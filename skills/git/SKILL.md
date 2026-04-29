@@ -110,7 +110,7 @@ argument-hint: "[本地 git 请求，例如 status / add path / commit / restore
 3. 只在需要时运行 `git diff --staged`，用于准确推导提交信息
 4. 生成一条英文 Conventional Commit 候选信息
 5. 向用户展示候选信息并等待确认
-6. 只有确认后，才执行 `git commit -m "<message>"`
+6. 只有确认后，才执行 `git commit -m "<message>"`，且 message 必须与已展示并确认的完整内容一致
 
 提交规则：
 
@@ -118,6 +118,8 @@ argument-hint: "[本地 git 请求，例如 status / add path / commit / restore
 - 使用最准确、最具体的合法 `type`
 - `subject` 使用祈使句，简短，不带句号
 - `body` 和 `footer` 仅在确实能提升清晰度时才加
+- 禁止自动加入 AI 或工具署名、生成声明、协作者 trailer，包括但不限于 `Made-with:`、`Generated-by:`、`Co-Authored-By:` 中指向 `Cursor`、`Claude`、`OpenAI`、`Anthropic` 或其他 AI agent / tool 的内容
+- 禁止在确认后追加任何未展示的 `body`、`footer` 或 trailer；只有用户明确逐字要求，或仓库强制策略要求时，才可加入非 AI 署名 trailer
 - 如果 staged diff 混入多个不相关改动，应先建议拆分再提交
 - 禁止编造 diff 中看不出的产品意图
 
