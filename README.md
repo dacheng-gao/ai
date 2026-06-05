@@ -8,6 +8,7 @@
 - `skills` 定义执行流程
 
 > 前置条件：先安装 [superpowers](https://github.com/obra/superpowers)。
+> 可选前置条件：[超级 agents 合集](https://github.com/msitarzewski/agency-agents)。
 
 ## Superagents 的地位
 
