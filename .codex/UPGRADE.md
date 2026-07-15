@@ -1,22 +1,9 @@
-# AGENTS 升级指南（Codex）
-
-升级目标：
-
-- 更新 `~/.codex/AGENTS.md`
-- 覆盖 `~/.codex/rules/`
-- 覆盖 `~/.codex/skills/`
-- 覆盖 `~/.codex/agents/`
-
-## 升级步骤
+# Upgrade For Codex
 
 ```bash
-cd ~/.ai
-git pull origin main
-
-mkdir -p ~/.codex ~/.codex/rules ~/.codex/skills ~/.codex/agents
-
-cp AGENTS.md ~/.codex/AGENTS.md
-cp -R rules/. ~/.codex/rules/
-cp -R skills/. ~/.codex/skills/
-cp -R agents/. ~/.codex/agents/
+git -C "$HOME/.ai" pull --ff-only
+bash "$HOME/.ai/scripts/install.sh" codex
 ```
+
+The installer replaces current managed files, removes known obsolete managed
+files, and leaves unrelated user content intact.

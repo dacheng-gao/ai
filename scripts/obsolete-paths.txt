@@ -1,0 +1,17 @@
+rules/deliverable-quality-gate.md
+rules/fast-path.md
+rules/language-rules.md
+rules/output-style.md
+rules/roles.md
+agents/_template.md
+skills/develop-feature/references/feature-delivery-playbook.md
+skills/develop-feature/references/verification-checklist.md
+skills/fix-bug/references/bug-recovery-playbook.md
+skills/fix-bug/references/debugging-escalation-playbook.md
+skills/fix-bug/references/verification-checklist.md
+skills/review-code/references/review-check-matrix.md
+skills/review-code/references/review-verdict-examples-and-anti-patterns.md
+skills/superagents/references/orchestration-playbook.md
+skills/superagents/references/routing-matrix.md
+skills/superagents/references/verification-evals.md
+skills/superagents/templates/universal-engineering-task-prompt.md

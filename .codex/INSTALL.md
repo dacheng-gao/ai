@@ -1,32 +1,19 @@
-# AGENTS 安装指南（Codex）
+# Install For Codex
 
-安装目标：
-
-- `~/.codex/AGENTS.md`
-- `~/.codex/rules/`
-- `~/.codex/skills/`
-- `~/.codex/agents/`
-
-## 安装步骤
+Prerequisite: install
+[superpowers](https://github.com/obra/superpowers) separately.
 
 ```bash
-cd ~
-
-if [ -d ".ai" ]; then
-    cd .ai && git pull origin main
+if [ -d "$HOME/.ai/.git" ]; then
+    git -C "$HOME/.ai" pull --ff-only
 else
-    git clone https://github.com/dacheng-gao/ai ~/.ai
-    cd ~/.ai
+    git clone https://github.com/dacheng-gao/ai "$HOME/.ai"
 fi
 
-mkdir -p ~/.codex ~/.codex/rules ~/.codex/skills ~/.codex/agents
-
-cp AGENTS.md ~/.codex/AGENTS.md
-cp -R rules/. ~/.codex/rules/
-cp -R skills/. ~/.codex/skills/
-cp -R agents/. ~/.codex/agents/
+bash "$HOME/.ai/scripts/install.sh" codex
 ```
 
-## 升级
-
-运行 `.codex/UPGRADE.md` 中的命令。
+The installer manages `AGENTS.md` and this repository's rules, skills,
+and agents under `~/.codex`. It removes only explicitly listed obsolete
+files from earlier versions and preserves other user-created rules, skills, and
+agents.
