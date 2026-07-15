@@ -9,8 +9,7 @@ This repository assumes a capable host model and a separately installed
 - concise global engineering and communication defaults;
 - domain skills for repository work, Git, GitHub, review, requirements, and test
   design;
-- small optional subagent definitions;
-- task-prompt builders.
+- small optional subagent definitions.
 
 Generic planning, debugging, TDD, review, and verification workflows belong to
 the host and superpowers. `superagents` is optional coordination for
@@ -23,7 +22,6 @@ genuinely cross-lane work, not a gateway for every request.
 - `rules/`: short global defaults
 - `skills/`: task-triggered domain guidance
 - `agents/`: bounded optional workers
-- `prompts/`: concise task-prompt builders
 - `scripts/`: installation and repository verification
 
 ## Install

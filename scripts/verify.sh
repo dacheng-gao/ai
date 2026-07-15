@@ -21,12 +21,11 @@ for path in \
     CLAUDE.md \
     rules/engineering.md \
     rules/communication.md \
-    prompts/claude.md \
-    prompts/codex.md \
-    prompts/cursor.md \
     scripts/obsolete-paths.txt; do
     require_file "$path"
 done
+
+[ ! -e prompts ] || fail "legacy task-prompt builders remain: prompts"
 
 expected_skills=(
     answer
@@ -89,7 +88,7 @@ while IFS= read -r skill_file; do
     [ "$words" -le 500 ] || fail "$skill_file exceeds 500 words: $words"
 done < <(find skills -mindepth 2 -maxdepth 2 -name SKILL.md -print | sort)
 
-active_paths=(AGENTS.md CLAUDE.md rules skills agents prompts README.md)
+active_paths=(AGENTS.md CLAUDE.md rules skills agents README.md)
 
 if rg -n '所有请求(一律|强制)|所有仓库任务统一进入|强制进入[[:space:]]*`?superagents|统一入口：所有请求' "${active_paths[@]}" >/dev/null; then
     fail "universal superagents routing remains"
@@ -99,8 +98,8 @@ if rg -n '直接执行[[:space:]]*/[[:space:]]*深度交互|所有回答必须�
     fail "fixed two-section response contract remains"
 fi
 
-if rg -n 'code-quality\.md|agents-orchestrator|testing-reality-checker|engineering-software-architect' prompts README.md >/dev/null; then
-    fail "prompt templates reference unavailable repository capabilities"
+if rg -n 'code-quality\.md|agents-orchestrator|testing-reality-checker|engineering-software-architect' README.md >/dev/null; then
+    fail "README references unavailable repository capabilities"
 fi
 
 for spec in \
@@ -134,7 +133,7 @@ done < <(
 )
 
 guidance_files=(AGENTS.md CLAUDE.md)
-while IFS= read -r path; do guidance_files+=("$path"); done < <(find rules skills agents prompts -type f -name '*.md' -print | sort)
+while IFS= read -r path; do guidance_files+=("$path"); done < <(find rules skills agents -type f -name '*.md' -print | sort)
 
 line_count="$(wc -l "${guidance_files[@]}" | tail -1 | awk '{print $1}')"
 byte_count="$(wc -c "${guidance_files[@]}" | tail -1 | awk '{print $1}')"

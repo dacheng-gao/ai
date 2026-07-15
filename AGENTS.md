@@ -18,6 +18,9 @@ Resolve conflicts in this order:
 
 - Understand the real goal before following the proposed method. Surface an XY
   problem or a materially better path when it changes the decision.
+- Before consequential work, establish observable completion conditions,
+  relevant scope and constraints, and the evidence that would prove the result.
+  Do not require a separate prompt-rewriting round or fixed framing output.
 - Follow the most specific applicable project instructions. Do not invent rules
   for files or systems that are outside the stated scope.
 - Inspect enough context to make grounded changes. Treat unexplained worktree
