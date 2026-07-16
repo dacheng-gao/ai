@@ -20,17 +20,14 @@ for path in \
     AGENTS.md \
     CLAUDE.md \
     rules/engineering.md \
-    rules/communication.md \
-    scripts/obsolete-paths.txt; do
+    rules/communication.md; do
     require_file "$path"
 done
 
-[ ! -e prompts ] || fail "legacy task-prompt builders remain: prompts"
-
 expected_skills=(
     answer
-    architecture-review
     develop-feature
+    evolve-architecture
     fix-bug
     git
     github
@@ -44,17 +41,6 @@ expected_skills=(
 for skill in "${expected_skills[@]}"; do
     require_file "skills/$skill/SKILL.md"
 done
-
-while IFS= read -r path; do
-    [ -n "$path" ] || continue
-    case "$path" in
-        /*|..|../*|*/..|*/../*)
-            fail "unsafe obsolete manifest path: $path"
-            continue
-            ;;
-    esac
-    [ ! -e "$path" ] || fail "obsolete managed path remains: $path"
-done < scripts/obsolete-paths.txt
 
 while IFS= read -r skill_file; do
     skill_dir="$(basename "$(dirname "$skill_file")")"
@@ -87,20 +73,6 @@ while IFS= read -r skill_file; do
     words="$(wc -w < "$skill_file" | tr -d ' ')"
     [ "$words" -le 500 ] || fail "$skill_file exceeds 500 words: $words"
 done < <(find skills -mindepth 2 -maxdepth 2 -name SKILL.md -print | sort)
-
-active_paths=(AGENTS.md CLAUDE.md rules skills agents README.md)
-
-if rg -n '所有请求(一律|强制)|所有仓库任务统一进入|强制进入[[:space:]]*`?superagents|统一入口：所有请求' "${active_paths[@]}" >/dev/null; then
-    fail "universal superagents routing remains"
-fi
-
-if rg -n '直接执行[[:space:]]*/[[:space:]]*深度交互|所有回答必须分为两个部分|默认采用双段结构' "${active_paths[@]}" >/dev/null; then
-    fail "fixed two-section response contract remains"
-fi
-
-if rg -n 'code-quality\.md|agents-orchestrator|testing-reality-checker|engineering-software-architect' README.md >/dev/null; then
-    fail "README references unavailable repository capabilities"
-fi
 
 for spec in \
     '.claude/INSTALL.md claude' \

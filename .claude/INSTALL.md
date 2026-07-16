@@ -13,7 +13,7 @@ fi
 bash "$HOME/.ai/scripts/install.sh" claude
 ```
 
-The installer manages `AGENTS.md`, `CLAUDE.md`, and this
-repository's rules, skills, and agents under `~/.claude`. It removes
-only explicitly listed obsolete files from earlier versions and preserves other
-user-created rules, skills, and agents.
+The installer manages `AGENTS.md`, `CLAUDE.md`, and this repository's rules,
+skills, and agents under `~/.claude`. It records the files it installs, removes
+previously recorded files when they disappear from the repository, and
+preserves other user-created rules, skills, and agents.

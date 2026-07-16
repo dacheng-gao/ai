@@ -31,9 +31,9 @@ Install superpowers first, then follow:
 - Claude Code: [`.claude/INSTALL.md`](.claude/INSTALL.md)
 - Codex: [`.codex/INSTALL.md`](.codex/INSTALL.md)
 
-Upgrade instructions are in the corresponding `UPGRADE.md`. The
-installer removes only known obsolete files managed by this repository and
-preserves unrelated user content.
+Upgrade instructions are in the corresponding `UPGRADE.md`. The installer
+tracks files managed by this repository, removes them when they disappear from
+the repository, and preserves unrelated user content.
 
 ## Verify
 
@@ -41,8 +41,8 @@ preserves unrelated user content.
 bash scripts/verify.sh
 ```
 
-The check validates active guidance structure, skill metadata, obsolete
-constraints, install documentation, and context-size budgets.
+The check validates active guidance structure, skill metadata, install
+documentation, local references, and context-size budgets.
 
 ## License
 
