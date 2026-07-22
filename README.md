@@ -41,8 +41,8 @@ the repository, and preserves unrelated user content.
 bash scripts/verify.sh
 ```
 
-The check validates active guidance structure, skill metadata, install
-documentation, local references, and context-size budgets.
+The check validates active guidance structure, approval-gate invariants, skill
+metadata, install documentation, local references, and context-size budgets.
 
 ## License
 

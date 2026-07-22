@@ -37,6 +37,21 @@ Resolve conflicts in this order:
 - Use current evidence before claiming a result. Verify with the strongest
   practical checks and state any limits honestly.
 
+## Decision And Approval Gates
+
+- A skill workflow applies only while its trigger remains true. Exit or skip it
+  when inspection shows that its ambiguity or decision gate is absent.
+- An explicit request to implement a specified or recommended approach counts as
+  implementation authorization. Do not ask the user to approve it again.
+- Do not invoke or continue brainstorming solely because a task creates or
+  changes behavior. Use it only when unresolved requirements or material
+  trade-offs could produce meaningfully different outcomes.
+- Pause for a material unresolved decision, missing authority, destructive or
+  irreversible action, or ambiguity that cannot be resolved safely from
+  context.
+- When the user requests a design, plan, proposal, or review gate, stop after
+  delivering that artifact and wait for review.
+
 ## Rules And Skills
 
 - Load a rule or skill only when its scope or trigger matches the current task.

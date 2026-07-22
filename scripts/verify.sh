@@ -16,6 +16,15 @@ require_file() {
     [ -f "$1" ] || fail "missing required file: $1"
 }
 
+require_pattern() {
+    local path="$1"
+    local pattern="$2"
+    local description="$3"
+
+    rg -U -q "$pattern" "$path" ||
+        fail "$path is missing guidance invariant: $description"
+}
+
 for path in \
     AGENTS.md \
     CLAUDE.md \
@@ -73,6 +82,22 @@ while IFS= read -r skill_file; do
     words="$(wc -w < "$skill_file" | tr -d ' ')"
     [ "$words" -le 500 ] || fail "$skill_file exceeds 500 words: $words"
 done < <(find skills -mindepth 2 -maxdepth 2 -name SKILL.md -print | sort)
+
+require_pattern AGENTS.md \
+    '^## Decision And Approval Gates$' \
+    'decision and approval gate section'
+require_pattern AGENTS.md \
+    'An explicit request to implement a specified or recommended approach counts as[[:space:]]+implementation authorization\.' \
+    'explicit implementation requests count as authorization'
+require_pattern AGENTS.md \
+    'Do not invoke or continue brainstorming solely because a task creates or[[:space:]]+changes behavior\.' \
+    'brainstorming is not triggered by behavior changes alone'
+require_pattern skills/develop-feature/SKILL.md \
+    'Use[[:space:]]+`superpowers:brainstorming` only when inspection leaves important[[:space:]]+requirements or material design trade-offs unresolved\.' \
+    'feature work routes to brainstorming only for unresolved material decisions'
+require_pattern skills/evolve-architecture/SKILL.md \
+    'An explicit[[:space:]]+request to implement a named or recommended design counts as[[:space:]]+approval\.' \
+    'explicit architecture implementation requests count as approval'
 
 for spec in \
     '.claude/INSTALL.md claude' \

@@ -60,10 +60,12 @@ need.
 
 Before changing domain boundaries, public contracts, data or persistence,
 cross-module dependencies, deployment topology, or moving code broadly, explain
-the trade-offs and obtain user approval. When evidence is missing, identify the
-smallest way to acquire it.
+the material trade-offs. Obtain user approval only when a material decision
+remains unresolved or the request does not authorize implementation. An explicit
+request to implement a named or recommended design counts as approval. When
+evidence is missing, identify the smallest way to acquire it.
 
-After approval, evolve through working vertical slices. Use `refactor`,
+After authorization, evolve through working vertical slices. Use `refactor`,
 `develop-feature`, or `fix-bug` for each slice instead of duplicating its
 workflow. Keep the architecture decision and acceptance criteria visible;
 update only supporting tests, documentation, configuration, and observability.

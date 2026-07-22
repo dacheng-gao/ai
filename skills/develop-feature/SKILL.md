@@ -5,13 +5,15 @@ description: Use when implementing a repository feature, integration, API or sch
 
 # Develop Feature
 
-Deliver the smallest coherent behavior that satisfies the approved outcome.
+Deliver the smallest coherent behavior that satisfies the authorized outcome.
 
 ## Boundaries
 
-- Confirm the user-visible result, scope, non-goals, and acceptance evidence.
-- If important requirements or design trade-offs remain unresolved, use
-  `superpowers:brainstorming` before implementation.
+- Establish the user-visible result, scope, non-goals, and acceptance evidence
+  from the request and repository context. Ask only when missing information
+  would materially change the outcome.
+- Use `superpowers:brainstorming` only when inspection leaves important
+  requirements or material design trade-offs unresolved.
 - Preserve existing contracts unless a change is explicit. For APIs, schemas,
   data, configuration, or deployment, account for compatibility, rollout, and
   recovery.
