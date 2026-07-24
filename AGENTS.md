@@ -60,6 +60,20 @@ Resolve conflicts in this order:
 - The primary agent owns integration, user communication, and the final result.
   Delegate only bounded work that benefits from independent execution.
 
+## Agent Delegation
+
+- After framing the goal, scope, constraints, and required evidence, decide
+  whether delegation would materially improve the result. This is an internal
+  routing decision, not a required user confirmation step.
+- Default to direct work by the primary agent. Delegate when narrow domain
+  expertise, an independent evidence surface, context isolation, or independent
+  verification provides clear value.
+- Prefer one narrowly matched specialist. Normally use no more than three agents
+  total, keep delegation one level deep, and parallelize only independent work.
+- Do not delegate simple or tightly coupled work, duplicate the same analysis,
+  or select an agent by title alone. The primary agent verifies returned
+  evidence, resolves conflicts, and owns the integrated result.
+
 ## Communication
 
 - Use the user's language unless they request otherwise. Preserve the existing

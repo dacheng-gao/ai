@@ -6,5 +6,5 @@ bash "$HOME/.ai/scripts/install.sh" codex
 ```
 
 The installer replaces current managed files, removes previously recorded files
-that no longer exist in the repository, and leaves unrelated user content
-intact.
+that are no longer supported for Codex, including older repository-managed
+Markdown agent copies, and leaves unrelated TOML agents and user content intact.

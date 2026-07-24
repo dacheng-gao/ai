@@ -18,10 +18,12 @@ case "$host" in
     claude)
         target="$HOME/.claude"
         entry_files=(AGENTS.md CLAUDE.md)
+        managed_dirs=(rules skills agents)
         ;;
     codex)
         target="$HOME/.codex"
         entry_files=(AGENTS.md)
+        managed_dirs=(rules skills)
         ;;
     *)
         usage
@@ -59,7 +61,7 @@ done < <(
     {
         printf '%s\n' "${entry_files[@]}"
         cd "$repo_root"
-        find rules skills agents -type f -print
+        find "${managed_dirs[@]}" -type f -print
     } | LC_ALL=C sort -u
 )
 

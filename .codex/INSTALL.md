@@ -13,7 +13,7 @@ fi
 bash "$HOME/.ai/scripts/install.sh" codex
 ```
 
-The installer manages `AGENTS.md` and this repository's rules, skills, and
-agents under `~/.codex`. It records the files it installs, removes previously
-recorded files when they disappear from the repository, and preserves other
-user-created rules, skills, and agents.
+The installer manages `AGENTS.md` and this repository's rules and skills under
+`~/.codex`. Codex custom agents use TOML, so the installer leaves personal and
+project custom agents to Codex and preserves them. It records the files it
+installs and removes only previously recorded repository-managed files.

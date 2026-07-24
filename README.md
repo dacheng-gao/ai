@@ -9,11 +9,13 @@ This repository assumes a capable host model and a separately installed
 - concise global engineering and communication defaults;
 - domain skills for repository work, Git, GitHub, review, requirements, and test
   design;
-- small optional subagent definitions.
+- small optional Claude Code subagent definitions and host-neutral delegation
+  guidance.
 
 Generic planning, debugging, TDD, review, and verification workflows belong to
-the host and superpowers. `superagents` is optional coordination for
-genuinely cross-lane work, not a gateway for every request.
+the host and superpowers. `superagents` selects a narrowly matched specialist or
+coordinates genuinely independent work only when delegation adds material
+value; it is not a gateway for every request.
 
 ## Layout
 
@@ -21,7 +23,7 @@ genuinely cross-lane work, not a gateway for every request.
 - `CLAUDE.md`: thin Claude Code entry point
 - `rules/`: short global defaults
 - `skills/`: task-triggered domain guidance
-- `agents/`: bounded optional workers
+- `agents/`: bounded optional Claude Code workers
 - `scripts/`: installation and repository verification
 
 ## Install
@@ -34,6 +36,11 @@ Install superpowers first, then follow:
 Upgrade instructions are in the corresponding `UPGRADE.md`. The installer
 tracks files managed by this repository, removes them when they disappear from
 the repository, and preserves unrelated user content.
+
+Codex uses its built-in agents and personal or project custom TOML agents.
+Claude Code uses its built-ins plus Markdown agents under `~/.claude/agents`.
+Routing uses the agents exposed by the active host and their descriptions; this
+repository does not maintain a static catalog of externally installed agents.
 
 ## Verify
 
