@@ -1,55 +1,52 @@
 # AI Guidance
 
-Shared baseline guidance for Claude Code and Codex.
+A source repository for globally installed Claude Code and Codex guidance.
+`AGENTS.md` is the shared global working agreement, not a separate project policy.
+The repository is not intended to be copied into each business project.
 
-This repository assumes a capable host model and a separately installed
-[superpowers](https://github.com/obra/superpowers) plugin. It adds only:
-
-- a short, host-neutral engineering constitution;
-- concise global engineering and communication defaults;
-- domain skills for repository work, Git, GitHub, review, requirements, and test
-  design;
-- small optional Claude Code subagent definitions and host-neutral delegation
-  guidance.
-
-Generic planning, debugging, TDD, review, and verification workflows belong to
-the host and superpowers. `superagents` selects a narrowly matched specialist or
-coordinates genuinely independent work only when delegation adds material
-value; it is not a gateway for every request.
+The agreement keeps stable scope, authority, evidence, and communication defaults.
+Skills add task-specific decisions and checks only when their descriptions match.
+Clear tasks proceed directly; requirements analysis, alternative designs, extra
+tests, and delegation apply when they resolve actual uncertainty or risk.
 
 ## Layout
 
-- `AGENTS.md`: durable shared principles
-- `CLAUDE.md`: thin Claude Code entry point
-- `rules/`: short global defaults
-- `skills/`: task-triggered domain guidance
-- `agents/`: bounded optional Claude Code workers
-- `scripts/`: installation and repository verification
+- `AGENTS.md`: the single shared global agreement
+- `CLAUDE.md`: Claude Code entry point importing that agreement
+- `.agents/skills/`: 6 reusable skills, including guidance evaluation
+- `.codex/hooks/`: Codex prompt review hook script
+- `docs/`: methodology, design rationale, and behavioral evaluation cases
+- `prompts/`: optional user-invoked analysis prompts
 
-## Install
+Engineering and communication defaults are consolidated into `AGENTS.md`.
+This repository no longer distributes separate Markdown rules or agent roles.
+Existing external skills, rules, and host-specific agents remain user-owned.
+Delegation uses capabilities exposed by the active host; installed role counts
+are not evidence that delegation will improve a task.
 
-Install superpowers first, then follow:
+## Usage And Verification
 
-- Claude Code: [`.claude/INSTALL.md`](.claude/INSTALL.md)
-- Codex: [`.codex/INSTALL.md`](.codex/INSTALL.md)
+Skills live in `.agents/skills/`, including their reference files and host metadata.
+The former installer and verification scripts have been removed. Global guidance
+and skill installations must be managed separately; updating this checkout does
+not update existing installed copies.
 
-Upgrade instructions are in the corresponding `UPGRADE.md`. The installer
-tracks files managed by this repository, removes them when they disappear from
-the repository, and preserves unrelated user content.
+The prompt review script is stored at [`.codex/hooks/prompt-review.mjs`](.codex/hooks/prompt-review.mjs).
+It uses Node.js built-ins and handles `SessionStart`, `UserPromptSubmit`, and
+`Stop` events. This repository copy preserves the current global script's behavior;
+global hook registration is managed separately.
 
-Codex uses its built-in agents and personal or project custom TOML agents.
-Claude Code uses its built-ins plus Markdown agents under `~/.claude/agents`.
-Routing uses the agents exposed by the active host and their descriptions; this
-repository does not maintain a static catalog of externally installed agents.
-
-## Verify
+Check script syntax with:
 
 ```bash
-bash scripts/verify.sh
+node --check .codex/hooks/prompt-review.mjs
 ```
 
-The check validates active guidance structure, approval-gate invariants, skill
-metadata, install documentation, local references, and context-size budgets.
+Check the active host's skill list to confirm runtime discovery. File presence
+and syntax checks do not prove that guidance improves model behavior. Use
+[the evaluation cases](docs/guidance-evaluation.md) and
+[`evaluate-guidance`](.agents/skills/evaluate-guidance/SKILL.md) to compare outcomes.
+See [design decisions and evidence](docs/guidance-design.md) for trade-offs and limits.
 
 ## License
 

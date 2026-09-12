@@ -1,0 +1,4 @@
+interface:
+  display_name: "GitHub"
+  short_description: "Manage GitHub issues, PRs, checks, and releases"
+  default_prompt: "Use $github to inspect and safely perform the requested GitHub operation."

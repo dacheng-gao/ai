@@ -1,0 +1,4 @@
+interface:
+  display_name: "Git"
+  short_description: "Manage local Git history, branches, and conflicts"
+  default_prompt: "Use $git to inspect and safely perform the requested local Git operation."
