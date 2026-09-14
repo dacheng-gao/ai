@@ -26,14 +26,25 @@ underlying task during this enhancement pass. Improve these layers as useful:
   inference or assumption to validate, never as a user requirement. Do not
   speculate about personal motives. If means and ends may conflict, direct
   the agent to examine that mismatch without silently replacing the request.
-- Method: add proportionate, task-relevant analysis, work sequencing, evidence
+- Method: embed suitable methods in the enhanced prompt to guide the subsequent
+  work, with proportionate, task-relevant analysis, work sequencing, evidence
   gathering, and verification guidance. These are revisable suggestions, not
   new user requirements. Do not invent facts, deliverables, scope, permissions,
   technology commitments, numerical targets, or acceptance criteria.
 
-Select the smallest useful set of methods for the actual decision gap, not for
-popularity. Translate selected methods into concrete guidance, not a checklist
-of framework names. Use only when relevant:
+Apply methods at two levels: use them as needed to understand and improve the
+original prompt; separately, select methods that would help the executing agent
+carry out the user's task and write that guidance into the enhanced prompt.
+A method useful for prompt review need not be useful for the subsequent work,
+and the subsequent work may need methods not used during prompt review.
+
+At each level, select the smallest useful set for the actual decision gap, not
+for popularity. For the subsequent work, translate selected methods into concrete,
+task-specific instructions: what to examine or do, which evidence would inform
+the decision, or how to verify the result, as relevant. Integrate these instructions
+where they help; naming a framework or describing how the prompt was reviewed is
+not a substitute. If no method adds value to the task, omit methodological guidance.
+The following methods are options for either level, not a required or exhaustive list:
 - First-principles: examine foundational assumptions.
 - Socratic questions: clarify material gaps in concepts, evidence, or constraints.
 - Steelman: give genuine competing explanations or approaches their strongest
