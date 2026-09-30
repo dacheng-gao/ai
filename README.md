@@ -48,6 +48,26 @@ and syntax checks do not prove that guidance improves model behavior. Use
 [`evaluate-guidance`](.agents/skills/evaluate-guidance/SKILL.md) to compare outcomes.
 See [design decisions and evidence](docs/guidance-design.md) for trade-offs and limits.
 
+## Codex resilient runner
+
+[`codex_resilient.py`](tools/codex-resilient/codex_resilient.py) is an external retry and resume
+supervisor for the local `~/bin/codex-*` wrappers. It uses `codex exec --json`,
+persists each run under `~/.codex-resilient/runs`, and resumes the same session
+after capacity, rate-limit, or transient network failures. Permanent errors and
+user interrupts stop without retrying.
+
+The global entry point is installed at `~/bin/codex-resilient`:
+
+```bash
+codex-resilient --profile dacheng --max-attempts 99 --max-elapsed 24h \
+  "完成这个任务"
+```
+
+Use `--wrapper ~/bin/codex-halcrow` when the wrapper itself, rather than the
+profile name, is the source of truth. The runner does not copy credentials from
+wrappers and never uses `--ephemeral`, because session persistence is required
+for resume.
+
 ## License
 
 [MIT](LICENSE)
