@@ -1,0 +1,4 @@
+interface:
+  display_name: "Software Design Philosophy"
+  short_description: "Apply complexity-first software design principles"
+  default_prompt: "Use $software-design-philosophy to evaluate or design software boundaries, APIs, and architecture."
