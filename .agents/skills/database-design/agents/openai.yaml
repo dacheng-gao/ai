@@ -1,0 +1,4 @@
+interface:
+  display_name: "业务数据库设计"
+  short_description: "从业务模型设计关系数据库，落实约束与事务，并平衡读写性能"
+  default_prompt: "使用 $database-design 根据业务模型和实际负载设计数据库，说明表结构、约束、事务与索引的依据及验证结果。"

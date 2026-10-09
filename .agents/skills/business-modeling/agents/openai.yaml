@@ -1,0 +1,4 @@
+interface:
+  display_name: "业务理解与建模"
+  short_description: "从业务证据与场景提炼概念、规则和边界，并验证模型能支持软件开发"
+  default_prompt: "使用 $business-modeling，根据现有业务资料建立或评审模型，说明依据、关键规则、验证场景与未决问题。"
