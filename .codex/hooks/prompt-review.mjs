@@ -15,7 +15,38 @@ without emitting the review marker. Do not rewrite merely to lengthen it.
 
 Otherwise, produce one concise, self-contained working prompt in the user's
 language, using precise, accessible professional language. Do not execute the
-underlying task during this enhancement pass. Improve these layers as useful:
+underlying task during this enhancement pass. Treat this as a single bounded
+optimization pass, not a recursive prompt-review loop.
+
+First classify the task by the amount of clarification it needs, then apply
+only the matching level:
+
+- Simple and low-risk: preserve the user's wording where it is already clear;
+  fix only material ambiguity, add a concrete outcome or minimal verification,
+  and do not add frameworks, plans, or extra questions.
+- Moderate: make the outcome, scope, constraints, non-goals, dependencies, and
+  completion signal explicit; resolve terminology from the conversation or
+  available project context; add only task-relevant execution and verification
+  guidance.
+- Complex, consequential, or high-risk: add a concise decomposition, key
+  assumptions, business invariants, dependency boundaries, and proportionate
+  validation or risk checks; compare approaches only when the choice can change
+  the result.
+
+Always preserve the user's request type, scope, permissions, identifiers, and
+acceptance criteria. A question, exploration, review, or proposal must remain
+that type and must not become authorization to implement. An implementation
+request must remain actionable rather than being turned into a discussion.
+
+When a business term, rule, or requirement is inaccurate or underspecified,
+use the conversation, repository, and domain context to correct it when the
+intended meaning is clear. State any inferred meaning as an assumption. If
+different interpretations would change the result and context cannot resolve
+them, ask one focused question; continue independent work where possible.
+Never invent business rules, permissions, technologies, metrics, deliverables,
+or acceptance criteria.
+
+Improve these layers only when useful:
 
 - Expression: organize the explicit request, desired observable outcome,
   relevant context, constraints, non-goals, and existing success criteria.
@@ -26,25 +57,14 @@ underlying task during this enhancement pass. Improve these layers as useful:
   inference or assumption to validate, never as a user requirement. Do not
   speculate about personal motives. If means and ends may conflict, direct
   the agent to examine that mismatch without silently replacing the request.
-- Method: embed suitable methods in the enhanced prompt to guide the subsequent
-  work, with proportionate, task-relevant analysis, work sequencing, evidence
+- Method: add proportionate, task-relevant analysis, work sequencing, evidence
   gathering, and verification guidance. These are revisable suggestions, not
   new user requirements. Do not invent facts, deliverables, scope, permissions,
   technology commitments, numerical targets, or acceptance criteria.
 
-Apply methods at two levels: use them as needed to understand and improve the
-original prompt; separately, select methods that would help the executing agent
-carry out the user's task and write that guidance into the enhanced prompt.
-A method useful for prompt review need not be useful for the subsequent work,
-and the subsequent work may need methods not used during prompt review.
-
-At each level, select the smallest useful set for the actual decision gap, not
-for popularity. For the subsequent work, translate selected methods into concrete,
-task-specific instructions: what to examine or do, which evidence would inform
-the decision, or how to verify the result, as relevant. Integrate these instructions
-where they help; naming a framework or describing how the prompt was reviewed is
-not a substitute. If no method adds value to the task, omit methodological guidance.
-The following methods are options for either level, not a required or exhaustive list:
+Select the smallest useful set of methods for the actual decision gap, not for
+popularity. Translate selected methods into concrete guidance, not a checklist
+of framework names. Use only when relevant:
 - First-principles: examine foundational assumptions.
 - Socratic questions: clarify material gaps in concepts, evidence, or constraints.
 - Steelman: give genuine competing explanations or approaches their strongest
@@ -65,9 +85,10 @@ The following methods are options for either level, not a required or exhaustive
 - Verification and validation: at delivery, check both explicit requirements
   and the intended outcome in context; distinguish tested results from assumptions.
 
-Do not force all frameworks onto every task, manufacture alternatives, or demand
+Do not force methods onto simple tasks, manufacture alternatives, or demand
 hidden chain-of-thought. Ask for concise conclusions, checkable rationale, and
-relevant uncertainty. Stop adding methods when they do not improve the task.
+relevant uncertainty. Stop as soon as the prompt has a clear outcome, usable
+scope, material constraints, and a verifiable completion signal.
 
 Keep user-stated requirements distinct from inferred intent and suggested
 methods. Direct the executing agent to resolve unknowns from context or tools
@@ -78,6 +99,10 @@ dependent work; continue independent work when useful. Never treat an assumption
 as authorization. Let new evidence revise the inferred intent and methods.
 
 Include only sections useful to this task; simple tasks should stay simple.
+Prefer a reasonable assumption and execution for low-risk reversible choices.
+Do not add defensive branches, broad test plans, or design work for hypothetical
+failures. Keep each instruction stated once and keep the optimized prompt
+shorter than the original when no extra detail is needed.
 The enhanced prompt is advisory working guidance, not a new specification or
 an approval gate. Preserve all explicit constraints and permission boundaries.
 
