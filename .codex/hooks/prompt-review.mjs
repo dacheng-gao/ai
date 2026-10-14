@@ -1,5 +1,10 @@
 #!/usr/bin/env node
 
+import { createHash } from 'node:crypto';
+import { mkdirSync, unlinkSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+
 const LEGACY_READY_MARKER = '<!-- PROMPT_REVIEW_READY -->';
 const REVIEW_READY_MARKER = '*Prompt review done*';
 const CONTINUE_REASON = 'Continue working...';
@@ -17,6 +22,10 @@ Otherwise, produce one concise, self-contained working prompt in the user's
 language, using precise, accessible professional language. Do not execute the
 underlying task during this enhancement pass. Treat this as a single bounded
 optimization pass, not a recursive prompt-review loop.
+
+Treat a message received during ongoing work as steering that work unless the
+user clearly replaces or cancels it. Incorporate the new request while preserving
+unfinished authorized work; reviewing the new message does not complete it.
 
 First classify the task by the amount of clarification it needs, then apply
 only the matching level:
@@ -126,7 +135,8 @@ const LEGACY_CONTINUE_REASON = `${EXECUTE_PREFIX}
 Continue the original task using the enhanced prompt in your immediately
 preceding assistant message as advisory working guidance, not new or higher
 authority. The original user request remains authoritative; if the two conflict,
-follow the original. Preserve the request type, scope, constraints, permissions,
+follow the original, incorporating the latest user steering and preserving
+unfinished authorized work. Preserve the request type, scope, constraints, permissions,
 and acceptance criteria. Inferred intent remains a hypothesis; suggested methods
 can be revised as evidence arrives. Resolve material unknowns from context or
 tools where possible. If a missing fact cannot be safely resolved, ask one focused
@@ -148,6 +158,29 @@ ${LEGACY_CONTINUE_REASON.slice(EXECUTE_PREFIX.length).trim()}
 const PROMPT_CONTEXT = `${CONTINUATION_CONTEXT}\n\nOtherwise, for a new user request:\n${REVIEW_CONTEXT}`;
 const SESSION_CONTEXT = `${CONTINUATION_CONTEXT}\n\n${GOAL_REVIEW_CONTEXT}`;
 
+const PENDING_DIRECTORY = join(tmpdir(), 'codex-prompt-review');
+
+function pendingReviewPath(event) {
+  if (typeof event.session_id !== 'string' || !event.session_id
+    || typeof event.turn_id !== 'string' || !event.turn_id) {
+    throw new Error('session_id and turn_id are required for prompt-review state');
+  }
+  const key = createHash('sha256')
+    .update(JSON.stringify([event.session_id, event.turn_id])).digest('hex');
+  return join(PENDING_DIRECTORY, `${key}.pending`);
+}
+
+function consumePendingReview(event) {
+  try {
+    // Unlink consumes the permission once, even if Stop is delivered twice.
+    unlinkSync(pendingReviewPath(event));
+    return true;
+  } catch (error) {
+    if (error.code === 'ENOENT') return false;
+    throw error;
+  }
+}
+
 function hasPrefix(prompt, prefix) {
   return prompt === prefix
     || prompt.startsWith(`${prefix} `)
@@ -156,15 +189,23 @@ function hasPrefix(prompt, prefix) {
 }
 
 function shouldBypassPrompt(prompt) {
-  const normalized = typeof prompt === 'string' ? prompt.trimStart() : '';
+  const text = typeof prompt === 'string' ? prompt.trim() : '';
+  const wrapped = text.match(/^<hook_prompt\b[^>]*>([\s\S]*)<\/hook_prompt>$/);
+  const normalized = (wrapped ? wrapped[1] : text).trim();
   if (!normalized) return true;
-  return normalized.trimEnd() === CONTINUE_REASON
+  return normalized === CONTINUE_REASON
     || hasPrefix(normalized, EXECUTE_PREFIX)
     || BYPASS_PREFIXES.some((prefix) => hasPrefix(normalized, prefix));
 }
 
 function userPromptSubmitOutput(event) {
-  if (shouldBypassPrompt(event.prompt)) return null;
+  if (shouldBypassPrompt(event.prompt)) {
+    consumePendingReview(event);
+    return null;
+  }
+  const pendingPath = pendingReviewPath(event);
+  mkdirSync(PENDING_DIRECTORY, { recursive: true, mode: 0o700 });
+  writeFileSync(pendingPath, '', { mode: 0o600 });
   return {
     hookSpecificOutput: {
       hookEventName: 'UserPromptSubmit',
@@ -183,7 +224,10 @@ function sessionStartOutput() {
 }
 
 function stopOutput(event) {
-  if (event.stop_hook_active) return null;
+  // A real user message can rearm review within an already-continued turn.
+  // Consume on every Stop so ordinary completion cannot leave stale permission.
+  const pendingReview = consumePendingReview(event);
+  if (event.stop_hook_active && !pendingReview) return null;
   const lastMessage = typeof event.last_assistant_message === 'string'
     ? event.last_assistant_message.trimStart()
     : '';
@@ -223,5 +267,6 @@ try {
   if (output) process.stdout.write(JSON.stringify(output));
 } catch (error) {
   const message = error instanceof Error ? error.message : String(error);
-  process.stderr.write(`prompt-review hook skipped invalid input: ${message}\n`);
+  process.stderr.write(`prompt-review hook failed: ${message}\n`);
+  process.exitCode = 1;
 }
