@@ -1,0 +1,4 @@
+interface:
+  display_name: "系统架构与技术验证"
+  short_description: "以质量场景、责任边界和技术试验支持系统级取舍与可行性判断"
+  default_prompt: "使用 $software-architecture 评审当前系统方案，说明质量要求、关键取舍、验证和演进风险。"

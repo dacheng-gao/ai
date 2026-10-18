@@ -1,0 +1,4 @@
+interface:
+  display_name: "实现与安全修改"
+  short_description: "按行为契约小步实现、调试与重构，验证已有系统中的必要修改"
+  default_prompt: "使用 $software-implementation 完成当前代码变更，保留必要契约并执行相称验证。"

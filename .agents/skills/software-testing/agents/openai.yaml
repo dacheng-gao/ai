@@ -1,0 +1,4 @@
+interface:
+  display_name: "测试与业务验收"
+  short_description: "用规则例子、风险选择和探索式测试建立可核查的行为验证证据"
+  default_prompt: "使用 $software-testing 根据需求与实现选择有区分力的检查，执行授权验证并报告证据边界。"

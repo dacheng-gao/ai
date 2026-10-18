@@ -1,0 +1,4 @@
+interface:
+  display_name: "问题发现与需求澄清"
+  short_description: "从真实问题证据澄清目标、场景、范围与验收条件，避免猜测业务"
+  default_prompt: "使用 $product-discovery 分析现有材料，澄清问题、需求与验收，指出影响决定的未知。"

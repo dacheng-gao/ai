@@ -1,0 +1,4 @@
+interface:
+  display_name: "发布与运行演进"
+  short_description: "准备可靠发布，分析运行问题并将真实反馈用于演进与系统退役"
+  default_prompt: "使用 $release-operations 处理当前发布或运行任务，核实环境与授权，验证结果并说明剩余风险。"

@@ -21,6 +21,8 @@ description: >-
 
 本技能综合 Evans、Fowler、Hay、Cockburn、Jackson、Ross 的相关方法。需要理解方法选择和各书边界时，读 [六本书的方法与适用边界](references/method-lenses.md)。需要查看从材料到模型的具体演练时，读 [建模演练与反例](references/modeling-example.md)。不必默认加载全部参考。
 
+跨角色流程存在争议、需要协同发现业务知识时，读 [事件风暴与 DDD 方法选择](references/collaborative-modeling.md)。该指南补充 Khononov 与 Brandolini 的公开方法，不要求使用事件驱动架构。
+
 这些指导是概念性转述和跨书综合，不是经过版本核对的原文摘要。不要编造引文、页码、章节位置或作者对当前项目的结论；涉及精确归属时核查用户提供的原文或权威来源。
 
 ## 从业务材料形成模型

@@ -1,0 +1,4 @@
+interface:
+  display_name: "软件交付闭环"
+  short_description: "按任务衔接需求、设计、实现、验证和运行反馈，减少返工与流程负担"
+  default_prompt: "使用 $software-delivery 完成当前交付任务，按证据选择必要方法，实施并验证授权范围内的结果。"

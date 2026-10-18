@@ -23,7 +23,7 @@ Apply these principles when a task involves module boundaries, public APIs, serv
 
 ## Choose deliberately
 
-- For important decisions, compare at least two plausible designs and explain the trade-off in complexity, failure behavior, testability, operations, and future change cost.
+- For important decisions with genuine alternatives, compare plausible designs and explain the trade-off in complexity, failure behavior, testability, operations, and change cost. Do not manufacture alternatives for a settled or obvious local choice.
 - Distinguish strategic design work from tactical patches. Spend design effort where a decision will be repeated, widely depended on, or expensive to reverse; keep low-risk local choices simple.
 - Do not speculate about every possible future. Generalize only around observed or strongly constrained variation, and record assumptions that would justify revisiting the boundary.
 - Treat duplication as a signal to investigate, not an automatic refactoring target. Duplication can be safer than a premature shared abstraction when the concepts may diverge.
@@ -40,3 +40,9 @@ Check whether the proposed design:
 6. Includes an explicit migration or rollback path when changing a public contract or data boundary.
 
 When reviewing or proposing architecture, state the conclusion first, then the evidence, assumptions, rejected alternatives, and the signal that would justify changing the decision. Apply the principles proportionally; this skill does not require a particular architecture style, language, framework, or microservice adoption.
+
+## Provenance and complementary work
+
+The primary conceptual source is John Ousterhout's *A Philosophy of Software Design*, second edition; the [author's page](https://web.stanford.edu/~ouster/cgi-bin/book.php) identifies the edition and discusses its scope. These instructions are an engineering synthesis, not a chapter-by-chapter extraction or a claim that all authors agree. Generalize around a concrete simplifying interface, not hypothetical features; clarity may justify a longer method or an explanatory comment.
+
+For system-wide quality scenarios and technical feasibility, use an available `software-architecture` skill when relevant. For carrying out a behavior-preserving refactor or changing untested code, use an available `software-implementation` skill. Neither is a prerequisite for an ordinary design decision. Stop when the current boundary decision is supported; do not expand a design review into implementation without authorization.
