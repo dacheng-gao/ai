@@ -1,10 +1,12 @@
 ---
 name: software-testing
 description: >-
-  Develop acceptance examples, select risk-based tests, perform exploratory testing
-  and assess verification evidence. Use for test design, meaningful coverage gaps
-  or business acceptance analysis. Exclude routine execution of known checks,
-  report formatting and code edits with no testing decision.
+  Designs acceptance examples and risk-based test strategies, reviews test
+  quality and coverage gaps, runs exploratory testing and judges whether
+  verification evidence is sufficient. Use for 测试设计、验收用例、测试评审,
+  deciding which tests to add or at which level, diagnosing flaky or brittle
+  tests, or assessing business acceptance. Exclude routine execution of known
+  checks, report formatting and code edits with no testing decision.
 ---
 
 # 测试与业务验收
@@ -27,13 +29,35 @@ description: >-
 - 难以穷举的交互与未知风险：有任务目标、时间边界和记录的探索式测试。
 - 权限、并发、性能或数据恢复：在对应边界和环境验证；单线程或内存替身不能证明数据库竞争，低负载样本不能证明容量。
 
-按失败后果、变更范围和不确定性安排检查。测试层次是反馈速度和真实性的取舍，不设固定比例或覆盖率门槛。小改动已有足够证据时直接复用，不为了流程新增测试。
+按失败后果、变更范围和不确定性安排检查。
+
+## 评价一个测试是否有价值
+
+新增或评审测试时逐项检查（依据 Khorikov 的好测试四要素，详见 methods.md）：
+
+1. **能抓住回归**：把被测缺陷或规则故意改错，这个测试会失败吗？不会失败的测试不提供保护。
+2. **耐重构**：只改内部实现、不改外部行为时，测试会误报吗？断言对象应是可观察结果，而非内部调用次数或私有结构。
+3. **反馈快**：能否在更快的层次得到同样的保护？
+4. **易维护**：读者能否一眼看出前提、操作和预期；准备代码是否大于测试本身。
+
+mock 只用于跨进程且外部可观察的非托管依赖（第三方 API、消息总线、邮件）；本应用独占的数据库等托管依赖优先用真实实例做集成测试。
+测试层次是反馈速度和真实性的取舍，不设固定比例或覆盖率门槛。小改动已有足够证据时直接复用，不为了流程新增测试。
 
 ## 执行与诊断
 
 对实际执行记录版本/差异、必要环境、命令或操作、预期与结果。先确认测试失败是否揭示产品缺陷、测试缺陷还是环境故障；不通过删除断言或无限重试制造成功。
 
 业务验收使用有代表性的角色、数据和任务，区分功能符合约定、用户能完成任务、业务指标改善。代理模拟走查只能发现潜在问题，不能冒充业务用户签收或真实可用性研究。
+
+## 输出模板（默认格式，可裁剪）
+
+```markdown
+| 风险／规则 | 检查（层次） | 前提与数据 | 预期（来源） | 状态 |
+| --- | --- | --- | --- | --- |
+| R1 超额退款被拒 | 集成：API + 真实库 | 已退 90/100 | 再退 20 → 409，余额不变（spec R1） | 通过／失败／未运行／待确认 |
+```
+
+状态只用：通过、失败、未运行、不适用、待确认（预期未知）。表后列出发现的问题（最短复现与影响）和剩余风险。
 
 ## 收敛
 

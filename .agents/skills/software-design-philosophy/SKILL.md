@@ -1,48 +1,65 @@
 ---
 name: software-design-philosophy
-description: "Evaluate or design software modules, APIs, and architecture with a complexity-first approach: make boundaries deep, hide information, concentrate change, and reduce the cost of future modification. Use for architecture decisions, significant refactors, and design reviews; do not invoke for routine local edits with no meaningful design choice."
+description: >-
+  Evaluates or designs module boundaries, public APIs, class/function
+  responsibilities and code-level refactors with a complexity-first approach
+  (deep modules, information hiding, concentrated change). Use for module or API
+  design reviews, choosing where a rule should live, or planning a significant
+  refactor inside a codebase. Exclude system-level quality tradeoffs and
+  deployment topology (use software-architecture) and routine local edits with no
+  real design choice.
 ---
 
-# Complexity-first software design
+# 以复杂度为首要考量的模块与 API 设计
 
-Apply these principles when a task involves module boundaries, public APIs, service decomposition, data ownership, or a non-trivial refactor. The goal is to reduce the system-wide cost of understanding and changing code, not to maximize abstraction, layers, or component count.
+目标是降低理解和修改代码的总成本，而不是增加抽象、层次或组件数量。系统级质量场景、部署拓扑和技术可行性交给 `software-architecture`；行为保持的重构执行交给 `software-implementation`。
 
-## Start with the complexity
+## 默认流程
 
-- Identify the change the design must support, the details a caller currently needs to know, and the places a rule or decision is duplicated.
-- Treat dependencies, information leakage, special cases, and non-obvious control flow as complexity signals.
-- Prefer the smallest design that hides the relevant complexity and leaves a clear path for evidence-driven evolution.
+1. **说出要支持的变化**：本次及已观察到的变化是什么；调用方现在必须知道哪些细节；同一规则或决策在哪些地方重复。
+2. **定位复杂度**：按下方“红旗”逐项检查涉及的代码或方案，只记录有具体位置的问题。
+3. **至少想两种接口**（仅限重要且有真实选择的边界）：用调用方代码草图比较，选让常见用法最简单、泄露知识最少的一种。显然的局部选择不凑备选。
+4. **给出结论**：先结论，再依据（文件位置或调用示例）、接受的代价、被放弃的方案，以及什么信号出现时应重新审视。
 
-## Shape boundaries
+## 设计原则
 
-- Prefer deep modules: a small, semantic interface that hides substantial implementation knowledge. Reject shallow wrappers that merely forward calls or rename technical details.
-- Organize code around business capability or a stable reason for change; keep API, application, domain, and infrastructure concerns inside that boundary when useful.
-- Keep one authoritative owner for each business rule, data interpretation, and external-system policy. Prevent database schemas, vendor protocols, and transport details from leaking into callers.
-- Make interfaces explicit and semantically meaningful. A caller should ask for an intention (for example, `findPendingOrders`) rather than reconstructing storage mechanics.
-- Do not split a module merely because it is large, or merge modules merely because code is shared. Use coupling, change impact, and information ownership as evidence.
+- **深模块**：小而有语义的接口隐藏大量实现知识。只转发调用或换个名字的浅层包装应合并或删除。
+- **信息隐藏**：每项业务规则、数据解释和外部系统策略只有一个权威归属；数据库结构、供应商协议和传输细节不泄露给调用方。调用方表达意图（如 `findPendingOrders`），而不是拼装存储机制。
+- **把复杂度往下拉**：宁可让模块实现更复杂，也不要把配置项、特殊情况或调用顺序推给每个调用方。
+- **用定义消除错误**：能通过调整语义让异常情况不存在（如删除不存在的元素视为成功、区间操作自动截断）就不要抛给调用方；真正无效的状态仍需明确报错。
+- **不同层次，不同抽象**：相邻层若接口几乎一样，说明有一层没有提供价值。
+- **适度通用**：接口面向当前已知的多个用法略作通用化，以简化调用为准；不为假想需求泛化。
+- **按变化原因组织**：围绕业务能力或稳定的变化原因划分代码。模块大不是拆分理由，代码相似也不是合并理由；用耦合、变更影响和信息归属作证据。重复是调查信号，概念可能分化时，重复比过早共享更安全。
+- **战略投入与战术修补**：在会被反复依赖、难以撤回的边界上多花设计精力；低风险局部选择保持简单。
 
-## Choose deliberately
+## 红旗清单
 
-- For important decisions with genuine alternatives, compare plausible designs and explain the trade-off in complexity, failure behavior, testability, operations, and change cost. Do not manufacture alternatives for a settled or obvious local choice.
-- Distinguish strategic design work from tactical patches. Spend design effort where a decision will be repeated, widely depended on, or expensive to reverse; keep low-risk local choices simple.
-- Do not speculate about every possible future. Generalize only around observed or strongly constrained variation, and record assumptions that would justify revisiting the boundary.
-- Treat duplication as a signal to investigate, not an automatic refactoring target. Duplication can be safer than a premature shared abstraction when the concepts may diverge.
+评审时逐项对照，命中需给出位置和改进方向；未命中不必罗列。
 
-## Review implementation quality
+| 红旗 | 识别方式 |
+| --- | --- |
+| 浅模块 | 接口复杂度接近实现复杂度；方法只是转发 |
+| 信息泄露 | 同一格式、协议或规则知识出现在多个模块，改一处必须同步改另一处 |
+| 时间顺序分解 | 按“先读、再处理、再写”拆模块，导致同一知识被拆散 |
+| 透传方法／变量 | 参数或方法穿过多层只为传到底层 |
+| 特殊与通用混杂 | 通用机制里塞满某个调用方的特殊分支 |
+| 联体方法 | 读懂一个方法必须同时读另一个方法的实现 |
+| 调用方需了解顺序或配置 | 不按特定顺序调用就出错；大量参数只有少数组合有效 |
+| 难以命名 | 找不到准确名字通常说明职责不清 |
+| 注释复述代码 | 注释没有说明代码无法表达的意图、约束或理由 |
+| 不直观的代码 | 读者需要追踪很多地方才能理解行为或副作用 |
 
-Check whether the proposed design:
+## 评审检查
 
-1. Reduces the knowledge required by callers and future maintainers.
-2. Localizes likely changes instead of scattering them across layers or services.
-3. Makes the common path obvious and contains exceptional cases.
-4. Keeps dependencies directional and prevents convenience access across boundaries.
-5. Can be tested at the boundary that owns the behavior, without reconstructing the whole system.
-6. Includes an explicit migration or rollback path when changing a public contract or data boundary.
+方案应能回答：
 
-When reviewing or proposing architecture, state the conclusion first, then the evidence, assumptions, rejected alternatives, and the signal that would justify changing the decision. Apply the principles proportionally; this skill does not require a particular architecture style, language, framework, or microservice adoption.
+1. 调用方和后续维护者需要知道的东西是否变少？
+2. 可预见的变化是否集中在一处，而非散落在多层或多个服务？
+3. 常见路径是否显而易见，例外是否被收拢？
+4. 依赖方向是否明确，有无为图方便的跨边界访问？
+5. 能否在拥有该行为的边界上测试，而不必搭起整个系统？
+6. 改变公开契约或数据边界时，是否有迁移或回退路径？
 
-## Provenance and complementary work
+## 来源与边界
 
-The primary conceptual source is John Ousterhout's *A Philosophy of Software Design*, second edition; the [author's page](https://web.stanford.edu/~ouster/cgi-bin/book.php) identifies the edition and discusses its scope. These instructions are an engineering synthesis, not a chapter-by-chapter extraction or a claim that all authors agree. Generalize around a concrete simplifying interface, not hypothetical features; clarity may justify a longer method or an explanatory comment.
-
-For system-wide quality scenarios and technical feasibility, use an available `software-architecture` skill when relevant. For carrying out a behavior-preserving refactor or changing untested code, use an available `software-implementation` skill. Neither is a prerequisite for an ordinary design decision. Stop when the current boundary decision is supported; do not expand a design review into implementation without authorization.
+主要依据 John Ousterhout《A Philosophy of Software Design》第 2 版（[作者页面](https://web.stanford.edu/~ouster/cgi-bin/book.php)）的概念，属工程化综合，不是逐章摘录。清晰性可以支持更长的方法或解释性注释；不要按方法长度、注释数量或抽象数量机械评分。设计评审不自动授权实施。

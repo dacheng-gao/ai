@@ -1,6 +1,6 @@
 # 生命周期方法来源与覆盖
 
-核查日期：2026-10-18。覆盖前述讨论的 **15 本书**及相关公开方法。本文是可追溯的概念提炼与 agent 工作方法综合，不是原著替代品、全文提取或逐章摘要。普通工程任务无需读取本文件或重新检索书目。
+核查日期：2026-10-18；2026-10-24 补充来源见文末专节。覆盖前述讨论的 **15 本书**及相关公开方法。本文是可追溯的概念提炼与 agent 工作方法综合，不是原著替代品、全文提取或逐章摘要。普通工程任务无需读取本文件或重新检索书目。
 
 ## 怎样理解证据
 
@@ -117,6 +117,21 @@ DORA 提供多年调查与统计研究，仍需考虑观察性数据、自报告
 - **TDD — Kent Beck 提出，Martin Fowler 公开概述**：[Test Driven Development](https://martinfowler.com/bliki/TestDrivenDevelopment.html)，已读取概述。落地 [safe-change.md](../../software-implementation/references/safe-change.md)；未将其扩展为必须新增测试的通用要求。
 - **NIST SSDF**：[官方项目说明](https://csrc.nist.gov/projects/ssdf)，已读取四组实践、按风险裁剪及适用说明。落地 [security.md](security.md)；未执行合规审计。
 - **技能发现与渐进加载**：[OpenAI 官方 Build skills](https://learn.chatgpt.com/docs/build-skills)，已检索并读取正文；按本会话的 `skill-creator` 编写规则实现入口、可选参考和行为验证。明确边界的描述用于选择，正文仅在使用时加载，参考按需读取。
+
+## 2026-10-24 补充来源
+
+本轮按“为技能补充具体可操作的默认流程、模板与检查”为目标补充以下来源。核查层次同上文定义。
+
+- **EARS — Alistair Mavin**：[官方页面](https://alistairmavin.com/ears/)，已读取正文中的通用句式与六种模式。落地 [requirements.md](../../product-discovery/references/requirements.md) 的验收句式及 product-discovery 输出模板。
+- **Kiro 规格工作流**：[Specs 文档](https://kiro.dev/docs/specs/)，已读取三阶段（requirements/bugfix → design → tasks）及 bugfix 规格的“当前/期望/不变行为”。仅借鉴缺陷需求三项写法与三件套映射；不要求项目采用该工具或文件名。
+- **A Philosophy of Software Design，第 2 版 — Ousterhout**：沿用上文第 8 项的核查范围。红旗清单、把复杂度往下拉、用定义消除错误、设计两次等为概念性转述，落地 [software-design-philosophy](../../software-design-philosophy/SKILL.md)；未逐章核对原文措辞。
+- **Building Evolutionary Architectures，第 2 版 — Ford、Parsons、Kua、Sadalage**：[Thoughtworks 书目页](https://www.thoughtworks.com/insights/books/building-evolutionary-architectures-second-edition)，已核查书目及“适应度函数用于自动化架构治理”的定位，未通读正文。落地 [decisions.md](../../software-architecture/references/decisions.md)。*Fundamentals of Software Architecture* 第 2 版仅确认存在讨论架构特性度量与适应度函数的章节，未作为直接依据。
+- **Tidy First? — Kent Beck**：[O'Reilly 书目](https://www.oreilly.com/library/view/tidy-first/9781098151232/)，已核查书目与公开评述中“结构整理与行为变化分开、整理不总是先做”的主张，未通读正文。落地 [safe-change.md](../../software-implementation/references/safe-change.md)。
+- **Debugging: The 9 Indispensable Rules — David Agans**：依据对九条规则的通用知识整理，本轮未在线核查原文。落地 [debugging.md](../../software-implementation/references/debugging.md)，步骤为工程化改写。
+- **Unit Testing: Principles, Practices, and Patterns — Vladimir Khorikov**：[Manning 第 9 章节选](https://livebook.manning.com/book/unit-testing/chapter-9) 及二手笔记，确认四要素与“只 mock 非托管依赖”的主张，未通读原著。落地 [methods.md](../../software-testing/references/methods.md) 及 software-testing 的测试价值检查。
+- **DORA 2025 State of AI-assisted Software Development**：[Google Cloud 发布文章](https://cloud.google.com/blog/products/ai-machine-learning/announcing-the-2025-dora-report)、[DORA 报告页](https://dora.dev/research/2025/dora-report/)，已读取“AI 是放大器”“AI 采用与交付吞吐正相关、与交付稳定性负相关”的公开结论；七项 AI 能力名称在可读页面中未列出，未引用。落地 software-delivery 的切片验证要求。属观察性调查结论，不作因果保证。
+- **Diátaxis — Daniele Procida**：[官方站点](https://diataxis.fr/)，已读取四类文档定义。落地 tech-docs 场景表中的技术指南分类。
+- **Skill 编写规范**：[Claude Agent Skills best practices](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices)，已读取正文。本轮据此采用第三人称且含触发词的描述、提供默认方案而非罗列选项、复杂流程给可复制清单与输出模板、引用只保留一层。
 
 ## 覆盖与剩余研究边界
 

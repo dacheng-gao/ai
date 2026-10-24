@@ -3,7 +3,8 @@ name: business-modeling
 description: >-
   Understand a business domain and create, refine, or review models of its concepts,
   relationships, rules, lifecycle, and responsibility boundaries to support software
-  development. Use when business meaning or model correctness needs analysis, including
+  development (业务建模、领域模型、业务规则与状态梳理). Use when business meaning or
+  model correctness needs analysis, including
   before implementation or when reviewing an existing domain or data model. Exclude
   book recommendations, business-model canvases, and routine code or schema edits
   with already-settled business semantics.

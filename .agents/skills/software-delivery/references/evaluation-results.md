@@ -57,3 +57,26 @@
 未通读全部书籍，具体来源范围见 [sources.md](sources.md)。没有执行全部可能生命周期组合、真实用户访谈、安全审计、生产发布或长期运营实验；没有无技能基线对照，不能声称提升了某个生产力百分比或已经改善工程师幸福感。
 
 下一步改进应由真实任务中的误触发、遗漏、返工或额外负担驱动，按 [evaluation.md](evaluation.md) 针对性复测，不为追求覆盖数字扩展所有任务的流程。
+
+## 2026-10-24 迭代：默认流程、模板与边界
+
+**改动目标**：依据 Claude Agent Skills 编写规范，为核心技能补充可复制的默认流程、输出模板和具体检查，减少只靠约束句驱动的不稳定性；收紧相邻技能的描述边界。来源见 [sources.md](sources.md) 的“2026-10-24 补充来源”。
+
+- product-discovery：默认流程增加系统边界与所有权核对；新增需求简报模板、EARS 验收句式（requirements.md）、缺陷需求“当前/期望/不变”三项，以及证据不足时的交付方式。
+- software-architecture：默认七步流程、判断倾向、决策简报模板；decisions.md 增加 ADR 最小结构与适应度函数。
+- software-design-philosophy：改为中文，与其他技能统一；范围收窄到模块/API（系统级交给 software-architecture）；新增红旗清单。删除已分叉的 `SKILL.zh_CN.md` 副本（备份保留在维护者本地）。
+- software-implementation：可跟踪的默认清单；新增 debugging.md（以 Agans 九条规则为骨架）；safe-change.md 增加 Tidy First。
+- software-testing：测试价值四问（Khorikov）、mock 边界、风险—检查—预期—状态模板。
+- software-delivery：路由改为“缺口—技能—交接产物”表，补充 DORA 2025 的切片验证要求。
+- release-operations：发布就绪清单；描述明确事故与代码缺陷、schema 设计的分工。
+- tech-docs、business-modeling：只调整描述/场景表。按用户决定删除了有缺陷的 `tech-docs/scripts/format_markdown_tables.py`（连同 `__pycache__`）以及 SKILL.md 中说明它的段落。
+
+**结构检查**：用 skill-creator 的 `quick_validate.py`（PyYAML 装在临时虚拟环境中）检查 10 个技能，全部通过；UI YAML 均可解析；相对链接全部存在，代码围栏均已闭合；SKILL.md 正文 40–107 行。
+
+**独立选择推演**：一个独立上下文只读 12 项描述，为 12 个请求做选择，结果全部符合预期（改字不加载技能、模块接口归 design-philosophy、拆微服务归 architecture、线上偶发折扣归 implementation、脆弱测试归 testing 等）。它指出的重叠项（验收标准与测试用例、事故与代码缺陷、迁移设计与执行、规格起草与需求澄清）已在 product-discovery、release-operations、tech-docs 的描述中补充分工。这仍是基于描述的推演，不是宿主自动触发的统计数据。
+
+**执行评估**：
+- 调试：在隔离临时目录中构造可变默认参数导致折扣泄漏的缺陷，独立执行者只加载 software-implementation 和 debugging.md，完成复现、根因定位、最小修复和回归测试。维护者独立运行 `python3 -m unittest -v`，4 项通过。按其反馈补充：间歇性问题优先检查共享状态；复现已指明原因时可跳过假设列举；小改动可压缩清单。
+- 需求澄清：独立执行者在真实仓库资料上处理一份二手转述的工时审批需求。没有编造需求，给出三种可区分的解释、带待定边界的例子和分优先级的阻塞问题，并发现需求可能属于外部只读系统。按其反馈补充：入口组合顺序、提问数量与问题清单的关系、期限紧且证据不足时的交付方式、系统边界核对、中文 EARS 默认句式、待定例子的写法。
+
+**未验证**：架构、测试设计和发布技能的新模板没有做独立执行评估；未做无技能基线对照或跨模型（Haiku/Sonnet）测试。

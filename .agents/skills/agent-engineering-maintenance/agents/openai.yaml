@@ -1,0 +1,3 @@
+interface:
+  display_name: "Agent 工程环境与规则维护"
+  short_description: "检查与维护工程反馈和协作规则，发挥 Agent 能力并减少人工负担"

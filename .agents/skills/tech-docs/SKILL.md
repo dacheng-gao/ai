@@ -1,7 +1,7 @@
 ---
 name: tech-docs
 description: >-
-  Write, revise, or review software lifecycle documentation from source materials and evidence: product specifications, architecture, test cases, performance reports, API guides, runbooks, and customer delivery documents. Use for document structure, reader-appropriate explanations, technical accuracy, and actionable review. Exclude book recommendations alone, ordinary chat answers, code-only tasks, and mechanical formatting-only changes.
+  Write, revise, or review software lifecycle documentation from source materials and evidence: product specifications, architecture, test cases, performance reports, API guides, runbooks, and customer delivery documents. Use for document structure, reader-appropriate explanations, technical accuracy, and actionable review. Exclude clarifying undecided requirements (use product-discovery), book recommendations alone, ordinary chat answers, code-only tasks, and mechanical formatting-only changes.
 ---
 
 # Write Documentation
@@ -28,7 +28,7 @@ description: >-
 | 测试计划、测试用例、测试报告           | [testing.md](references/testing.md)：追踪、可执行步骤、判定依据及结果证据                                |
 | 性能测试方案、性能报告、容量结论       | [performance-testing.md](references/performance-testing.md)：负载模型、指标口径、可复现条件与结论边界    |
 | 客户交付、验收材料、使用手册、培训材料 | [customer-delivery.md](references/customer-delivery.md)：交付范围、客户操作、证据与承诺边界              |
-| API、README、部署、运维、故障排查      | [technical-guides.md](references/technical-guides.md)：准确契约、操作路径、检查和恢复                    |
+| API、README、部署、运维、故障排查      | [technical-guides.md](references/technical-guides.md)：准确契约、操作路径、检查和恢复；先按 Diátaxis 判断是教程、操作指南、参考还是解释，一页只服务一种 |
 | 任意场景的排版、长文或发布前检查       | [markdown-and-editing.md](references/markdown-and-editing.md)：信息组织、中文编辑、图表与可移植 Markdown |
 
 其他生命周期文档按实际读者目的选择相近指南；例如发布说明关注变化与影响，事故复盘区分时间线事实、原因假设与改进行动。不要生造类型或套用不相关模板。
@@ -48,7 +48,7 @@ description: >-
 2. **围绕读者组织。** 开篇交代主题、适用范围和最需要知道的结论或操作。按因果、决策或执行顺序展开；参考手册按资源、字段或状态组织。已有模板优先，但无关章节可在允许范围内省略。简短变更不附带整份报告。
 3. **保留关键含义。** 区分事实、推断、提案、待确认与未验证结果，只在有歧义的位置标注。使用一致的名称、单位、状态和版本；保留条件、例外、否定、风险及兼容约束。不要为显得确定而删除真实的不确定性，不为显得完整而补造业务规则、指标或证据。
 4. **写出可用内容。** 操作写前提、输入、步骤和可观察结果；设计写责任、关键流与失败语义；规格写触发条件和应有行为；结论给足够的理由或证据定位。代码、路径、字段、端口和参数以实际资料为准；示意内容明确标为示例。
-5. **编辑并核对。** 先查逻辑与遗漏，再删冗余、统一术语与排版。本次新写或修改了 Markdown 表格时，按 [表格自检与格式化](references/markdown-and-editing.md#表格自检与格式化) 完成列对齐和内容复核；只评审时报告问题，不直接改写。表格排版必须使用确定性的逐表处理：跳过 fenced code block，识别每个表格的完整连续行，按未裁剪单元格的显示宽度计算列宽，使用“目标显示宽度减当前显示宽度”补空格（中文宽字符按 2 列计算，禁止以 `len`/`ljust` 的字符数代替），重新生成表头、分隔行和数据行；不得只凭目测补空格，也不得把代码围栏中的竖线当成表格。格式化后逐行确认列数相同、每个边界有空格、分隔行只含合法 Markdown 对齐标记且每列至少 3 个连字符，并逐项比较单元格文本、链接、转义竖线和表格外文本未改变。验收至少使用一张中英文混排表格，断言每列所有行的显示宽度一致，并执行二次格式化的幂等性检查。若项目没有现成 formatter，应使用一次性脚本或等价的可重复检查，不要声称仅凭源码对齐已完成渲染验证。重读全文，检查跨章节、表格、图和示例是否一致。只读文档的目标读者应能回答关键问题或完成指定任务；重要长文可做无上下文读者检查，但模型读懂不是事实正确或客户验收的证明。
+5. **编辑并核对。** 先查逻辑与遗漏，再删冗余、统一术语与排版。表格优先使用项目已有格式工具，仅处理本次修改范围；核对列数、单元格、链接、转义竖线、对齐标记及代码围栏内容未被改变。没有可靠工具时做针对性的语义检查并说明未验证的渲染，不为补空格默认新建脚本、安装依赖或全量重排。工具幂等不等于语义正确；只评审时报告问题，不直接改写。重读受影响内容，检查跨章节、表格、图和示例是否一致。重要长文可做无上下文读者检查，但模型读懂不是事实正确或客户验收的证明。
 
 ## 交付与维护
 
@@ -57,14 +57,3 @@ description: >-
 - 改写时对照原文，确保核心约束和人工修订未丢失。保持稳定标识与链接；重复契约优先引用权威页面，需要复制时检查一致性。
 - 只添加维护所需元信息，如适用版本、状态、证据日期或已有负责人。短文不默认加目录、版本历史、签字栏或大段检查表；不编造责任人、审核记录。
 - 交付完整请求范围内的文档或评审。简述产物位置、实质变化、实际验证和影响使用的未决项；避免在正文中混入 agent 工作日志、自评分或写作过程说明。
-
-### 表格自动化工具
-
-需要新建或修改 Markdown 表格时，必须优先使用可重复脚本，而不是手工补空格。运行：
-
-```bash
-python3 <skill-dir>/scripts/format_markdown_tables.py <file.md>
-python3 <skill-dir>/scripts/format_markdown_tables.py --check <file.md>
-```
-
-脚本只处理 fenced code block 之外的表格，按 Unicode East Asian 宽度计算列宽，保留单元格文本，生成与数据列宽一致且每列至少三个连字符的分隔行，并验证列数、边界空格和幂等性。交付前必须先格式化，再用 `--check` 验证；若项目已有格式化器，应以项目格式化器为准并补充等价的稳定性检查。

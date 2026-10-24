@@ -1,4 +1,4 @@
 interface:
-  display_name: "Software Design Philosophy"
-  short_description: "Apply complexity-first software design principles"
-  default_prompt: "Use $software-design-philosophy to evaluate or design software boundaries, APIs, and architecture."
+  display_name: "模块与 API 设计"
+  short_description: "以复杂度为首要考量设计和评审模块边界、API 与重构方案"
+  default_prompt: "使用 $software-design-philosophy 评审当前模块或 API 设计，指出红旗位置、给出结论与取舍。"

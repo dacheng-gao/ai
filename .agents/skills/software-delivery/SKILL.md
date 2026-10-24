@@ -19,16 +19,21 @@ description: >-
 
 ## 按需衔接已有能力
 
-下列同仓库技能是可选协作入口，只在当前工作需要时读取相应 `SKILL.md`，再选择其中相关参考。它们不是要全部调用的任务清单；缺少某个技能不阻止凭当前证据完成已明确的工作。
+下列技能是可选协作入口，只在当前缺口需要时读取对应 `SKILL.md`，不是要全部调用的清单；缺少某个技能不阻止凭当前证据完成已明确的工作。
 
-- 价值、用户场景、范围或验收含义不清：[product-discovery](../product-discovery/SKILL.md)。
-- 概念、规则、状态或责任存在歧义：[business-modeling](../business-modeling/SKILL.md)。
-- 质量目标、系统边界或关键技术风险：[software-architecture](../software-architecture/SKILL.md)。
-- 模块/API 复杂度与信息隐藏：[software-design-philosophy](../software-design-philosophy/SKILL.md)；关系数据、约束和事务选择：[database-design](../database-design/SKILL.md)。
-- 行为实现、缺陷修复或遗留代码修改：[software-implementation](../software-implementation/SKILL.md)。
-- 验收例子、测试选择与结果判断：[software-testing](../software-testing/SKILL.md)。测试从澄清行为时开始，不等待编码结束。
-- 发布准备、运行可靠性、结果反馈或退役：[release-operations](../release-operations/SKILL.md)。
-- 需要实质性编写交付文档时使用 [tech-docs](../tech-docs/SKILL.md)；已有短结论无需再次走文档流程。
+| 当前缺口 | 技能 | 交给下一步的最小产物 |
+| --- | --- | --- |
+| 价值、场景、范围或验收含义不清 | [product-discovery](../product-discovery/SKILL.md) | 范围、规则（EARS 验收句）、例子、未决问题 |
+| 概念、身份、状态或责任有歧义 | [business-modeling](../business-modeling/SKILL.md) | 术语、关键规则与不变量、生命周期、责任边界 |
+| 质量目标、系统边界或关键技术风险 | [software-architecture](../software-architecture/SKILL.md) | 质量场景、方案结论、ADR、试验结果 |
+| 模块/API 复杂度与规则归属 | [software-design-philosophy](../software-design-philosophy/SKILL.md) | 边界与接口结论、红旗位置 |
+| 关系数据、约束、事务与索引 | [database-design](../database-design/SKILL.md) | 表与约束、事务协议、索引依据 |
+| 行为实现、缺陷修复、遗留代码修改 | [software-implementation](../software-implementation/SKILL.md) | 代码差异、验证命令与结果 |
+| 验收例子、测试选择与证据判断 | [software-testing](../software-testing/SKILL.md) | 风险—检查—预期—状态表 |
+| 发布、迁移、运行可靠性、反馈或退役 | [release-operations](../release-operations/SKILL.md) | 发布/恢复方案、观测信号、剩余动作 |
+| 需要实质编写交付文档 | [tech-docs](../tech-docs/SKILL.md) | 面向读者的文档 |
+
+测试从澄清行为时开始，不等到编码结束。较大功能若项目已有“需求—设计—任务”三件套（如 `spec.md`、`design.md`、`tasks.md`），按项目约定分别承载上表前两段、中段和实施状态；没有约定时不为小功能新建这套文件。
 
 每次衔接复用当前任务里的目标、规则来源、决定、未决项、受影响契约和证据位置。用原有 issue、测试、ADR 或对话承载即可，不创建重复状态库，不要求每一步新建文件。后一步发现反例时，仅回到对应规则或决定修正，再更新受影响实现与检查。
 
@@ -36,6 +41,7 @@ description: >-
 
 - 用一个能够推翻当前判断的案例、实验或检查处理关键不确定性；单纯重述同一结论不算验证。
 - 区分业务期望、现有实现、设计提议和执行结果。模型可以发现遗漏和生成候选方案，不能代替用户证言、业务授权或运行测量。
+- AI 辅助会放大既有工程能力：产出变快时，没有小批次、自动化测试和快速反馈，稳定性更容易下降（DORA 2025）。因此每个切片完成即验证，不积攒大批未验证改动。
 - 范围较大时按可使用、可验证的业务切片推进；不要先做完所有数据库、再所有接口、最后才整合。关键技术风险可以先做有结束条件的试验。
 - 只有存在会改变选择的真实备选时比较方案；按已知约束、失败代价、维护成本选择，不制造加权分数或假定业务指标。
 - 已有明确方案就实施；材料不足时仅询问改变正确性的关键问题，并推进独立部分。不能以调查、计划或反复讨论代替已经授权的实现。

@@ -1,38 +1,66 @@
 ---
 name: software-architecture
 description: >-
-  Design or review system architecture using quality requirements, system boundaries,
-  failure behavior, technology experiments and migration constraints. Use for
-  system-level tradeoffs or feasibility risks. Exclude routine coding, settled
-  diagram edits and module-only refactoring without system-level consequences.
+  Designs or reviews system-level architecture: quality attribute scenarios,
+  system and service boundaries, integration and failure behavior, technology
+  choices, feasibility spikes, architecture decision records and migration paths.
+  Use for 架构设计/技术方案评审, choosing between architectural options, assessing
+  scalability/availability/security risks, or planning an evolution of a running
+  system. Exclude routine coding, settled diagram edits and module-internal design
+  without system-level consequences (use software-design-philosophy).
 ---
 
 # 系统架构与技术验证
 
-让重要质量要求有可解释的实现路径，使高代价决定能够被证据检验。保留已有架构与约束，按当前问题决定分析深度。
+让重要质量要求有可解释的实现路径，让高代价决定能被证据检验。保留已有架构与约束，按当前问题决定分析深度。模块内部的接口与信息隐藏用 `software-design-philosophy`，数据库约束与事务协议用 `database-design`。
 
-## 找出架构驱动因素
+## 默认流程
 
-从当前系统、需求、依赖契约、运行测量和已有决定中识别受影响边界。明确需要改善的行为，以及兼容、部署环境、团队维护能力、预算或期限中已知的限制。不从“高并发”“高可用”推造数值，不从框架流行度推导架构。
+1. **驱动因素**：从当前系统、需求、依赖契约、运行测量和已有决定中找出受影响边界；列出兼容、部署环境、团队能力、预算、期限等已知限制。不从“高并发”“高可用”推造数值，不因框架流行而选型。
+2. **质量场景**：把最重要的 1–3 个质量要求写成“来源/刺激 → 环境 → 受影响部分 → 响应 → 衡量方式”。没有目标值时标“待确认”，仍可分析结构与可行性。
+3. **责任与结构**：明确事实与规则由谁拥有、调用方向、同步或异步边界、事务与失败语义。业务语义未定先澄清，不在架构里替业务做决定。
+4. **方案比较**（仅当有真实选择）：包含“保留现状/渐进修改”方案；比较收益、代价、失败行为、运维负担，以及什么证据会推翻结论。明显的局部选择不做比较表。
+5. **先验证最可能推翻方案的未知**：供应商能力、关键延迟、数据迁移可行性、隔离保证等，用有判定标准和结束条件的技术试验回答。试验代码不自动进入生产，样本表现不代表生产容量。
+6. **演进与守护**：改变公开接口、事件或存储时，走查新旧共存、回填、切换和恢复；为关键质量要求指定一个持续检查（适应度函数），防止架构随时间退化。
+7. **记录**：重大且需长期保留理由的决定写 ADR；仍是提案就标“提议”。
 
-把最重要的质量要求写成具体场景：来源/触发、环境、受影响对象、期望响应、判定尺度。没有目标值时列为待确认，仍可分析结构与可行性。使用 [decisions.md](references/decisions.md) 展开质量场景、权衡、C4/ADR 和技术试验。
+各步骤的展开方法（质量场景、C4 视图、ADR、技术试验、适应度函数、演进走查）见 [decisions.md](references/decisions.md)。
 
-## 从责任到结构
+## 默认判断倾向
 
-明确事实与规则由谁拥有、调用方向、同步或异步边界、需要的事务与失败语义。业务语义未定时先澄清；模块信息隐藏使用现有 `software-design-philosophy`，数据库约束/并发协议使用 `database-design`，无需重复其工作。
+- 先在单个部署单元内把模块边界做清楚，只有独立部署、独立扩展、故障隔离或团队自治有实际证据时才拆分为分布式服务。
+- 优先选团队已掌握、项目已在用的技术；新技术需说明它解决了哪个已存在的问题及运维代价。
+- 一致性要求来自业务：不能把“提交时必须成立”的规则悄悄改成“后台稍后修复”。
+- 画图只回答当前读者的问题，不为形式完整画全套 C4 层级；图与真实接口或部署矛盾时修正图。
 
-画图只为回答当前读者的问题：系统上下文解释外部参与者，容器视图解释可运行单元和存储，动态视图解释交互，部署视图解释运行位置。C4 的 container 不专指 Docker。不要为形式完整画全套层级。
+## 输出模板（默认格式，可裁剪）
 
-对重要且有选择空间的决定，比较真实可行方案，包括保留或渐进修改现状的方案。说明收益、代价、失败行为、运维负担和什么证据会改变结论；明显的局部选择无需比较表。
+```markdown
+## 结论
+<推荐方案，一两句话；是否需要用户决定>
 
-优先验证能够推翻方案的未知：供应商能力、关键延迟、数据迁移可行性或隔离保证。试验围绕一个明确问题和判定依据展开；实验代码不自动成为生产代码，样本表现不自动证明生产容量。
+## 驱动因素
+- 质量场景 Q1：<刺激> 在 <环境> 下，<部分> 应 <响应>，以 <衡量方式> 判定（目标值：…/待确认）
+- 约束：…
 
-## 演进与验证
+## 方案与取舍
+| 方案 | 满足哪些场景 | 代价与风险 | 推翻条件 |
+| --- | --- | --- | --- |
 
-变更公开接口、事件或存储时，检查生产者/消费者、旧新版本共存、回填、切换与故障恢复；说明哪些动作不可逆，回滚应用是否足以恢复。请求仅为设计时交付可审查方案，不实际发布或迁移。
+## 关键视图／契约
+<只放回答问题所需的图或接口说明>
 
-通过关键业务流和失败路径走查，检查责任是否完整、约束是否可执行、质量目标是否对应验证方法。重大决定需要长期保留理由时更新项目 ADR；状态仍是提案就明确写提案。
+## 验证与守护
+- 已验证：…（证据）
+- 待验证：…（试验设计与判定标准）
+- 持续检查：…（适应度函数）
 
-交付结论、必要视图/契约、关键取舍与证据、实施顺序和未决风险。当它们足以支持当前决定或授权实现时停止，不为了预想规模增加分布式组件。
+## 实施顺序与风险
+1. …（不可逆步骤单独标出）
+```
 
-主要来源为 Bass/Clements/Kazman 的质量属性方法、Brown 的 C4、Nygard 的 ADR；详见 [来源映射](../software-delivery/references/sources.md)。
+## 停止条件
+
+结论、必要视图/契约、关键取舍与证据、实施顺序和未决风险足以支持当前决定或授权实现时停止。不为预想规模增加分布式组件；设计请求只交付可审查方案，不实际发布或迁移。
+
+主要来源：Bass/Clements/Kazman 质量属性方法、Brown 的 C4、Nygard 的 ADR、Ford/Parsons 等的演进式架构与适应度函数；详见 [来源映射](../software-delivery/references/sources.md)。

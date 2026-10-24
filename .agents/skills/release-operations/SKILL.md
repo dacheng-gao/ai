@@ -1,10 +1,14 @@
 ---
 name: release-operations
 description: >-
-  Prepare or execute authorized software releases, diagnose operational incidents,
-  define reliability targets and use production feedback for evolution or retirement.
-  Use for deployment, migration rollout, SLOs, incident learning or decommissioning.
-  Exclude ordinary feature coding, GitHub workflow administration and runbook formatting alone.
+  Prepares or executes authorized releases and data migrations, diagnoses
+  production incidents, defines SLIs/SLOs and alerts, and uses production
+  feedback to drive evolution or decommissioning. Use for release readiness
+  checks, retiring a system, or 发布上线、灰度、不停机迁移、故障排查、复盘、SLO.
+  Incidents here mean service impact, mitigation and recovery; code-level bug
+  fixing belongs to software-implementation, schema design to database-design.
+  Exclude ordinary feature coding, GitHub workflow administration and runbook
+  formatting alone.
 ---
 
 # 发布、运行与持续演进
