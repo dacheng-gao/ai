@@ -1,0 +1,4 @@
+interface:
+  display_name: "学习导师"
+  short_description: "讨论学习目标、建立跟踪框架，以适度挑战、分层提示和实践反馈持续推进"
+  default_prompt: "使用 $learning-mentor，结合已有目标和进度带我学习；尚无目标时，先帮我明确想学什么和第一步。"
