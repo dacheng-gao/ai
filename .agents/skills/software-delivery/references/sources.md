@@ -1,6 +1,6 @@
 # 生命周期方法来源与覆盖
 
-核查日期：2026-10-18；2026-10-24 补充来源见文末专节。覆盖前述讨论的 **15 本书**及相关公开方法。本文是可追溯的概念提炼与 agent 工作方法综合，不是原著替代品、全文提取或逐章摘要。普通工程任务无需读取本文件或重新检索书目。
+核查日期：2026-10-18；2026-10-24 与 2026-11-26 补充来源见文末专节。初始覆盖前述讨论的 **15 本书**及相关公开方法，后续两轮按工程短板持续增补经典软件工程与生命周期著作。本文是可追溯的概念提炼与 agent 工作方法综合，不是原著替代品、全文提取或逐章摘要。普通工程任务无需读取本文件或重新检索书目。
 
 ## 怎样理解证据
 
@@ -60,7 +60,7 @@ DORA 提供多年调查与统计研究，仍需考虑观察性数据、自报告
 
 [作者页面与版次说明](https://web.stanford.edu/~ouster/cgi-bin/book.php)。已读取作者对新版、泛化、重要性判断及与 Clean Code 分歧的说明；未通读本轮所涉书籍正文。
 
-落地：复用 [software-design-philosophy](../../software-design-philosophy/SKILL.md)，以信息隐藏、深模块和变更成本评价设计。泛化须有实际简化作用；不按方法长度、注释数量或抽象数量机械评分。跨书存在差异，按问题与证据选择，不假装所有经典观点一致。
+落地：复用 [software-design](../../software-design/SKILL.md)，以信息隐藏、深模块和变更成本评价设计。泛化须有实际简化作用；不按方法长度、注释数量或抽象数量机械评分。跨书存在差异，按问题与证据选择，不假装所有经典观点一致。
 
 ## 实现与验证
 
@@ -124,7 +124,7 @@ DORA 提供多年调查与统计研究，仍需考虑观察性数据、自报告
 
 - **EARS — Alistair Mavin**：[官方页面](https://alistairmavin.com/ears/)，已读取正文中的通用句式与六种模式。落地 [requirements.md](../../product-discovery/references/requirements.md) 的验收句式及 product-discovery 输出模板。
 - **Kiro 规格工作流**：[Specs 文档](https://kiro.dev/docs/specs/)，已读取三阶段（requirements/bugfix → design → tasks）及 bugfix 规格的“当前/期望/不变行为”。仅借鉴缺陷需求三项写法与三件套映射；不要求项目采用该工具或文件名。
-- **A Philosophy of Software Design，第 2 版 — Ousterhout**：沿用上文第 8 项的核查范围。红旗清单、把复杂度往下拉、用定义消除错误、设计两次等为概念性转述，落地 [software-design-philosophy](../../software-design-philosophy/SKILL.md)；未逐章核对原文措辞。
+- **A Philosophy of Software Design，第 2 版 — Ousterhout**：沿用上文第 8 项的核查范围。红旗清单、把复杂度往下拉、用定义消除错误、设计两次等为概念性转述，落地 [software-design](../../software-design/SKILL.md)；未逐章核对原文措辞。
 - **Building Evolutionary Architectures，第 2 版 — Ford、Parsons、Kua、Sadalage**：[Thoughtworks 书目页](https://www.thoughtworks.com/insights/books/building-evolutionary-architectures-second-edition)，已核查书目及“适应度函数用于自动化架构治理”的定位，未通读正文。落地 [decisions.md](../../software-architecture/references/decisions.md)。*Fundamentals of Software Architecture* 第 2 版仅确认存在讨论架构特性度量与适应度函数的章节，未作为直接依据。
 - **Tidy First? — Kent Beck**：[O'Reilly 书目](https://www.oreilly.com/library/view/tidy-first/9781098151232/)，已核查书目与公开评述中“结构整理与行为变化分开、整理不总是先做”的主张，未通读正文。落地 [safe-change.md](../../software-implementation/references/safe-change.md)。
 - **Debugging: The 9 Indispensable Rules — David Agans**：依据对九条规则的通用知识整理，本轮未在线核查原文。落地 [debugging.md](../../software-implementation/references/debugging.md)，步骤为工程化改写。
@@ -133,9 +133,77 @@ DORA 提供多年调查与统计研究，仍需考虑观察性数据、自报告
 - **Diátaxis — Daniele Procida**：[官方站点](https://diataxis.fr/)，已读取四类文档定义。落地 tech-docs 场景表中的技术指南分类。
 - **Skill 编写规范**：[Claude Agent Skills best practices](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices)，已读取正文。本轮据此采用第三人称且含触发词的描述、提供默认方案而非罗列选项、复杂流程给可复制清单与输出模板、引用只保留一层。
 
+## 2026-11-26 补充来源
+
+本轮围绕软件开发生命周期与软件工程管理经典著作做系统性补盲，重点强化：风险与流经济学、轻量威胁建模、需求定型与无预设提问、聚合与类型化领域建模、分布式稳定性与数据流一致性、模块秘密与公共 API 契约、科学调试感染链、测试心理学与测试替身/异味、可观测性及可信在线实验。核查层次同上文定义（均为书目/公开指南核查 + 工程化综合，未通读全文，不编造页码或原句）。
+
+### 交付统筹、流经济学与安全
+
+- **The Mythical Man-Month（周年版，含 *No Silver Bullet*）— Frederick P. Brooks, Jr.**：确认书目与本质/偶然复杂度、概念完整性、第二系统效应等经典主题。落地 [software-delivery/SKILL.md](../SKILL.md) 与 [flow.md](flow.md)。
+- **A Spiral Model of Software Development and Enhancement（1988）— Barry W. Boehm**：确认风险驱动生命周期核心思想（以最高风险不确定性决定每轮投入）。落地 [software-delivery/SKILL.md](../SKILL.md) 与 [flow.md](flow.md)。
+- **The Principles of Product Development Flow — Donald G. Reinertsen**：确认书目与小批量经济学、在制品队列长度、延迟代价（Cost of Delay）及快速反馈主题。落地 [flow.md](flow.md)。
+- **Team Topologies — Matthew Skelton、Manuel Pais**：[官方网站](https://teamtopologies.com/)，已核查认知负荷、团队类型与交互模式定位。落地 [flow.md](flow.md) 与 [decisions.md](../../software-architecture/references/decisions.md)。
+- **Threat Modeling: Designing for Security — Adam Shostack**：[作者站点](https://shostack.org/)，已核查四问框架（What are we working on / What can go wrong / What are we going to do about it / Did we do a good job）与 STRIDE 威胁分类。落地 [security.md](security.md)。
+
+### 问题发现与需求工程
+
+- **Exploring Requirements: Quality Before Design — Donald C. Gause、Gerald M. Weinberg**：确认书目与设计前质量、无预设提问（Context-Free Questions）及需求歧义排查主题。落地 [product-discovery/SKILL.md](../../product-discovery/SKILL.md)、[discovery.md](../../product-discovery/references/discovery.md) 与 [requirements.md](../../product-discovery/references/requirements.md)。
+- **Impact Mapping — Gojko Adzic**：[官方站点](https://www.impactmapping.org/)，已核查 Goal → Actor → Impact → Deliverable 四层映射结构。落地 [discovery.md](../../product-discovery/references/discovery.md)。
+- **Shape Up — Ryan Singer（Basecamp）**：[官方在线书](https://basecamp.com/shapeup)，已核查 Appetite（投入边界）、Rabbit Holes（高风险暗礁）与 No-Gos（明确不做）定型思路。落地 [product-discovery/SKILL.md](../../product-discovery/SKILL.md) 与 [requirements.md](../../product-discovery/references/requirements.md)。
+
+### 业务与领域建模
+
+- **Implementing Domain-Driven Design（及 *Effective Aggregate Design* 专题）— Vaughn Vernon**：确认书目与聚合设计四条经验法则（保护真实不变量、小聚合、ID 引用、跨聚合最终一致）。落地 [collaborative-modeling.md](../../business-modeling/references/collaborative-modeling.md)。
+- **Domain Modeling Made Functional — Scott Wlaschin**：确认 Pragmatic Bookshelf 书目与“用显式类型/状态结构让非法状态不可表示”及工作流管道主题。落地 [collaborative-modeling.md](../../business-modeling/references/collaborative-modeling.md)。
+
+### 系统架构、分布式数据与集成
+
+- **Release It!，第 2 版 — Michael T. Nygard**：确认 Pragmatic Bookshelf 书目与稳定性反模式（集成点阻塞、级联故障、无界结果集、重试风暴）及稳定性模式（超时、断路器、舱壁、背压/降载、稳态、快速失败）。落地 [software-architecture/SKILL.md](../../software-architecture/SKILL.md) 与 [resilience-and-integration.md](../../software-architecture/references/resilience-and-integration.md)。
+- **Designing Data-Intensive Applications — Martin Kleppmann**：[官方书站](https://dataintensive.net/)、[O'Reilly 页面](https://www.oreilly.com/library/view/designing-data-intensive-applications/9781491903063/)，已核查记录系统与派生数据、复制延迟一致性模型、可靠写入与分布式取舍主题。落地 [resilience-and-integration.md](../../software-architecture/references/resilience-and-integration.md)。
+- **Enterprise Integration Patterns — Gregor Hohpe、Bobby Woolf**：[官方站点](https://www.enterpriseintegrationpatterns.com/)，已核查幂等接收者、死信通道、关联标识等异步集成模式定位。落地 [resilience-and-integration.md](../../software-architecture/references/resilience-and-integration.md)。
+- **Software Architecture: The Hard Parts — Neal Ford、Mark Richards、Pramod Sadalage、Zhamak Dehghani**：确认 O'Reilly 书目与分布式拆分/聚合驱动力、数据所有权与 Saga 权衡主题。落地 [resilience-and-integration.md](../../software-architecture/references/resilience-and-integration.md)。
+- **Monolith to Microservices — Sam Newman**：确认 O'Reilly 书目与绞杀者模式、抽象分支、并行运行及数据逐步切分主题。落地 [resilience-and-integration.md](../../software-architecture/references/resilience-and-integration.md)。
+
+### 模块、代码内部架构与公共 API 设计
+
+- **On the Criteria To Be Used in Decomposing Systems into Modules（1972）— David L. Parnas**：确认论文核心主张——按可能变化的设计决策（秘密）而非执行步骤划分模块。落地 [software-design/SKILL.md](../../software-design/SKILL.md) 与 [api-and-contracts.md](../../software-design/references/api-and-contracts.md)。
+- **Structured Design — Edward Yourdon、Larry L. Constantine**：确认经典耦合与内聚定义。落地 [architecture-and-coupling.md](../../software-design/references/architecture-and-coupling.md)。
+- **Balancing Coupling in Software Design — Vlad Khononov**：确认 Addison-Wesley 书目与整合强度、距离、变化频率三维平衡原则（同时诊断紧耦合痛点与低变化场景的过度抽象）。落地 [software-design/SKILL.md](../../software-design/SKILL.md) 与 [architecture-and-coupling.md](../../software-design/references/architecture-and-coupling.md)。
+- **Hexagonal Architecture（Ports and Adapters）— Alistair Cockburn**：[作者官方文章](https://alistair.cockburn.us/hexagonal-architecture/)，已核查通过端口与适配器隔离业务核心与外部驱动/被驱动设施的目标。落地 [architecture-and-coupling.md](../../software-design/references/architecture-and-coupling.md)。
+- **Clean Architecture — Robert C. Martin**：确认 Prentice Hall / InformIT 书目与依赖原则（依赖指向高层策略）、无环依赖（ADP）与稳定依赖（SDP）；按需裁剪，避免机械多层仪式。落地 [architecture-and-coupling.md](../../software-design/references/architecture-and-coupling.md)。
+- **Boundaries（Functional Core, Imperative Shell）— Gary Bernhardt**：确认公开演讲核心结构——纯逻辑核心与 I/O 外壳分离以提升可理解性与测试反馈速度。落地 [architecture-and-coupling.md](../../software-design/references/architecture-and-coupling.md)。
+- **Fundamentals of Software Architecture — Mark Richards、Neal Ford**：确认 O'Reilly 书目与组件化模块化思维、按能力组织边界及权衡分析定位。落地 [architecture-and-coupling.md](../../software-design/references/architecture-and-coupling.md)。
+- **Software Design X-Rays / Your Code as a Crime Scene — Adam Tornhill**：确认 Pragmatic Bookshelf 书目与基于版本控制历史识别热点（复杂度×变更频率）及变更耦合（Change Coupling）的行为代码分析思路。落地 [software-design/SKILL.md](../../software-design/SKILL.md) 与 [architecture-and-coupling.md](../../software-design/references/architecture-and-coupling.md)。
+- **Design Patterns: Elements of Reusable Object-Oriented Software — Erich Gamma、Richard Helm、Ralph Johnson、John Vlissides**：确认 Addison-Wesley 书目与组合优于继承、面向接口编程及按真实张力选用模式的原则。落地 [architecture-and-coupling.md](../../software-design/references/architecture-and-coupling.md)。
+- **Design Stamina Hypothesis — Martin Fowler**：确认公开论述关于“好设计在初期略慢但维持长期演进耐力，同时警惕过度设计”的经济权衡视角。落地 [architecture-and-coupling.md](../../software-design/references/architecture-and-coupling.md)。
+- **Object-Oriented Software Construction，第 2 版 — Bertrand Meyer**：确认书目与契约式设计（DbC：前置/后置条件、不变量）及命令查询分离（CQS）核心定义。落地 [api-and-contracts.md](../../software-design/references/api-and-contracts.md)。
+- **How to Design a Good API and Why It Matters — Joshua Bloch**：确认演讲/论文关于 API 不可逆性、最小惊讶、快速失败与最小可变性的核心准则。落地 [api-and-contracts.md](../../software-design/references/api-and-contracts.md)。
+- **Practical Object-Oriented Design，第 2 版 — Sandi Metz**：确认书目与“重复代价低于错误抽象”、依赖方向与迪米特法则主题。落地 [api-and-contracts.md](../../software-design/references/api-and-contracts.md)。
+
+### 实现、调试与工程协作
+
+- **Code Complete，第 2 版 — Steve McConnell**：确认书目与软件构建实践（卫语句、表驱动、边界防御与构建检查）。落地 [software-implementation/SKILL.md](../../software-implementation/SKILL.md) 与 [safe-change.md](../../software-implementation/references/safe-change.md)。
+- **The Pragmatic Programmer，20 周年版 — David Thomas、Andrew Hunt**：确认 Pragmatic Bookshelf 书目与曳光弹 vs 原型、单一知识源（DRY）、断言与错误处理分离、快速崩溃等主题。落地 [software-implementation/SKILL.md](../../software-implementation/SKILL.md) 与 [safe-change.md](../../software-implementation/references/safe-change.md)。
+- **Why Programs Fail，第 2 版 — Andreas Zeller**：[官方书站](https://www.whyprogramsfail.com/)，已核查感染链（Defect → Infection → Failure）与系统性缩减复现（Delta Debugging）主题。落地 [debugging.md](../../software-implementation/references/debugging.md)。
+- **Software Engineering at Google — Titus Winters、Tom Manshreck、Hyrum Wright**：[官方在线目录](https://abseil.io/resources/swe-book/html/toc.html)，已核查海勒姆定律（Hyrum's Law）与面向长期维护的代码审查原则。落地 [software-implementation/SKILL.md](../../software-implementation/SKILL.md) 与 [safe-change.md](../../software-implementation/references/safe-change.md)。
+
+### 测试与验收
+
+- **The Art of Software Testing，第 3 版 — Glenford J. Myers、Corey Sandler、Tom Badgett**：确认书目与测试心理学（以发现缺陷而非证明正确为目的）及错误猜测方法。落地 [software-testing/SKILL.md](../../software-testing/SKILL.md) 与 [methods.md](../../software-testing/references/methods.md)。
+- **xUnit Test Patterns — Gerard Meszaros**：[官方站点](http://xunitpatterns.com/)，已核查五类测试替身定义（Dummy/Stub/Spy/Mock/Fake）与常见测试异味（Mystery Guest/Fragile/Erratic/Obscure）。落地 [methods.md](../../software-testing/references/methods.md)。
+- **A Practitioner's Guide to Software Test Design — Lee Copeland**：确认书目与组合测试（Pairwise/All-Pairs）、等价类/边界值、决策表与状态转换覆盖主题。落地 [methods.md](../../software-testing/references/methods.md)。
+- **Growing Object-Oriented Software, Guided by Tests — Steve Freeman、Nat Pryce**：确认书目与行走骨架（Walking Skeleton）及“倾听测试的设计反馈”主题。落地 [software-testing/SKILL.md](../../software-testing/SKILL.md) 与 [methods.md](../../software-testing/references/methods.md)。
+
+### 发布、可观测性、实验与系统安全
+
+- **Refactoring Databases: Evolutionary Database Design — Pramod J. Sadalage、Scott W. Ambler**：[官方站点](https://databaserefactoring.com/)，已核查演进式数据库重构与扩展—收缩过渡期思路。落地 [delivery.md](../../release-operations/references/delivery.md)。
+- **Observability Engineering — Charity Majors、Liz Fong-Jones、George Miranda**：确认 O'Reilly 书目与高基数/高维度宽事件可观测性区别于传统预聚合监控的核心定位。落地 [reliability.md](../../release-operations/references/reliability.md)。
+- **Trustworthy Online Controlled Experiments — Ron Kohavi、Diane Tang、Ya Xu**：[官方书站](https://experimentguide.com/)，已核查 OEC、护栏指标、特威曼定律（Twyman's Law）、样本比例不匹配（SRM）与偷看偏差主题。落地 [evolution.md](../../release-operations/references/evolution.md)。
+- **The Field Guide to Understanding 'Human Error' — Sidney Dekker**：确认书目与系统安全新视角（人为失误是系统症状而非根因、局部理性分析）。落地 [reliability.md](../../release-operations/references/reliability.md)。
+
 ## 覆盖与剩余研究边界
 
-上述 15 本书均已关联具体指令位置，含全部前述方法类别：事实访谈、假设实验、机会树、场景/故事地图/原型、统一语言/状态/不变量/事件风暴、质量场景/C4/ADR/技术试验、信息隐藏/数据约束/重构/TDD、实例化需求/风险测试/探索/验收、持续交付/迁移/发布控制、服务目标/复盘/结果反馈/演进与退役。
+初始 15 本书及后续两轮补充著作均已关联具体指令位置，覆盖软件开发全生命周期的关键节点：问题定义/访谈/影响地图/机会树/定型去风险、故事地图/EARS/歧义排查、统一语言/状态/聚合/类型化建模/事件风暴、质量场景/C4/ADR/适应度函数/稳定性防雪崩/数据流一致性/渐进拆迁、深模块/秘密列表/契约式设计/API 准则、关系数据与负载设计、安全变更/曳光弹/感染链调试/海勒姆定律、证伪测试心态/组合与性质测试/测试替身与异味/探索式测试、持续交付/演进式数据库重构/可观测性与诊断信号/新视角无责复盘/可信在线实验与退役，以及风险驱动的威胁建模（四问 + STRIDE）。
 
 数据设计继续使用 [database-design](../../database-design/SKILL.md) 及其 [来源说明](../../database-design/references/sources.md)，文档继续使用 [tech-docs](../../tech-docs/SKILL.md) 及其 [书目](../../tech-docs/references/books-and-methods.md)。这些既有书目超出本次新增的 15 本书范围，保留原核查声明，不宣称本次重新通读。
 

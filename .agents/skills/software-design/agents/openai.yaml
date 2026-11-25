@@ -1,0 +1,4 @@
+interface:
+  display_name: "模块与代码架构设计"
+  short_description: "以复杂度与耦合均衡设计评审模块边界、代码架构与 API，兼顾短期演进并防过度设计"
+  default_prompt: "使用 $software-design 评审或设计当前模块与代码内部架构，平衡耦合与短期演进，指出设计不足与过度设计红旗并给出取舍。"

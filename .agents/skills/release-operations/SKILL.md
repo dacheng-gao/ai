@@ -39,4 +39,4 @@ description: >-
 
 长期指标或真实用户样本尚未积累时，交付观察口径和后续行动条件，不无限等待、不编造结果。退役任务只有依赖与数据处理等授权范围的必要工作完成才称为退役完成；不能用“暂无流量”单独证明无人依赖。
 
-主要来源为 Humble/Farley、Forsgren/Humble/Kim、Google SRE 与相关工程综合，详见 [来源映射](../software-delivery/references/sources.md)。
+主要来源为 Humble/Farley、Forsgren/Humble/Kim、Google SRE、Majors 等《Observability Engineering》、Kohavi 等《Trustworthy Online Controlled Experiments》、Sadalage/Ambler《Refactoring Databases》与 Dekker 的系统安全视角，详见 [来源映射](../software-delivery/references/sources.md)。

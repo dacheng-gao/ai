@@ -64,7 +64,7 @@
 
 - product-discovery：默认流程增加系统边界与所有权核对；新增需求简报模板、EARS 验收句式（requirements.md）、缺陷需求“当前/期望/不变”三项，以及证据不足时的交付方式。
 - software-architecture：默认七步流程、判断倾向、决策简报模板；decisions.md 增加 ADR 最小结构与适应度函数。
-- software-design-philosophy：改为中文，与其他技能统一；范围收窄到模块/API（系统级交给 software-architecture）；新增红旗清单。删除已分叉的 `SKILL.zh_CN.md` 副本（备份保留在维护者本地）。
+- software-design-philosophy（现已重命名为 `software-design`）：改为中文，与其他技能统一；范围收窄到模块/API（系统级交给 software-architecture）；新增红旗清单。删除已分叉的 `SKILL.zh_CN.md` 副本（备份保留在维护者本地）。
 - software-implementation：可跟踪的默认清单；新增 debugging.md（以 Agans 九条规则为骨架）；safe-change.md 增加 Tidy First。
 - software-testing：测试价值四问（Khorikov）、mock 边界、风险—检查—预期—状态模板。
 - software-delivery：路由改为“缺口—技能—交接产物”表，补充 DORA 2025 的切片验证要求。

@@ -6,13 +6,14 @@ description: >-
   choices, feasibility spikes, architecture decision records and migration paths.
   Use for 架构设计/技术方案评审, choosing between architectural options, assessing
   scalability/availability/security risks, or planning an evolution of a running
-  system. Exclude routine coding, settled diagram edits and module-internal design
-  without system-level consequences (use software-design-philosophy).
+  system. Exclude routine coding, settled diagram edits and codebase-internal
+  module/package/API design without system-level or deployment consequences (use
+  software-design).
 ---
 
 # 系统架构与技术验证
 
-让重要质量要求有可解释的实现路径，让高代价决定能被证据检验。保留已有架构与约束，按当前问题决定分析深度。模块内部的接口与信息隐藏用 `software-design-philosophy`，数据库约束与事务协议用 `database-design`。
+让重要质量要求有可解释的实现路径，让高代价决定能被证据检验。保留已有架构与约束，按当前问题决定分析深度。代码库内部的模块划分、依赖方向、耦合均衡与 API 设计用 `software-design`，数据库约束与事务协议用 `database-design`。
 
 ## 默认流程
 
@@ -24,13 +25,14 @@ description: >-
 6. **演进与守护**：改变公开接口、事件或存储时，走查新旧共存、回填、切换和恢复；为关键质量要求指定一个持续检查（适应度函数），防止架构随时间退化。
 7. **记录**：重大且需长期保留理由的决定写 ADR；仍是提案就标“提议”。
 
-各步骤的展开方法（质量场景、C4 视图、ADR、技术试验、适应度函数、演进走查）见 [decisions.md](references/decisions.md)。
+各步骤的展开方法（质量场景、C4 视图、ADR、技术试验、适应度函数、演进走查）见 [decisions.md](references/decisions.md)。涉及跨进程集成、分布式一致性、容错防雪崩或单体拆迁演进时，读 [resilience-and-integration.md](references/resilience-and-integration.md)。
 
 ## 默认判断倾向
 
 - 先在单个部署单元内把模块边界做清楚，只有独立部署、独立扩展、故障隔离或团队自治有实际证据时才拆分为分布式服务。
+- 所有跨进程调用都默认可能变慢、卡死或部分失败：超时、幂等、背压与失败隔离须随集成边界一起设计，不留到上线后补救。
 - 优先选团队已掌握、项目已在用的技术；新技术需说明它解决了哪个已存在的问题及运维代价。
-- 一致性要求来自业务：不能把“提交时必须成立”的规则悄悄改成“后台稍后修复”。
+- 一致性要求来自业务：不能把“提交时必须成立”的规则悄悄改成“后台稍后修复”；明确区分记录系统（System of Record）与可重建的派生数据。
 - 画图只回答当前读者的问题，不为形式完整画全套 C4 层级；图与真实接口或部署矛盾时修正图。
 
 ## 输出模板（默认格式，可裁剪）
@@ -63,4 +65,4 @@ description: >-
 
 结论、必要视图/契约、关键取舍与证据、实施顺序和未决风险足以支持当前决定或授权实现时停止。不为预想规模增加分布式组件；设计请求只交付可审查方案，不实际发布或迁移。
 
-主要来源：Bass/Clements/Kazman 质量属性方法、Brown 的 C4、Nygard 的 ADR、Ford/Parsons 等的演进式架构与适应度函数；详见 [来源映射](../software-delivery/references/sources.md)。
+主要来源：Bass/Clements/Kazman 质量属性方法、Brown 的 C4、Nygard 的 ADR 与《Release It!》、Ford/Parsons 等的演进式架构与权衡分析、Kleppmann 的数据密集型系统原则、Hohpe/Woolf 的集成模式及 Newman 的渐进拆迁；详见 [来源映射](../software-delivery/references/sources.md)。

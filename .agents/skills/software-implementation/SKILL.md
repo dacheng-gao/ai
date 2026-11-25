@@ -37,12 +37,12 @@ description: >-
 要点：
 
 - 沿行为路径定向阅读，不先扫完整个仓库。测试描述的是现状，也可能固化了旧缺陷。
-- 遵守可信内部契约，只在外部输入、权限、数据转换等信任边界校验。能用类型或数据结构让非法状态无法表示时，优先于在各处补检查。
-- 已有清楚方案就直接实施。设计选择会实质影响耦合和修改成本时用 `software-design-philosophy`；业务语义或数据库约束未定时处理那个缺口，不偷偷发明政策。
-- “先让改动变容易，再做容易的改动”：结构整理只覆盖本次所需范围，不顺手做全面重构。
+- 遵守可信内部契约，只在外部输入、权限、数据转换等信任边界做错误处理校验；“绝不应发生”的内部不变量用类型或断言快速失败（Crash Early），不要混为一谈或静默吞错。能用类型或数据结构让非法状态无法表示时，优先于在各处补检查。
+- 已有清楚方案就直接实施。设计选择会实质影响耦合和修改成本时用 `software-design`；业务语义或数据库约束未定时处理那个缺口，不偷偷发明政策。复杂分支优先用卫语句降嵌套或用表驱动替代冗长条件链；DRY 指单一知识源，不机械合并可能独立演化的相似代码。
+- “先让改动变容易，再做容易的改动”：结构整理只覆盖本次所需范围，不顺手做全面重构。涉及跨层或外部集成的新能力，可先打通最小端到端**曳光弹（Tracer Bullet）**验证链路，再填充细节。
 - 纯逻辑、状态转换或回归修复适合先写失败测试；已有测试足够或改动低风险时，不强制 TDD 或新增测试。复杂测试选择用 `software-testing`。
 - 边界问题用集成检查，UI 行为用交互验证；不要用大量 mock 证明真实集成正确。
-- 注释解释非显然的约束与理由；改动公开契约时核查提供方与调用方两端，兼容边界不明先调查、必要时聚焦提问，并同步必要文档。
+- 注释解释非显然的约束与理由；改动已有较广使用的接口时，警惕**海勒姆定律（Hyrum's Law）**——除文档契约外，错误码、排序、边界宽容度等可观察行为也可能已被调用方依赖，须核查提供方与调用方两端，兼容边界不明先调查、必要时聚焦提问，并同步必要文档。
 
 ## 失败与停止
 
@@ -54,4 +54,4 @@ description: >-
 
 报告具体行为变化、验证命令与结果、材料限制。未执行的检查标“未运行”并写明原因；局部通过不写成系统通过。完成代码修改不等于提交、发布或用户验收。
 
-方法来源：Fowler《Refactoring》、Feathers《Working Effectively with Legacy Code》、Beck《Tidy First?》与 TDD、Agans《Debugging》；见 [来源映射](../software-delivery/references/sources.md)。
+方法来源：Fowler《Refactoring》、Feathers《Working Effectively with Legacy Code》、Beck《Tidy First?》与 TDD、Agans《Debugging》、Zeller《Why Programs Fail》、McConnell《Code Complete》、Hunt/Thomas《The Pragmatic Programmer》及《Software Engineering at Google》；见 [来源映射](../software-delivery/references/sources.md)。
