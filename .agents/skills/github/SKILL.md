@@ -32,6 +32,7 @@ Prefer `--json` with only the required fields and `--jq` for stable facts. Use `
 - For issues, issue comments, labels, assignments, state changes, and linked development branches, read [references/issues-and-comments.md](references/issues-and-comments.md).
 - For PR metadata, diffs, conversation comments, reviews, inline review threads, checks, updates, and merges, read [references/pull-requests-and-reviews.md](references/pull-requests-and-reviews.md).
 - For hosted branches, rulesets and protection, workflow runs, releases, and repository settings, read [references/repository-and-automation.md](references/repository-and-automation.md).
+- For multi-account authentication, resolving a non-active `gh` user from repository context, or handling account/permission mismatches without switching the global active account, read [references/multi-account-auth.md](references/multi-account-auth.md).
 
 Use more than one reference only when the request crosses those resources. When a workflow also changes local commits, branches, worktrees, or conflicts, load the `git` skill for that portion and keep the two evidence surfaces separate.
 
